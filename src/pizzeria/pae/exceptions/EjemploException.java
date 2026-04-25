@@ -8,6 +8,6 @@ package pizzeria.pae.exceptions;
  *
  * @author jdani
  */
-public class EjemploException {
+public class EjemploException extends Exception{
     
 }
