@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="743.0" prefWidth="1386.0" spacing="30.0" style="-fx-background-color: #505050;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" prefHeight="743.0" prefWidth="1386.0" spacing="30.0" style="-fx-background-color: #505050;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pizzeria.pae.vistas.controlador.AcercaDeViewController">
    <padding><Insets bottom="40.0" left="40.0" right="40.0" top="40.0" /></padding>
    <children>
       <Label text="Acerca de este proyecto" textFill="WHITE">
