@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="743.0" prefWidth="1386.0" spacing="20.0" style="-fx-background-color: #505050;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <padding><Insets bottom="20.0" left="20.0" right="20.0" top="20.0" /></padding>
+   <Label text="Registro / Edición de Pedido" textFill="WHITE">
+      <font><Font name="System Bold" size="24.0" /></font>
+   </Label>
+   <GridPane hgap="15.0" vgap="15.0">
+       <columnConstraints>
+           <ColumnConstraints minWidth="100.0" />
+           <ColumnConstraints minWidth="300.0" />
+           <ColumnConstraints minWidth="100.0" />
+           <ColumnConstraints minWidth="200.0" />
+       </columnConstraints>
+       <Label text="Cliente:" textFill="#d1cfcf" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+       <ComboBox fx:id="cmbCliente" prefWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+       
+       <Label text="Fecha:" textFill="#d1cfcf" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+       <DatePicker fx:id="dpFecha" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+   </GridPane>
+   <Separator style="-fx-background-color: #404040;" />
+   <HBox spacing="10.0" alignment="CENTER_LEFT">
+       <Label text="Añadir Producto:" textFill="#d1cfcf" />
+       <ComboBox fx:id="cmbProducto" prefWidth="300.0" />
+       <Label text="Cantidad:" textFill="#d1cfcf" />
+       <Spinner fx:id="spnCantidad" prefWidth="80.0" />
+       <Button fx:id="btnAgregarAlPedido" text="Agregar a la lista" style="-fx-background-color: #404040; -fx-text-fill: white;" />
+       <Button fx:id="btnQuitarDelPedido" text="Quitar Seleccionado" style="-fx-background-color: #a83232; -fx-text-fill: white;" />
+   </HBox>
+   <TableView fx:id="tblDetallePedido" VBox.vgrow="ALWAYS">
+      <columns>
+         <TableColumn fx:id="colDetalleCod" prefWidth="100.0" text="Código" />
+         <TableColumn fx:id="colDetalleProd" prefWidth="300.0" text="Producto" />
+         <TableColumn fx:id="colDetalleCant" prefWidth="100.0" text="Cantidad" />
+         <TableColumn fx:id="colDetallePrecio" prefWidth="100.0" text="Precio Unitario" />
+         <TableColumn fx:id="colDetalleSubtotal" prefWidth="100.0" text="Subtotal" />
+      </columns>
+   </TableView>
+   <HBox spacing="15.0" alignment="CENTER_RIGHT">
+      <Label text="Total a pagar: $" textFill="WHITE">
+          <font><Font name="System Bold" size="20.0" /></font>
+      </Label>
+      <Label fx:id="lblTotalPago" text="0.00" textFill="#218c74">
+          <font><Font name="System Bold" size="20.0" /></font>
+      </Label>
+   </HBox>
+   <HBox spacing="15.0" alignment="CENTER_RIGHT">
+      <Button fx:id="btnCancelarPed" style="-fx-background-color: #404040; -fx-background-radius: 8;" text="Cancelar" textFill="WHITE" prefHeight="40" prefWidth="130" />
+      <Button fx:id="btnGuardarPed" style="-fx-background-color: #218c74; -fx-background-radius: 8;" text="Guardar Pedido" textFill="WHITE" prefHeight="40" prefWidth="130" />
+   </HBox>
+</VBox>

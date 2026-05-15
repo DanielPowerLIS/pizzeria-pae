@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="743.0" prefWidth="1386.0" spacing="20.0" style="-fx-background-color: #505050;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <padding><Insets bottom="20.0" left="20.0" right="20.0" top="20.0" /></padding>
+   <Label text="Módulo de Pedidos" textFill="WHITE">
+      <font><Font name="System Bold" size="24.0" /></font>
+   </Label>
+   <HBox spacing="10.0" alignment="CENTER_LEFT">
+      <ComboBox fx:id="cmbBuscarUsuario" prefWidth="200.0" promptText="Usuario / Cliente..." />
+      <DatePicker fx:id="dpBuscarFecha" promptText="Fecha de pedido..." />
+      <ComboBox fx:id="cmbBuscarEstatus" prefWidth="150.0" promptText="Estatus..." />
+      <Button fx:id="btnBuscarPedido" style="-fx-background-color: #404040; -fx-background-radius: 8;" text="Filtrar" textFill="WHITE" />
+      <Region HBox.hgrow="ALWAYS" />
+      <Button fx:id="btnExportarCSV" style="-fx-background-color: #227093; -fx-background-radius: 8;" text="Exportar a CSV" textFill="WHITE" />
+      <Button fx:id="btnExportarPDF" style="-fx-background-color: #b33939; -fx-background-radius: 8;" text="Exportar a PDF" textFill="WHITE" />
+   </HBox>
+   <TableView fx:id="tblPedidos" VBox.vgrow="ALWAYS">
+      <columns>
+         <TableColumn fx:id="colIdPedido" prefWidth="80.0" text="Folio" />
+         <TableColumn fx:id="colFechaPedido" prefWidth="150.0" text="Fecha" />
+         <TableColumn fx:id="colClientePedido" prefWidth="250.0" text="Cliente" />
+         <TableColumn fx:id="colTotalPedido" prefWidth="100.0" text="Total ($)" />
+         <TableColumn fx:id="colEstatusPedido" prefWidth="150.0" text="Estatus" />
+      </columns>
+   </TableView>
+   <HBox spacing="15.0" alignment="CENTER_RIGHT">
+      <Button fx:id="btnCambiarEstatus" style="-fx-background-color: #404040; -fx-background-radius: 8;" text="Cambiar Estatus" textFill="WHITE" prefHeight="40" prefWidth="140" />
+      <Button fx:id="btnEditarPedido" style="-fx-background-color: #404040; -fx-background-radius: 8;" text="Editar Pedido" textFill="WHITE" prefHeight="40" prefWidth="130" />
+      <Button fx:id="btnNuevoPedido" style="-fx-background-color: #218c74; -fx-background-radius: 8;" text="Nuevo Pedido" textFill="WHITE" prefHeight="40" prefWidth="130" />
+   </HBox>
+</VBox>
