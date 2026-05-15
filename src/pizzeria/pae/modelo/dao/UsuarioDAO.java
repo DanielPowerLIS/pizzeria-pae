@@ -2,12 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package pizzeria.pae.exceptions;
+package pizzeria.pae.modelo.dao;
 
 /**
  *
  * @author jdani
  */
-public class EjemploException extends Exception{
+public class UsuarioDAO {
     
 }
