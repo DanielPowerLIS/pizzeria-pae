@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" prefHeight="743.0" prefWidth="1386.0" spacing="30.0" style="-fx-background-color: #505050;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <padding><Insets bottom="40.0" left="40.0" right="40.0" top="40.0" /></padding>
+   <children>
+      <Label text="Acerca de este proyecto" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="36.0" />
+         </font>
+      </Label>
+      <Separator maxWidth="600.0" style="-fx-background-color: #404040;" />
+      <VBox alignment="CENTER" spacing="15.0">
+         <children>
+             <Label text="Institución Educativa: Universidad Veracruzana (Región Xalapa)" textFill="#d1cfcf">
+                 <font>
+                  <Font size="20.0" />
+               </font>
+             </Label>
+             <Label text="Carrera: Licenciatura en Ingeniería de Software" textFill="#d1cfcf">
+                 <font>
+                  <Font size="20.0" />
+               </font>
+             </Label>
+             <Label text="Semestre: Cuarto Semestre" textFill="#d1cfcf">
+                 <font>
+                  <Font size="20.0" />
+               </font>
+             </Label>
+         </children>
+      </VBox>
+      <Separator maxWidth="400.0" style="-fx-background-color: #404040;" />
+      <Label text="Equipo de Desarrollo:" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <VBox alignment="CENTER" spacing="10.0">
+         <children>
+             <Label text="Nombres" textFill="#d1cfcf" wrapText="true">
+                 <font>
+                  <Font size="18.0" />
+               </font>
+             </Label>
+         </children>
+          <!-- Puedes agregar más integrantes aquí si trabajas en equipo -->
+      </VBox>
+   </children>
+</VBox>

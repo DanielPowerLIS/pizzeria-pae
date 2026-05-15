@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="500.0" prefWidth="600.0" style="-fx-background-color: #323232;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <VBox spacing="15.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+      <Label text="Datos del Usuario" textFill="WHITE">
+         <font><Font name="System Bold" size="20.0" /></font>
+      </Label>
+      <GridPane hgap="15.0" vgap="15.0">
+         <columnConstraints>
+            <ColumnConstraints minWidth="100.0" />
+            <ColumnConstraints minWidth="200.0" hgrow="ALWAYS" />
+         </columnConstraints>
+         <Label text="Nombre(s):" textFill="#d1cfcf" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+         <TextField fx:id="txtNombre" style="-fx-background-color: #505050; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+         
+         <Label text="Apellidos:" textFill="#d1cfcf" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+         <TextField fx:id="txtApellidos" style="-fx-background-color: #505050; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+         
+         <Label text="Teléfono:" textFill="#d1cfcf" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+         <TextField fx:id="txtTelefono" style="-fx-background-color: #505050; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+         
+         <Label text="Email:" textFill="#d1cfcf" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+         <TextField fx:id="txtEmail" style="-fx-background-color: #505050; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+         
+         <Label text="Dirección:" textFill="#d1cfcf" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+         <TextField fx:id="txtDireccion" style="-fx-background-color: #505050; -fx-text-fill: white;" promptText="Calle y número" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+         
+         <Label text="Tipo Usuario:" textFill="#d1cfcf" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+         <ComboBox fx:id="cmbTipoUsuario" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+         
+         <Label text="Usuario (Emp):" textFill="#d1cfcf" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+         <TextField fx:id="txtUsername" style="-fx-background-color: #505050; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+         
+         <Label text="Contraseña:" textFill="#d1cfcf" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+         <PasswordField fx:id="txtPassword" style="-fx-background-color: #505050; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+      </GridPane>
+      <HBox spacing="10.0" alignment="CENTER_RIGHT" VBox.vgrow="ALWAYS">
+         <padding><Insets top="20.0" /></padding>
+         <Button fx:id="btnCancelar" style="-fx-background-color: #505050; -fx-background-radius: 8;" text="Cancelar" textFill="WHITE" prefWidth="100"/>
+         <Button fx:id="btnGuardar" style="-fx-background-color: #218c74; -fx-background-radius: 8;" text="Guardar" textFill="WHITE" prefWidth="100"/>
+      </HBox>
+   </VBox>
+</AnchorPane>

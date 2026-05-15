@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="743.0" prefWidth="1386.0" spacing="20.0" style="-fx-background-color: #505050;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <padding><Insets bottom="20.0" left="20.0" right="20.0" top="20.0" /></padding>
+   <Label text="Validación de Inventario Físico" textFill="WHITE">
+      <font><Font name="System Bold" size="24.0" /></font>
+   </Label>
+   <Label text="Capture la cantidad física actual para comparar con la registrada en el sistema." textFill="#d1cfcf" />
+   <TableView fx:id="tblValidacion" VBox.vgrow="ALWAYS">
+      <columns>
+         <TableColumn fx:id="colCodVal" prefWidth="100.0" text="Código" />
+         <TableColumn fx:id="colNomVal" prefWidth="300.0" text="Producto" />
+         <TableColumn fx:id="colCantSistema" prefWidth="150.0" text="Cantidad Sistema" />
+         <TableColumn fx:id="colCantFisica" prefWidth="150.0" text="Cantidad Física" />
+         <TableColumn fx:id="colDiferencia" prefWidth="150.0" text="Diferencia" />
+      </columns>
+   </TableView>
+   <HBox spacing="15.0" alignment="CENTER_RIGHT">
+      <Button fx:id="btnGuardarValidacion" style="-fx-background-color: #218c74; -fx-background-radius: 8;" text="Guardar Validación" textFill="WHITE" prefHeight="40" prefWidth="160" />
+   </HBox>
+</VBox>

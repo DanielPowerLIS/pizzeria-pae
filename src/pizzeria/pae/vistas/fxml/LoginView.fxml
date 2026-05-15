@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" prefHeight="550.0" prefWidth="450.0" spacing="25.0" style="-fx-background-color: #323232; -fx-border-color: #2F5240; -fx-border-width: 2;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+    
+    <padding>
+        <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+    </padding>
+   <children>
+   
+       <!-- Título de la Empresa -->
+       <Label text="Italia Pizza" textFill="WHITE">
+           <font>
+               <Font name="System Bold" size="32.0" />
+           </font>
+       </Label>
+   
+       <Label text="Acceso al Sistema" textFill="WHITE">
+           <font>
+               <Font size="18.0" />
+           </font>
+       </Label>
+   
+       <Region prefHeight="20.0" />
+   
+       <!-- Contenedor de Usuario -->
+       <VBox alignment="CENTER_LEFT" spacing="8.0">
+      <children>
+              <Label text="Usuario:">
+                  <font>
+                      <Font size="14.0" />
+                  </font>
+              </Label>
+              <!-- Altura mínima aumentada para facilitar el uso táctil -->
+              <TextField fx:id="txtUsuario" minHeight="45.0" promptText="Nombre de usuario" style="-fx-font-size: 14px;" />
+      </children>
+       </VBox>
+   
+       <!-- Contenedor de Contraseña -->
+       <VBox alignment="CENTER_LEFT" spacing="8.0">
+      <children>
+              <Label text="Contraseña:">
+                  <font>
+                      <Font size="14.0" />
+                  </font>
+              </Label>
+              <!-- Altura mínima aumentada para facilitar el uso táctil -->
+              <PasswordField fx:id="txtPassword" minHeight="45.0" promptText="••••••••" style="-fx-font-size: 14px;" />
+      </children>
+       </VBox>
+   
+       <Region prefHeight="10.0" />
+   
+       <!-- Botón de Inicio de Sesión -->
+       <!-- Dimensiones amplias para cumplimiento de entrada dual (mouse/táctil) -->
+       <Button fx:id="btnIniciarSesion" maxWidth="Infinity" minHeight="55.0" style="-fx-background-color: #800000; -fx-font-weight: bold; -fx-cursor: hand;" text="Iniciar Sesión" textFill="WHITE" />
+   </children>
+
+</VBox>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="500.0" prefWidth="600.0" style="-fx-background-color: #323232;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <VBox spacing="15.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+      <Label text="Datos del Producto" textFill="WHITE">
+         <font><Font name="System Bold" size="20.0" /></font>
+      </Label>
+      <GridPane hgap="15.0" vgap="15.0">
+         <columnConstraints>
+            <ColumnConstraints minWidth="100.0" />
+            <ColumnConstraints minWidth="200.0" hgrow="ALWAYS" />
+         </columnConstraints>
+         <Label text="Código:" textFill="#d1cfcf" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+         <TextField fx:id="txtCodigo" style="-fx-background-color: #505050; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+         
+         <Label text="Nombre:" textFill="#d1cfcf" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+         <TextField fx:id="txtNombreProducto" style="-fx-background-color: #505050; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+         
+         <Label text="Descripción:" textFill="#d1cfcf" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+         <TextArea fx:id="txtDescripcion" prefRowCount="3" style="-fx-control-inner-background: #505050; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+         
+         <Label text="Precio:" textFill="#d1cfcf" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+         <TextField fx:id="txtPrecio" style="-fx-background-color: #505050; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+         
+         <Label text="Cantidad:" textFill="#d1cfcf" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+         <TextField fx:id="txtCantidad" style="-fx-background-color: #505050; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+         
+         <Label text="Restricciones:" textFill="#d1cfcf" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+         <TextField fx:id="txtRestricciones" style="-fx-background-color: #505050; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+      </GridPane>
+      <HBox spacing="10.0" alignment="CENTER_LEFT">
+          <Label text="Foto del producto:" textFill="#d1cfcf"/>
+          <Button fx:id="btnSeleccionarFoto" text="Seleccionar Imagen" style="-fx-background-color: #404040; -fx-text-fill: white;" />
+          <Label fx:id="lblRutaFoto" text="Sin seleccionar..." textFill="#a0a0a0" />
+      </HBox>
+      <HBox spacing="10.0" alignment="CENTER_RIGHT" VBox.vgrow="ALWAYS">
+         <padding><Insets top="20.0" /></padding>
+         <Button fx:id="btnCancelarProd" style="-fx-background-color: #505050; -fx-background-radius: 8;" text="Cancelar" textFill="WHITE" prefWidth="100"/>
+         <Button fx:id="btnGuardarProd" style="-fx-background-color: #218c74; -fx-background-radius: 8;" text="Guardar" textFill="WHITE" prefWidth="100"/>
+      </HBox>
+   </VBox>
+</AnchorPane>
