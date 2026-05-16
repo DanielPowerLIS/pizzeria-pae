@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
@@ -9,18 +10,6 @@
 <?import javafx.scene.text.Font?>
 
 <BorderPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #323232;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pizzeria.pae.vistas.controlador.MenuViewController">
-   <bottom>
-      <HBox alignment="CENTER_RIGHT" spacing="15" style="-fx-background-color: #252525;" BorderPane.alignment="CENTER">
-         <children>
-            <Label fx:id="lblUsuario" text="Sesión: Nombre de usuario" textFill="WHITE" />
-            <Separator orientation="VERTICAL" prefHeight="15" />
-            <Label fx:id="lblRol" text="Rol: Administrador" textFill="WHITE" />
-         </children>
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
-      </HBox>
-   </bottom>
    <top>
       <VBox prefHeight="48.0" prefWidth="1636.0" style="-fx-background-color: black;" BorderPane.alignment="CENTER">
          <children>
@@ -28,15 +17,67 @@
                <font>
                   <Font name="System Bold" size="28.0" />
                </font>
+               <padding>
+                  <Insets bottom="10.0" left="15.0" right="15.0" />
+               </padding>
             </Label>
+            <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="1280.0" spacing="15" style="-fx-background-color: #1A1818;">
+               <children>
+                  <Label fx:id="lblUsuario" text="Sesión: Nombre de usuario" textFill="WHITE">
+                     <padding>
+                        <Insets left="16.0" />
+                     </padding>
+                  </Label>
+                  <Separator orientation="VERTICAL" prefHeight="15.0" />
+                  <Label fx:id="lblRol" text="Rol: Administrador" textFill="WHITE">
+                     <HBox.margin>
+                        <Insets right="15.0" />
+                     </HBox.margin>
+                  </Label>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="8.0" prefWidth="872.0">
+                     <children>
+                        <Button fx:id="btnAcercaDe" contentDisplay="TOP" mnemonicParsing="false" style="-fx-background-color: transparent;" text="Acerca de" textAlignment="CENTER" textFill="WHITE">
+                           <graphic>
+                              <ImageView fitHeight="41.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../resources/icons/icon-acercaDe.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="btnCerrarSesion" alignment="CENTER_RIGHT" contentDisplay="TOP" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="71.0" prefWidth="107.0" style="-fx-background-color: transparent;" text="Cerrar sesión" textFill="WHITE">
+                           <graphic>
+                              <ImageView fitHeight="41.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../resources/icons/icon-cerrarSesion.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" top="10.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
          </children>
          <padding>
-            <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
+            <Insets top="10.0" />
          </padding>
       </VBox>
    </top>
    <left>
-      <VBox alignment="CENTER_LEFT" prefHeight="595.0" prefWidth="250.0" spacing="10.0" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER_LEFT" prefHeight="595.0" prefWidth="250.0" spacing="15.0" BorderPane.alignment="CENTER">
          <children>
             <Separator prefWidth="200.0" />
             <Label text="Administración" textFill="#d1cfcf">
@@ -45,9 +86,11 @@
                </font>
             </Label>
             <Button fx:id="btnModuloUsuarios" alignment="CENTER_LEFT" maxWidth="Infinity" prefHeight="60.0" style="-fx-background-color: #404040; -fx-border-radius: 8;" text="Usuarios" textFill="WHITE" wrapText="true" />
-            <Button fx:id="btnCerrarSesion" alignment="CENTER_LEFT" maxWidth="Infinity" mnemonicParsing="false" prefHeight="60.0" style="-fx-border-radius: 8; -fx-background-color: #404040;" text="Cerrar sesión" textFill="WHITE" />
 
-                  <Separator prefWidth="200.0" />
+                  <Separator prefWidth="200.0">
+               <padding>
+                  <Insets top="20.0" />
+               </padding></Separator>
             <Label text="Inventarios" textFill="#d3d0d0">
                <font>
                   <Font name="System Bold" size="12.0" />
@@ -56,29 +99,24 @@
             <Button fx:id="btnProductos" alignment="CENTER_LEFT" maxWidth="Infinity" prefHeight="60.0" style="-fx-background-color: #404040; -fx-border-radius: 8;" text="Productos" textFill="WHITE" />
             <Button fx:id="btnValidacion" alignment="CENTER_LEFT" maxWidth="Infinity" prefHeight="60.0" style="-fx-background-color: #404040; -fx-border-radius: 8;" text="Validación de inventarios" textFill="WHITE" />
 
-                  <Separator prefWidth="200.0" />
+                  <Separator prefWidth="200.0">
+               <padding>
+                  <Insets top="20.0" />
+               </padding></Separator>
             <Label text="Pedidos" textFill="#d3d0d0">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
             <Button fx:id="btnPedidos" alignment="CENTER_LEFT" maxWidth="Infinity" prefHeight="60.0" style="-fx-background-color: #404040; -fx-border-radius: 8;" text="Pedidos" textFill="WHITE" />
-
-                  <Separator prefWidth="200.0" />
-            <Label text="Ayuda" textFill="#d3d0d0">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <Button fx:id="btnAcercaDe" alignment="CENTER_LEFT" maxWidth="Infinity" prefHeight="60.0" style="-fx-background-color: #404040; -fx-border-radius: 8;" text="Acerca de" textFill="WHITE" />
             
                </children>
          <padding>
-            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+            <Insets left="15.0" right="15.0" />
          </padding>
       </VBox>
    </left>
    <center>
-      <Pane prefHeight="743.0" prefWidth="1386.0" style="-fx-background-color: #505050;" BorderPane.alignment="CENTER" />
-   </center>
+    <StackPane fx:id="panelCentral" style="-fx-background-color: #505050;" BorderPane.alignment="CENTER" />
+</center>
 </BorderPane>
