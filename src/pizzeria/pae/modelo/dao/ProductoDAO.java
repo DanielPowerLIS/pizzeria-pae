@@ -2,8 +2,8 @@ package pizzeria.pae.modelo.dao;
 
 /**
  *
- * @author jdani
+ * @author adair
  */
-public class UsuarioDAO {
+public class ProductoDAO {
     
 }
