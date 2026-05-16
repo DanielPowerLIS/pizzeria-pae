@@ -1,32 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="743.0" prefWidth="1386.0" spacing="20.0" style="-fx-background-color: #505050;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pizzeria.pae.vistas.fxml.ProductosViewController">
+<VBox prefHeight="650.0" prefWidth="1084.0" spacing="20.0" style="-fx-background-color: #505050;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pizzeria.pae.vistas.controlador.ProductosViewController">
    <padding><Insets bottom="20.0" left="20.0" right="20.0" top="20.0" /></padding>
-   <Label text="Gestión de Productos e Inventario" textFill="WHITE">
-      <font><Font name="System Bold" size="24.0" /></font>
-   </Label>
-   <HBox spacing="10.0" alignment="CENTER_LEFT">
-      <TextField fx:id="txtBuscarProducto" prefWidth="300.0" promptText="Buscar por nombre o código..." style="-fx-background-color: #323232; -fx-text-fill: white;" />
-      <Button fx:id="btnBuscarProducto" style="-fx-background-color: #404040; -fx-background-radius: 8;" text="Buscar" textFill="WHITE" />
-      <Region HBox.hgrow="ALWAYS" />
-      <Button fx:id="btnGenerarReportePDF" style="-fx-background-color: #b33939; -fx-background-radius: 8;" text="Generar Reporte PDF" textFill="WHITE" />
-   </HBox>
-   <TableView fx:id="tblProductos" VBox.vgrow="ALWAYS">
-      <columns>
-         <TableColumn fx:id="colCodigo" prefWidth="100.0" text="Código" />
-         <TableColumn fx:id="colNombreProd" prefWidth="200.0" text="Nombre" />
-         <TableColumn fx:id="colPrecio" prefWidth="100.0" text="Precio" />
-         <TableColumn fx:id="colCantidad" prefWidth="100.0" text="En Existencia" />
-         <TableColumn fx:id="colRestricciones" prefWidth="250.0" text="Restricciones" />
-      </columns>
-   </TableView>
-   <HBox spacing="15.0" alignment="CENTER_RIGHT">
-      <Button fx:id="btnAgregarProducto" style="-fx-background-color: #404040; -fx-background-radius: 8;" text="Agregar Producto" textFill="WHITE" prefHeight="40" prefWidth="130" />
-      <Button fx:id="btnEditarProducto" style="-fx-background-color: #404040; -fx-background-radius: 8;" text="Editar Producto" textFill="WHITE" prefHeight="40" prefWidth="130" />
-      <Button fx:id="btnEliminarProducto" style="-fx-background-color: #a83232; -fx-background-radius: 8;" text="Eliminar Producto" textFill="WHITE" prefHeight="40" prefWidth="130" />
-   </HBox>
+   <children>
+      <Label text="Gestión de Productos e Inventario" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <HBox alignment="CENTER_LEFT" spacing="10.0">
+         <children>
+            <HBox>
+               <children>
+                  <TextField fx:id="txtBuscarProducto" prefWidth="300.0" promptText="Buscar por nombre o código..." style="-fx-background-color: #323232; -fx-text-fill: white;" />
+                  <Button fx:id="btnBuscarProducto" style="-fx-background-color: transparent; -fx-background-radius: 8;" textFill="WHITE">
+                     <graphic>
+                        <ImageView fitHeight="32.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../resources/icons/icon-buscar.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
+            <Button fx:id="btnAgregarProducto" prefHeight="40" prefWidth="152.0" style="-fx-background-color: #404040; -fx-background-radius: 8;" text="Agregar Producto" textFill="WHITE" />
+            <Button fx:id="btnEditarProducto" prefHeight="40" prefWidth="152.0" style="-fx-background-color: #404040; -fx-background-radius: 8;" text="Editar Producto" textFill="WHITE" />
+            <Button fx:id="btnEliminarProducto" prefHeight="40" prefWidth="152.0" style="-fx-background-color: #a83232; -fx-background-radius: 8;" text="Eliminar Producto" textFill="WHITE" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button fx:id="btnGenerarReportePDF" style="-fx-background-color: #191970; -fx-background-radius: 8;" text="Generar Reporte PDF" textFill="WHITE" />
+         </children>
+      </HBox>
+      <TableView fx:id="tblProductos" VBox.vgrow="ALWAYS">
+         <columns>
+            <TableColumn fx:id="colCodigo" prefWidth="100.0" text="Código" />
+            <TableColumn fx:id="colNombreProd" prefWidth="200.0" text="Nombre" />
+            <TableColumn fx:id="colPrecio" prefWidth="100.0" text="Precio" />
+            <TableColumn fx:id="colCantidad" prefWidth="100.0" text="En Existencia" />
+            <TableColumn fx:id="colRestricciones" prefWidth="250.0" text="Restricciones" />
+         </columns>
+      </TableView>
+      <HBox alignment="CENTER_RIGHT" spacing="15.0" />
+   </children>
 </VBox>
