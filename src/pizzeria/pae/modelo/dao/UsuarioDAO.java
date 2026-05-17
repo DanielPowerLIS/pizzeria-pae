@@ -282,4 +282,71 @@ public class UsuarioDAO {
         }
         return false;
     }
+    
+    public static boolean agregarUsuario(Usuario usuarioAgregar)throws SQLException{
+        Boolean haPedido = false;
+        Boolean esActivo = false;
+        
+        String insercionUsuario = "INSERT INTO usuario (nombre, apellidoPaterno, apellidoMaterno, telefono, " +
+                        "email, haPedido, esEmpleado, esActivo, nombreUsuario, contrasenia) " +
+                        "VALUES ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ";
+        
+        String insercionDireccion = "INSERT INTO direccion (calle, ciudad, numero, codigoPostal, idUsuario) " +
+                         "VALUES ?, ?, ?, ?, ? ";
+        
+        MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
+        PreparedStatement insercionUsuarioBD = conexion.prepareStatement(insercionUsuario);
+        PreparedStatement insercionDireccionBD = conexion.prepareStatement(insercionDireccion);
+        /*
+        insercionUsuarioBD.setString(1, usuarioAgregar.nombre);
+        insercionUsuarioBD.setString(2, usuarioAgregar.apellidoPaterno);
+        insercionUsuarioBD.setString(3, usuarioAgregar.apellidoMaterno);
+        insercionUsuarioBD.setString(4, usuarioAgregar.telefono);
+        insercionUsuarioBD.setString(5, usuarioAgregar.email);
+        insercionUsuarioBD.setBoolean(6,haPedido);
+        insercionUsuarioBD.setString(7, usuarioAgregar.esEmpleado);
+        insercionUsuarioBD.setBoolean(8,esActivo);
+        insercionUsuarioBD.setString(9, usuarioAgregar.nombreUsuario);
+        insercionUsuarioBD.setString(10, usuarioAgregar.contrasenia);
+        */
+        Integer usuarioInsertado = insercionUsuarioBD.executeUpdate();
+        /*
+        Usuario usuario = buscarUsuarioPorTelefono(usuarioAgregar.telefono);
+        
+        insercionDireccionBD.setString(1, usuarioAgregar.direccion.calle);
+        insercionDireccionBD.setString(2, usuarioAgregar.direccion.ciudad);
+        insercionDireccionBD.setString(3, usuarioAgregar.direccion.numero);
+        insercionDireccionBD.setString(4, usuarioAgregar.direccion.codigoPostal);
+        insercionDireccionBD.setInt(5, usuario.idUsuario);
+        */
+        Integer direccionInsertada = insercionDireccionBD.executeUpdate();
+        
+        if((usuarioInsertado > 0) && (direccionInsertada > 0)){
+            return true;
+        }
+
+        return false;
+    }
+    
+    public static boolean eliminarUsuario(Integer idUsuario)throws SQLException{
+        String eliminarUsuario = "DELETE FROM usuario WHERE idUsuario = ?";
+        String eliminarDireccion = "DELETE FROM direccion WHERE idUsuario = ?";
+        
+        MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
+        
+        PreparedStatement eliminarUsuarioBD = conexion.prepareStatement(eliminarUsuario);
+        PreparedStatement eliminarDireccionBD = conexion.prepareStatement(eliminarDireccion);
+        
+        eliminarUsuarioBD.setInt(1, idUsuario);
+        eliminarDireccionBD.setInt(1, idUsuario);
+        
+        Integer usuarioEliminado = eliminarUsuarioBD.executeUpdate();
+        Integer  direccionEliminada = eliminarDireccionBD.executeUpdate();
+        
+        if((usuarioEliminado > 0) && (direccionEliminada > 0)){
+            return true;
+        }
+        
+        return false;
+    }
 }
