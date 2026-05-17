@@ -22,7 +22,9 @@ public class Producto {
     public Producto() {
     }
 
-    public Producto(Integer idProducto, String nombre, String codigoProducto, Boolean esInsumo, Boolean esUtilizado, int cantidad, String rutaFoto, String restricciones, BigDecimal precio, String descripcion) {
+    public Producto(Integer idProducto, String nombre, String codigoProducto, Boolean esInsumo, 
+            Boolean esUtilizado, int cantidad, String rutaFoto, String restricciones, 
+            BigDecimal precio, String descripcion) {
         this.idProducto = idProducto;
         this.nombre = nombre;
         this.codigoProducto = codigoProducto;
