@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import pizzeria.pae.modelo.MySQLConnectionManager;
+import pizzeria.pae.modelo.beans.Direccion;
 import pizzeria.pae.modelo.beans.Usuario;
 
 /**
@@ -33,8 +34,11 @@ public class UsuarioDAO {
         
         ResultSet resultado = sentenciaBD.executeQuery();
         
-        if(resultado.next()){
-            Usuario u = new Usuario();
+        Usuario u = null;
+        
+        if(resultado != null && resultado.next()){
+            u = new Usuario();
+            
             u.setIdUsuario(resultado.getInt("idUsuario"));
             u.setNombre(resultado.getString("nombre"));
             u.setApellidoPaterno(resultado.getString("apellidoPaterno"));
@@ -46,18 +50,21 @@ public class UsuarioDAO {
             u.setEsActivo(resultado.getBoolean("esActivo"));
             u.setNombreUsuario(resultado.getString("nombreUsuario"));
             u.setContrasenia(resultado.getString("contrasenia"));
-            u.direccion.idDireccion = resultado.getInt("idDireccion");
-            u.direccion.calle = resultado.getString("calle");
-            u.direccion.ciudad = resultado.getString("ciudad");
-            u.direccion.numero = resultado.getString("numero");
-            u.direccion.codigoPostal = resultado.getString("codigoPostal");
+            
+            Direccion d =  new Direccion();
+            d.setIdDireccion(resultado.getInt("idDireccion"));
+            d.setCalle(resultado.getString("calle"));
+            d.setCiudad(resultado.getString("ciudad"));
+            d.setNumero(resultado.getString("numero"));
+            d.setCodigoPostal(resultado.getString("codigoPostal"));
+            
+            u.setDireccion(d);
+            
         }
         resultado.close();
         conexion.close();
         
         return u;
-        
-        return null;
     }
     
     private static String[] prepararNombre(String nombreCompleto){ 
@@ -76,32 +83,37 @@ public class UsuarioDAO {
         sentenciaBD.setString(1, telefonoBuscar);
         
         ResultSet resultado = sentenciaBD.executeQuery();
-        /*
-        if(resultado.next()){
-            Usuario u = new Usuario();
-            u.idUsuario = resultado.getInt("idUsuario");
-            u.nombre = resultado.getString("nombre");
-            u.apellidoPaterno = resultado.getString("apellidoPaterno");
-            u.apellidoMaterno = resultado.getString("apellidoMaterno");
-            u.telefono = resultado.getString("telefono");
-            u.email = resultado.getString("email");
-            u.haPedido = resultado.getBoolean("haPedido");
-            u.esEmpleado = resultado.getBoolean("esEmpleado");
-            u.esActivo = resultado.getBoolean("esActivo");
-            u.nombreUsuario = resultado.getString("nombreUsuario");
-            u.contrasenia = resultado.getString("contrasenia");
-            u.direccion.idDireccion = resultado.getInt("idDireccion");
-            u.direccion.calle = resultado.getString("calle");
-            u.direccion.ciudad = resultado.getString("ciudad");
-            u.direccion.numero = resultado.getString("numero");
-            u.direccion.codigoPostal = resultado.getString("codigoPostal");
+        Usuario u = null;
+        
+        if(resultado != null && resultado.next()){
+            u = new Usuario();
+            
+            u.setIdUsuario(resultado.getInt("idUsuario"));
+            u.setNombre(resultado.getString("nombre"));
+            u.setApellidoPaterno(resultado.getString("apellidoPaterno"));
+            u.setApellidoMaterno(resultado.getString("apellidoMaterno"));
+            u.setTelefono(resultado.getString("telefono"));
+            u.setEmail(resultado.getString("email"));
+            u.setHaPedido(resultado.getBoolean("haPedido"));
+            u.setEsEmpleado(resultado.getBoolean("esEmpleado"));
+            u.setEsActivo(resultado.getBoolean("esActivo"));
+            u.setNombreUsuario(resultado.getString("nombreUsuario"));
+            u.setContrasenia(resultado.getString("contrasenia"));
+            
+            Direccion d =  new Direccion();
+            d.setIdDireccion(resultado.getInt("idDireccion"));
+            d.setCalle(resultado.getString("calle"));
+            d.setCiudad(resultado.getString("ciudad"));
+            d.setNumero(resultado.getString("numero"));
+            d.setCodigoPostal(resultado.getString("codigoPostal"));
+            
+            u.setDireccion(d);
+            
         }
         resultado.close();
         conexion.close();
         
         return u;
-        */
-        return null;
     }
        
     public static Usuario buscarUsuarioPorDireccion(String calle, String numero )throws SQLException{
@@ -116,32 +128,37 @@ public class UsuarioDAO {
         sentenciaBD.setString(2, numero);
         
         ResultSet resultado = sentenciaBD.executeQuery();
-        /*
-        if(resultado.next()){
-            Usuario u = new Usuario();
-            u.idUsuario = resultado.getInt("idUsuario");
-            u.nombre = resultado.getString("nombre");
-            u.apellidoPaterno = resultado.getString("apellidoPaterno");
-            u.apellidoMaterno = resultado.getString("apellidoMaterno");
-            u.telefono = resultado.getString("telefono");
-            u.email = resultado.getString("email");
-            u.haPedido = resultado.getBoolean("haPedido");
-            u.esEmpleado = resultado.getBoolean("esEmpleado");
-            u.esActivo = resultado.getBoolean("esActivo");
-            u.nombreUsuario = resultado.getString("nombreUsuario");
-            u.contrasenia = resultado.getString("contrasenia");
-            u.direccion.idDireccion = resultado.getInt("idDireccion");
-            u.direccion.calle = resultado.getString("calle");
-            u.direccion.ciudad = resultado.getString("ciudad");
-            u.direccion.numero = resultado.getString("numero");
-            u.direccion.codigoPostal = resultado.getString("codigoPostal");
+        Usuario u = null;
+        
+        if(resultado != null && resultado.next()){
+            u = new Usuario();
+            
+            u.setIdUsuario(resultado.getInt("idUsuario"));
+            u.setNombre(resultado.getString("nombre"));
+            u.setApellidoPaterno(resultado.getString("apellidoPaterno"));
+            u.setApellidoMaterno(resultado.getString("apellidoMaterno"));
+            u.setTelefono(resultado.getString("telefono"));
+            u.setEmail(resultado.getString("email"));
+            u.setHaPedido(resultado.getBoolean("haPedido"));
+            u.setEsEmpleado(resultado.getBoolean("esEmpleado"));
+            u.setEsActivo(resultado.getBoolean("esActivo"));
+            u.setNombreUsuario(resultado.getString("nombreUsuario"));
+            u.setContrasenia(resultado.getString("contrasenia"));
+            
+            Direccion d =  new Direccion();
+            d.setIdDireccion(resultado.getInt("idDireccion"));
+            d.setCalle(resultado.getString("calle"));
+            d.setCiudad(resultado.getString("ciudad"));
+            d.setNumero(resultado.getString("numero"));
+            d.setCodigoPostal(resultado.getString("codigoPostal"));
+            
+            u.setDireccion(d);
+            
         }
         resultado.close();
         conexion.close();
         
         return u;
-        */
-        return null;
     }
     
     public static List<Usuario> obtenerUsuarios(boolean esEmpleado)throws SQLException{
@@ -165,30 +182,37 @@ public class UsuarioDAO {
         sentenciaBD.setBoolean(1, empleado);
         ResultSet resultado = sentenciaBD.executeQuery();
         
-        List<Usuario> empleados = new ArrayList<>();
-        /*
-        while(resultado.next()){
-            Usuario u = new Usuario();
-            u.idUsuario = resultado.getInt("idUsuario");
-            u.nombre = resultado.getString("nombre");
-            u.apellidoPaterno = resultado.getString("apellidoPaterno");
-            u.apellidoMaterno = resultado.getString("apellidoMaterno");
-            u.telefono = resultado.getString("telefono");
-            u.email = resultado.getString("email");
-            u.haPedido = resultado.getBoolean("haPedido");
-            u.esEmpleado = resultado.getBoolean("esEmpleado");
-            u.esActivo = resultado.getBoolean("esActivo");
-            u.nombreUsuario = resultado.getString("nombreUsuario");
-            u.contrasenia = resultado.getString("contrasenia");
-            u.direccion.idDireccion = resultado.getInt("idDireccion");
-            u.direccion.calle = resultado.getString("calle");
-            u.direccion.ciudad = resultado.getString("ciudad");
-            u.direccion.numero = resultado.getString("numero");
-            u.direccion.codigoPostal = resultado.getString("codigoPostal");
-            
-            empleados.add(u);
+        List<Usuario> empleados = null;
+        
+        if(resultado != null){
+            empleados = new ArrayList<>();
+            while(resultado.next()){
+                Usuario u = new Usuario();
+
+                u.setIdUsuario(resultado.getInt("idUsuario"));
+                u.setNombre(resultado.getString("nombre"));
+                u.setApellidoPaterno(resultado.getString("apellidoPaterno"));
+                u.setApellidoMaterno(resultado.getString("apellidoMaterno"));
+                u.setTelefono(resultado.getString("telefono"));
+                u.setEmail(resultado.getString("email"));
+                u.setHaPedido(resultado.getBoolean("haPedido"));
+                u.setEsEmpleado(resultado.getBoolean("esEmpleado"));
+                u.setEsActivo(resultado.getBoolean("esActivo"));
+                u.setNombreUsuario(resultado.getString("nombreUsuario"));
+                u.setContrasenia(resultado.getString("contrasenia"));
+
+                Direccion d =  new Direccion();
+                d.setIdDireccion(resultado.getInt("idDireccion"));
+                d.setCalle(resultado.getString("calle"));
+                d.setCiudad(resultado.getString("ciudad"));
+                d.setNumero(resultado.getString("numero"));
+                d.setCodigoPostal(resultado.getString("codigoPostal"));
+
+                u.setDireccion(d);
+
+                empleados.add(u);
+            }
         }
-        */
         resultado.close();
         conexion.close();
         
@@ -207,30 +231,36 @@ public class UsuarioDAO {
         sentenciaBD.setBoolean(1, empleado);
         ResultSet resultado = sentenciaBD.executeQuery();
         
-        List<Usuario> clientes = new ArrayList<>();
-        /*
-        while(resultado.next()){
-            Usuario u = new Usuario();
-            u.idUsuario = resultado.getInt("idUsuario");
-            u.nombre = resultado.getString("nombre");
-            u.apellidoPaterno = resultado.getString("apellidoPaterno");
-            u.apellidoMaterno = resultado.getString("apellidoMaterno");
-            u.telefono = resultado.getString("telefono");
-            u.email = resultado.getString("email");
-            u.haPedido = resultado.getBoolean("haPedido");
-            u.esEmpleado = resultado.getBoolean("esEmpleado");
-            u.esActivo = resultado.getBoolean("esActivo");
-            u.nombreUsuario = resultado.getString("nombreUsuario");
-            u.contrasenia = resultado.getString("contrasenia");
-            u.direccion.idDireccion = resultado.getInt("idDireccion");
-            u.direccion.calle = resultado.getString("calle");
-            u.direccion.ciudad = resultado.getString("ciudad");
-            u.direccion.numero = resultado.getString("numero");
-            u.direccion.codigoPostal = resultado.getString("codigoPostal");
-            
-            clientes.add(u);
+        List<Usuario> clientes = null;
+        if(resultado != null){
+            clientes = new ArrayList<>();
+            while(resultado.next()){
+                Usuario u = new Usuario();
+
+                u.setIdUsuario(resultado.getInt("idUsuario"));
+                u.setNombre(resultado.getString("nombre"));
+                u.setApellidoPaterno(resultado.getString("apellidoPaterno"));
+                u.setApellidoMaterno(resultado.getString("apellidoMaterno"));
+                u.setTelefono(resultado.getString("telefono"));
+                u.setEmail(resultado.getString("email"));
+                u.setHaPedido(resultado.getBoolean("haPedido"));
+                u.setEsEmpleado(resultado.getBoolean("esEmpleado"));
+                u.setEsActivo(resultado.getBoolean("esActivo"));
+                u.setNombreUsuario(resultado.getString("nombreUsuario"));
+                u.setContrasenia(resultado.getString("contrasenia"));
+
+                Direccion d =  new Direccion();
+                d.setIdDireccion(resultado.getInt("idDireccion"));
+                d.setCalle(resultado.getString("calle"));
+                d.setCiudad(resultado.getString("ciudad"));
+                d.setNumero(resultado.getString("numero"));
+                d.setCodigoPostal(resultado.getString("codigoPostal"));
+
+                u.setDireccion(d);
+
+                clientes.add(u);
+            }
         }
-        */
         resultado.close();
         conexion.close();
         
