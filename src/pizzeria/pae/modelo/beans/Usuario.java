@@ -91,7 +91,7 @@ public class Usuario {
         this.email = email;
     }
 
-    public boolean isHaPedido() {
+    public boolean getHaPedido() {
         return haPedido;
     }
 
@@ -99,7 +99,7 @@ public class Usuario {
         this.haPedido = haPedido;
     }
 
-    public boolean isEsEmpleado() {
+    public boolean getEsEmpleado() {
         return esEmpleado;
     }
 
@@ -107,7 +107,7 @@ public class Usuario {
         this.esEmpleado = esEmpleado;
     }
 
-    public boolean isEsActivo() {
+    public boolean getEsActivo() {
         return esActivo;
     }
 

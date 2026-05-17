@@ -232,6 +232,7 @@ public class UsuarioDAO {
         ResultSet resultado = sentenciaBD.executeQuery();
         
         List<Usuario> clientes = null;
+        
         if(resultado != null){
             clientes = new ArrayList<>();
             while(resultado.next()){
@@ -274,6 +275,9 @@ public class UsuarioDAO {
                         "apellidoMaterno = ?," +
                         "telefono = ?," +
                         "email = ?," +
+                        "haPedido = ?," +
+                        "esEmpleado = ?," +
+                        "esActivo = ?," +
                         "nombreUsuario = ?," +
                         "contrasenia = ? " +
                         "WHERE idUsuario = ?";
@@ -288,22 +292,25 @@ public class UsuarioDAO {
         MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
         PreparedStatement actualizarUsuarioBD = conexion.prepareStatement(actualizarUsuario);
         PreparedStatement actualizarDireccionBD = conexion.prepareStatement(actualizarDireccion);
-        /*
-        actualizarUsuarioBD.setString(1, usuarioActualizar.nombre);
-        actualizarUsuarioBD.setString(2, usuarioActualizar.apellidoPaterno);
-        actualizarUsuarioBD.setString(3, usuarioActualizar.apellidoMaterno);
-        actualizarUsuarioBD.setString(4, usuarioActualizar.telefono);
-        actualizarUsuarioBD.setString(5, usuarioActualizar.email);
-        actualizarUsuarioBD.setString(6, usuarioActualizar.nombreUsuario);
-        actualizarUsuarioBD.setString(7, usuarioActualizar.contrasenia);
-        actualizarUsuarioBD.setString(8, usuarioActualizar.idUsuario);
         
-        actualizarDireccionBD.setString(1, usuarioActualizar.direccion.calle);
-        actualizarDireccionBD.setString(2, usuarioActualizar.direccion.ciudad);
-        actualizarDireccionBD.setString(3, usuarioActualizar.direccion.numero);
-        actualizarDireccionBD.setString(4, usuarioActualizar.direccion.codigoPostal);
-        actualizarDireccionBD.setString(5, usuarioActualizar.idUsuario);
-        */
+        actualizarUsuarioBD.setString(1, usuarioActualizar.getNombre());
+        actualizarUsuarioBD.setString(2, usuarioActualizar.getApellidoPaterno());
+        actualizarUsuarioBD.setString(3, usuarioActualizar.getApellidoMaterno());
+        actualizarUsuarioBD.setString(4, usuarioActualizar.getTelefono());
+        actualizarUsuarioBD.setString(5, usuarioActualizar.getEmail());
+        actualizarUsuarioBD.setBoolean(6, usuarioActualizar.getHaPedido());
+        actualizarUsuarioBD.setBoolean(7, usuarioActualizar.getEsEmpleado());
+        actualizarUsuarioBD.setBoolean(8, usuarioActualizar.getEsActivo());
+        actualizarUsuarioBD.setString(9, usuarioActualizar.getNombreUsuario());
+        actualizarUsuarioBD.setString(10, usuarioActualizar.getContrasenia());
+        actualizarUsuarioBD.setInt(11, usuarioActualizar.getIdUsuario());
+        
+        actualizarDireccionBD.setString(1, usuarioActualizar.getDireccion().getCalle());
+        actualizarDireccionBD.setString(2, usuarioActualizar.getDireccion().getCiudad());
+        actualizarDireccionBD.setString(3, usuarioActualizar.getDireccion().getNumero());
+        actualizarDireccionBD.setString(4, usuarioActualizar.getDireccion().getCodigoPostal());
+        actualizarDireccionBD.setInt(5, usuarioActualizar.getIdUsuario());
+        
         Integer usuarioActualizado = actualizarDireccionBD.executeUpdate();
         Integer direccionActualizada = actualizarDireccionBD.executeUpdate();
         
@@ -328,7 +335,7 @@ public class UsuarioDAO {
         PreparedStatement insercionUsuarioBD = conexion.prepareStatement(insercionUsuario);
         PreparedStatement insercionDireccionBD = conexion.prepareStatement(insercionDireccion);
         /*
-        insercionUsuarioBD.setString(1, usuarioAgregar.nombre);
+        insercionUsuarioBD.setString(1, usuarioAgregar.getNombre());
         insercionUsuarioBD.setString(2, usuarioAgregar.apellidoPaterno);
         insercionUsuarioBD.setString(3, usuarioAgregar.apellidoMaterno);
         insercionUsuarioBD.setString(4, usuarioAgregar.telefono);
