@@ -230,5 +230,18 @@ public class ProductoDAO {
         return productoActualizado > 0;
     }
     
-    
+    public static Boolean eliminarProducto(Integer idProducto)throws SQLException{
+        String eliminarProducto = "DELETE FROM producto WHERE idProducto = ?";
+        
+        MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
+        PreparedStatement eliminarProductoBD = conexion.prepareStatement(eliminarProducto);
+        
+        eliminarProductoBD.setInt(1, idProducto);
+        
+        Integer productoEliminado = eliminarProductoBD.executeUpdate();
+        
+        conexion.close();
+        
+        return productoEliminado > 0;
+    }
 }
