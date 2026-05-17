@@ -6,18 +6,18 @@ package pizzeria.pae.modelo.beans;
  */
 public class Usuario {
 
-    public int idUsuario;
-    public String nombre;
-    public String apellidoPaterno;
-    public String apellidoMaterno;
-    public String telefono;
-    public String email;
-    public boolean haPedido;
-    public boolean esEmpleado;
-    public boolean esActivo;
-    public String nombreUsuario;
-    public String contrasenia;
-    public Direccion direccion;
+    private int idUsuario;
+    private String nombre;
+    private String apellidoPaterno;
+    private String apellidoMaterno;
+    private String telefono;
+    private String email;
+    private boolean haPedido;
+    private boolean esEmpleado;
+    private boolean esActivo;
+    private String nombreUsuario;
+    private String contrasenia;
+    private Direccion direccion;
 
     // Constructor vacío — inicializa la dirección para evitar NullPointerException
     public Usuario() {

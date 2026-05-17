@@ -32,20 +32,20 @@ public class UsuarioDAO {
         sentenciaBD.setString(3, apellidoMaterno);
         
         ResultSet resultado = sentenciaBD.executeQuery();
-        /*
+        
         if(resultado.next()){
             Usuario u = new Usuario();
-            u.idUsuario = resultado.getInt("idUsuario");
-            u.nombre = resultado.getString("nombre");
-            u.apellidoPaterno = resultado.getString("apellidoPaterno");
-            u.apellidoMaterno = resultado.getString("apellidoMaterno");
-            u.telefono = resultado.getString("telefono");
-            u.email = resultado.getString("email");
-            u.haPedido = resultado.getBoolean("haPedido");
-            u.esEmpleado = resultado.getBoolean("esEmpleado");
-            u.esActivo = resultado.getBoolean("esActivo");
-            u.nombreUsuario = resultado.getString("nombreUsuario");
-            u.contrasenia = resultado.getString("contrasenia");
+            u.setIdUsuario(resultado.getInt("idUsuario"));
+            u.setNombre(resultado.getString("nombre"));
+            u.setApellidoPaterno(resultado.getString("apellidoPaterno"));
+            u.setApellidoMaterno(resultado.getString("apellidoMaterno"));
+            u.setTelefono(resultado.getString("telefono"));
+            u.setEmail(resultado.getString("email"));
+            u.setHaPedido(resultado.getBoolean("haPedido"));
+            u.setEsEmpleado(resultado.getBoolean("esEmpleado"));
+            u.setEsActivo(resultado.getBoolean("esActivo"));
+            u.setNombreUsuario(resultado.getString("nombreUsuario"));
+            u.setContrasenia(resultado.getString("contrasenia"));
             u.direccion.idDireccion = resultado.getInt("idDireccion");
             u.direccion.calle = resultado.getString("calle");
             u.direccion.ciudad = resultado.getString("ciudad");
@@ -56,7 +56,7 @@ public class UsuarioDAO {
         conexion.close();
         
         return u;
-        */
+        
         return null;
     }
     

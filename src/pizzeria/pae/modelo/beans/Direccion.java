@@ -5,11 +5,11 @@ package pizzeria.pae.modelo.beans;
  */
 public class Direccion {
 
-    public int idDireccion;
-    public String calle;
-    public String ciudad;
-    public String numero;
-    public String codigoPostal;
+    private int idDireccion;
+    private String calle;
+    private String ciudad;
+    private String numero;
+    private String codigoPostal;
 
     // Constructor vacío
     public Direccion() {
