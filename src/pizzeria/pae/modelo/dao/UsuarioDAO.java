@@ -238,7 +238,7 @@ public class UsuarioDAO {
     }
     
     public static boolean actualizarUsuario(Usuario usuarioActualizar)throws SQLException{
-        String updateUsuario = "UPDATE usuario " +
+        String actualizarUsuario = "UPDATE usuario " +
                         "SET nombre = ?," +
                         "apellidoPaterno = ?," +
                         "apellidoMaterno = ?," +
@@ -248,7 +248,7 @@ public class UsuarioDAO {
                         "contrasenia = ? " +
                         "WHERE idUsuario = ?";
         
-        String updateDireccion = "UPDATE direccion " +
+        String actualizarDireccion = "UPDATE direccion " +
                             "SET calle = ?," +
                             "ciudad = ?," +
                             "numero = ?," +
@@ -256,25 +256,30 @@ public class UsuarioDAO {
                             "WHERE idUsuario = ?";
         
         MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
-        PreparedStatement updateUsuarioBD = conexion.prepareStatement(updateUsuario);
-        PreparedStatement updateDireccionBD = conexion.prepareStatement(updateDireccion);
+        PreparedStatement actualizarUsuarioBD = conexion.prepareStatement(actualizarUsuario);
+        PreparedStatement actualizarDireccionBD = conexion.prepareStatement(actualizarDireccion);
+        /*
+        actualizarUsuarioBD.setString(1, usuarioActualizar.nombre);
+        actualizarUsuarioBD.setString(2, usuarioActualizar.apellidoPaterno);
+        actualizarUsuarioBD.setString(3, usuarioActualizar.apellidoMaterno);
+        actualizarUsuarioBD.setString(4, usuarioActualizar.telefono);
+        actualizarUsuarioBD.setString(5, usuarioActualizar.email);
+        actualizarUsuarioBD.setString(6, usuarioActualizar.nombreUsuario);
+        actualizarUsuarioBD.setString(7, usuarioActualizar.contrasenia);
+        actualizarUsuarioBD.setString(8, usuarioActualizar.idUsuario);
         
-        updateUsuarioBD.setString(1, usuarioActualizar.nombre);
-        updateUsuarioBD.setString(2, usuarioActualizar.apellidoPaterno);
-        updateUsuarioBD.setString(3, usuarioActualizar.apellidoMaterno);
-        updateUsuarioBD.setString(4, usuarioActualizar.telefono);
-        updateUsuarioBD.setString(5, usuarioActualizar.email);
-        updateUsuarioBD.setString(6, usuarioActualizar.nombreUsuario);
-        updateUsuarioBD.setString(7, usuarioActualizar.contrasenia);
-        updateUsuarioBD.setString(8, usuarioActualizar.idUsuario);
+        actualizarDireccionBD.setString(1, usuarioActualizar.direccion.calle);
+        actualizarDireccionBD.setString(2, usuarioActualizar.direccion.ciudad);
+        actualizarDireccionBD.setString(3, usuarioActualizar.direccion.numero);
+        actualizarDireccionBD.setString(4, usuarioActualizar.direccion.codigoPostal);
+        actualizarDireccionBD.setString(5, usuarioActualizar.idUsuario);
+        */
+        Integer usuarioActualizado = actualizarDireccionBD.executeUpdate();
+        Integer direccionActualizada = actualizarDireccionBD.executeUpdate();
         
-        updateDireccionBD.setString(1, usuarioActualizar.direccion.calle);
-        updateDireccionBD.setString(2, usuarioActualizar.direccion.ciudad);
-        updateDireccionBD.setString(3, usuarioActualizar.direccion.numero);
-        updateDireccionBD.setString(4, usuarioActualizar.direccion.codigoPostal);
-        updateDireccionBD.setString(5, usuarioActualizar.idUsuario);
-        
-        
-        
+        if((usuarioActualizado > 0) && (direccionActualizada > 0)){
+            return true;
+        }
+        return false;
     }
 }
