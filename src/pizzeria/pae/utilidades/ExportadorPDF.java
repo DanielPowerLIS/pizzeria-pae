@@ -47,7 +47,7 @@ public class ExportadorPDF extends Exportador<Pedido>{
             
             for(DetallePedido dp : p.getDetallePedido()) {
                 documento.add(new Paragraph(
-                        dp.getProducto().getNombreProducto() + 
+                        dp.getProducto().getNombre() + 
                         " | Cantidad: " + dp.getCantidad() + 
                         " | Subtotal: " + dp.getSubtotal()
                 ));
