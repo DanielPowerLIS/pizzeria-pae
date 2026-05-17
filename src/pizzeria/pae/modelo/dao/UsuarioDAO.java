@@ -236,4 +236,45 @@ public class UsuarioDAO {
         
         return clientes;
     }
+    
+    public static boolean actualizarUsuario(Usuario usuarioActualizar)throws SQLException{
+        String updateUsuario = "UPDATE usuario " +
+                        "SET nombre = ?," +
+                        "apellidoPaterno = ?," +
+                        "apellidoMaterno = ?," +
+                        "telefono = ?," +
+                        "email = ?," +
+                        "nombreUsuario = ?," +
+                        "contrasenia = ? " +
+                        "WHERE idUsuario = ?";
+        
+        String updateDireccion = "UPDATE direccion " +
+                            "SET calle = ?," +
+                            "ciudad = ?," +
+                            "numero = ?," +
+                            "codigoPostal = ? " +
+                            "WHERE idUsuario = ?";
+        
+        MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
+        PreparedStatement updateUsuarioBD = conexion.prepareStatement(updateUsuario);
+        PreparedStatement updateDireccionBD = conexion.prepareStatement(updateDireccion);
+        
+        updateUsuarioBD.setString(1, usuarioActualizar.nombre);
+        updateUsuarioBD.setString(2, usuarioActualizar.apellidoPaterno);
+        updateUsuarioBD.setString(3, usuarioActualizar.apellidoMaterno);
+        updateUsuarioBD.setString(4, usuarioActualizar.telefono);
+        updateUsuarioBD.setString(5, usuarioActualizar.email);
+        updateUsuarioBD.setString(6, usuarioActualizar.nombreUsuario);
+        updateUsuarioBD.setString(7, usuarioActualizar.contrasenia);
+        updateUsuarioBD.setString(8, usuarioActualizar.idUsuario);
+        
+        updateDireccionBD.setString(1, usuarioActualizar.direccion.calle);
+        updateDireccionBD.setString(2, usuarioActualizar.direccion.ciudad);
+        updateDireccionBD.setString(3, usuarioActualizar.direccion.numero);
+        updateDireccionBD.setString(4, usuarioActualizar.direccion.codigoPostal);
+        updateDireccionBD.setString(5, usuarioActualizar.idUsuario);
+        
+        
+        
+    }
 }
