@@ -1,5 +1,6 @@
 package pizzeria.pae.modelo.dao;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -193,10 +194,41 @@ public class ProductoDAO {
         
         conexion.close();
         
-        if(productoInsertado > 0){
-            return true;
-        }
-        
-        return false;
+        return productoInsertado > 0;
+          
     }
+    
+    public static Boolean actualizarProducto(Producto producoActualizar)throws SQLException{
+        String actualizarProducto = "UPDATE producto SET " +
+                        "nombre = ?, " +
+                        "descripcion = ?, " +
+                        "precio = ?, " +
+                        "cantidad = ?, " +
+                        "restricciones = ?, " +
+                        "foto = ?, " +
+                        "esUtilizado = ?, " +
+                        "esInsumo = ? " +
+                        "WHERE idProducto = ?";
+        
+        MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
+        PreparedStatement actualizarProductoBD = conexion.prepareStatement(actualizarProducto);
+        
+        actualizarProductoBD.setString(1, producoActualizar.getNombre());
+        actualizarProductoBD.setString(2, producoActualizar.getDescripcion());
+        actualizarProductoBD.setBigDecimal(3, producoActualizar.getPrecio());
+        actualizarProductoBD.setInt(4, producoActualizar.getCantidad());
+        actualizarProductoBD.setString(5, producoActualizar.getRestricciones());
+        actualizarProductoBD.setBlob(6, producoActualizar.getFoto());
+        actualizarProductoBD.setBoolean(7, producoActualizar.getEsUtilizado());
+        actualizarProductoBD.setBoolean(8, producoActualizar.getEsInsumo());
+        actualizarProductoBD.setInt(9, producoActualizar.getIdProducto());
+        
+        Integer productoActualizado = actualizarProductoBD.executeUpdate();
+        
+        conexion.close();
+        
+        return productoActualizado > 0;
+    }
+    
+    
 }
