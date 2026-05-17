@@ -334,28 +334,28 @@ public class UsuarioDAO {
         MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
         PreparedStatement insercionUsuarioBD = conexion.prepareStatement(insercionUsuario);
         PreparedStatement insercionDireccionBD = conexion.prepareStatement(insercionDireccion);
-        /*
-        insercionUsuarioBD.setString(1, usuarioAgregar.getNombre());
-        insercionUsuarioBD.setString(2, usuarioAgregar.apellidoPaterno);
-        insercionUsuarioBD.setString(3, usuarioAgregar.apellidoMaterno);
-        insercionUsuarioBD.setString(4, usuarioAgregar.telefono);
-        insercionUsuarioBD.setString(5, usuarioAgregar.email);
-        insercionUsuarioBD.setBoolean(6,haPedido);
-        insercionUsuarioBD.setString(7, usuarioAgregar.esEmpleado);
-        insercionUsuarioBD.setBoolean(8,esActivo);
-        insercionUsuarioBD.setString(9, usuarioAgregar.nombreUsuario);
-        insercionUsuarioBD.setString(10, usuarioAgregar.contrasenia);
-        */
-        Integer usuarioInsertado = insercionUsuarioBD.executeUpdate();
-        /*
-        Usuario usuario = buscarUsuarioPorTelefono(usuarioAgregar.telefono);
         
-        insercionDireccionBD.setString(1, usuarioAgregar.direccion.calle);
-        insercionDireccionBD.setString(2, usuarioAgregar.direccion.ciudad);
-        insercionDireccionBD.setString(3, usuarioAgregar.direccion.numero);
-        insercionDireccionBD.setString(4, usuarioAgregar.direccion.codigoPostal);
-        insercionDireccionBD.setInt(5, usuario.idUsuario);
-        */
+        insercionUsuarioBD.setString(1, usuarioAgregar.getNombre());
+        insercionUsuarioBD.setString(2, usuarioAgregar.getApellidoPaterno());
+        insercionUsuarioBD.setString(3, usuarioAgregar.getApellidoMaterno());
+        insercionUsuarioBD.setString(4, usuarioAgregar.getTelefono());
+        insercionUsuarioBD.setString(5, usuarioAgregar.getEmail());
+        insercionUsuarioBD.setBoolean(6, usuarioAgregar.getHaPedido());
+        insercionUsuarioBD.setBoolean(7, usuarioAgregar.getEsEmpleado());
+        insercionUsuarioBD.setBoolean(8, usuarioAgregar.getEsActivo());
+        insercionUsuarioBD.setString(9, usuarioAgregar.getNombreUsuario());
+        insercionUsuarioBD.setString(10, usuarioAgregar.getContrasenia());
+        
+        Integer usuarioInsertado = insercionUsuarioBD.executeUpdate();
+        
+        Usuario usuario = buscarUsuarioPorTelefono(usuarioAgregar.getTelefono());
+        
+        insercionDireccionBD.setString(1, usuarioAgregar.getDireccion().getCalle());
+        insercionDireccionBD.setString(2, usuarioAgregar.getDireccion().getCiudad());
+        insercionDireccionBD.setString(3, usuarioAgregar.getDireccion().getNumero());
+        insercionDireccionBD.setString(4, usuarioAgregar.getDireccion().getCodigoPostal());
+        insercionDireccionBD.setInt(5, usuario.getIdUsuario());
+        
         Integer direccionInsertada = insercionDireccionBD.executeUpdate();
         
         if((usuarioInsertado > 0) && (direccionInsertada > 0)){
