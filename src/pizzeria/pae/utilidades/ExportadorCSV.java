@@ -36,7 +36,7 @@ public class ExportadorCSV extends Exportador<Pedido>{
             for(DetallePedido dp : p.getDetallePedido()) {
                 writer.println(
                         p.getCliente().getNombre() + "," +
-                        dp.getProducto().getNombreProducto() + "," +
+                        dp.getProducto().getNombre() + "," +
                         dp.getCantidad() + "," +
                         dp.getSubtotal() + "," +
                         p.getTotal()

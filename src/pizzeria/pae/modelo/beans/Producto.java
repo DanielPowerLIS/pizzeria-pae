@@ -7,62 +7,62 @@ import java.math.BigDecimal;
  * Los campos fueron inferidos del ProductoFormViewController y su FXML.
  */
 public class Producto {
+       
+    private String nombre;
+    private String codigoProducto;
+    private Boolean esInsumo;
+    private Boolean esUtilizado;
+    private int cantidad;
+    private String rutaFoto;
+    private String restricciones;
+    private BigDecimal precio;
+    private String descripcion;
 
-    public String codigo;
-    public String nombreProducto;
-    public String descripcion;
-    public BigDecimal precio;
-    public int cantidad;
-    public String restricciones;
-    public String rutaFoto;
-
-    // Constructor vacío
     public Producto() {
     }
 
-    // Constructor con todos los campos
-    public Producto(String codigo, String nombreProducto, String descripcion,
-                    BigDecimal precio, int cantidad, String restricciones, String rutaFoto) {
-        this.codigo = codigo;
-        this.nombreProducto = nombreProducto;
-        this.descripcion = descripcion;
-        this.precio = precio;
+    public Producto(String nombre, String codigoProducto, Boolean esInsumo, Boolean esUtilizado, int cantidad, String rutaFoto, String restricciones, BigDecimal precio, String descripcion) {
+        this.nombre = nombre;
+        this.codigoProducto = codigoProducto;
+        this.esInsumo = esInsumo;
+        this.esUtilizado = esUtilizado;
         this.cantidad = cantidad;
-        this.restricciones = restricciones;
         this.rutaFoto = rutaFoto;
-    }
-
-    // Getters y Setters
-    public String getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
-    }
-
-    public String getNombreProducto() {
-        return nombreProducto;
-    }
-
-    public void setNombreProducto(String nombreProducto) {
-        this.nombreProducto = nombreProducto;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
+        this.restricciones = restricciones;
+        this.precio = precio;
         this.descripcion = descripcion;
     }
 
-    public BigDecimal getPrecio() {
-        return precio;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setPrecio(BigDecimal precio) {
-        this.precio = precio;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getCodigoProducto() {
+        return codigoProducto;
+    }
+
+    public void setCodigoProducto(String codigoProducto) {
+        this.codigoProducto = codigoProducto;
+    }
+
+    public Boolean getEsInsumo() {
+        return esInsumo;
+    }
+
+    public void setEsInsumo(Boolean esInsumo) {
+        this.esInsumo = esInsumo;
+    }
+
+    public Boolean getEsUtilizado() {
+        return esUtilizado;
+    }
+
+    public void setEsUtilizado(Boolean esUtilizado) {
+        this.esUtilizado = esUtilizado;
     }
 
     public int getCantidad() {
@@ -73,14 +73,6 @@ public class Producto {
         this.cantidad = cantidad;
     }
 
-    public String getRestricciones() {
-        return restricciones;
-    }
-
-    public void setRestricciones(String restricciones) {
-        this.restricciones = restricciones;
-    }
-
     public String getRutaFoto() {
         return rutaFoto;
     }
@@ -89,8 +81,28 @@ public class Producto {
         this.rutaFoto = rutaFoto;
     }
 
-    @Override
-    public String toString() {
-        return "[" + codigo + "] " + nombreProducto;
+    public String getRestricciones() {
+        return restricciones;
     }
+
+    public void setRestricciones(String restricciones) {
+        this.restricciones = restricciones;
+    }
+
+    public BigDecimal getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(BigDecimal precio) {
+        this.precio = precio;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+      
 }
