@@ -8,41 +8,32 @@ import java.math.BigDecimal;
  * Código | Producto | Cantidad | Precio Unitario | Subtotal
  */
 public class DetallePedido {
-
-    public String codigo;
-    public Producto producto;
-    public int cantidad;
-    public BigDecimal precioUnitario;
-    public BigDecimal subtotal;
-
-    // Constructor vacío
+    
+    private Integer idPedido;
+    private Producto producto;
+    private int cantidad;
+    private BigDecimal subtotal;
+    
     public DetallePedido() {
     }
 
-    // Constructor con todos los campos
-    public DetallePedido(Producto producto, int cantidad) {
+    public DetallePedido(Integer idPedido, Producto producto, int cantidad) {
+        this.idPedido = idPedido;
         this.producto = producto;
-        this.codigo = producto.getCodigo();
         this.cantidad = cantidad;
-        this.precioUnitario = producto.getPrecio();
         this.subtotal = calcularSubtotal();
     }
 
-    // Calcula el subtotal automáticamente al asignar cantidad o precio
     public BigDecimal calcularSubtotal() {
-        if (precioUnitario != null && cantidad > 0) {
-            return precioUnitario.multiply(new BigDecimal(cantidad));
-        }
-        return BigDecimal.ZERO;
+        return producto.getPrecio().multiply(BigDecimal.valueOf(cantidad));
     }
 
-    // Getters y Setters
-    public String getCodigo() {
-        return codigo;
+    public Integer getIdPedido() {
+        return idPedido;
     }
 
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
+    public void setIdPedido(Integer idPedido) {
+        this.idPedido = idPedido;
     }
 
     public Producto getProducto() {
@@ -51,11 +42,6 @@ public class DetallePedido {
 
     public void setProducto(Producto producto) {
         this.producto = producto;
-        if (producto != null) {
-            this.codigo = producto.getCodigo();
-            this.precioUnitario = producto.getPrecio();
-            this.subtotal = calcularSubtotal();
-        }
     }
 
     public int getCantidad() {
@@ -64,16 +50,6 @@ public class DetallePedido {
 
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
-        this.subtotal = calcularSubtotal();
-    }
-
-    public BigDecimal getPrecioUnitario() {
-        return precioUnitario;
-    }
-
-    public void setPrecioUnitario(BigDecimal precioUnitario) {
-        this.precioUnitario = precioUnitario;
-        this.subtotal = calcularSubtotal();
     }
 
     public BigDecimal getSubtotal() {
@@ -84,8 +60,4 @@ public class DetallePedido {
         this.subtotal = subtotal;
     }
 
-    @Override
-    public String toString() {
-        return codigo + " x" + cantidad + " = $" + subtotal;
-    }
 }
