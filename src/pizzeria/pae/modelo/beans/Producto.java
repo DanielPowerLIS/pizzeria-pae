@@ -7,9 +7,10 @@ import java.math.BigDecimal;
  * Los campos fueron inferidos del ProductoFormViewController y su FXML.
  */
 public class Producto {
-       
+     
+    private Integer idProducto;
     private String nombre;
-    private String codigoProducto;
+    private String codigo;
     private Boolean esInsumo;
     private Boolean esUtilizado;
     private int cantidad;
@@ -21,9 +22,12 @@ public class Producto {
     public Producto() {
     }
 
-    public Producto(String nombre, String codigoProducto, Boolean esInsumo, Boolean esUtilizado, int cantidad, String rutaFoto, String restricciones, BigDecimal precio, String descripcion) {
+    public Producto(Integer idProducto, String nombre, String codigoProducto, Boolean esInsumo, 
+            Boolean esUtilizado, int cantidad, String rutaFoto, String restricciones, 
+            BigDecimal precio, String descripcion) {
+        this.idProducto = idProducto;
         this.nombre = nombre;
-        this.codigoProducto = codigoProducto;
+        this.codigo = codigoProducto;
         this.esInsumo = esInsumo;
         this.esUtilizado = esUtilizado;
         this.cantidad = cantidad;
@@ -33,6 +37,14 @@ public class Producto {
         this.descripcion = descripcion;
     }
 
+    public Integer getIdProducto() {
+        return idProducto;
+    }
+
+    public void setIdProducto(Integer idProducto) {
+        this.idProducto = idProducto;
+    }
+    
     public String getNombre() {
         return nombre;
     }
@@ -41,12 +53,12 @@ public class Producto {
         this.nombre = nombre;
     }
 
-    public String getCodigoProducto() {
-        return codigoProducto;
+    public String getCodigo() {
+        return codigo;
     }
 
-    public void setCodigoProducto(String codigoProducto) {
-        this.codigoProducto = codigoProducto;
+    public void setCodigo(String codigoProducto) {
+        this.codigo = codigoProducto;
     }
 
     public Boolean getEsInsumo() {
