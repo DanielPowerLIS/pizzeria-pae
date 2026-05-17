@@ -7,7 +7,8 @@ import java.math.BigDecimal;
  * Los campos fueron inferidos del ProductoFormViewController y su FXML.
  */
 public class Producto {
-       
+     
+    private Integer idProducto;
     private String nombre;
     private String codigoProducto;
     private Boolean esInsumo;
@@ -21,7 +22,8 @@ public class Producto {
     public Producto() {
     }
 
-    public Producto(String nombre, String codigoProducto, Boolean esInsumo, Boolean esUtilizado, int cantidad, String rutaFoto, String restricciones, BigDecimal precio, String descripcion) {
+    public Producto(Integer idProducto, String nombre, String codigoProducto, Boolean esInsumo, Boolean esUtilizado, int cantidad, String rutaFoto, String restricciones, BigDecimal precio, String descripcion) {
+        this.idProducto = idProducto;
         this.nombre = nombre;
         this.codigoProducto = codigoProducto;
         this.esInsumo = esInsumo;
@@ -33,6 +35,14 @@ public class Producto {
         this.descripcion = descripcion;
     }
 
+    public Integer getIdProducto() {
+        return idProducto;
+    }
+
+    public void setIdProducto(Integer idProducto) {
+        this.idProducto = idProducto;
+    }
+    
     public String getNombre() {
         return nombre;
     }
