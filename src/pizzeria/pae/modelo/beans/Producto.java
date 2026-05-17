@@ -10,7 +10,7 @@ public class Producto {
      
     private Integer idProducto;
     private String nombre;
-    private String codigoProducto;
+    private String codigo;
     private Boolean esInsumo;
     private Boolean esUtilizado;
     private int cantidad;
@@ -27,7 +27,7 @@ public class Producto {
             BigDecimal precio, String descripcion) {
         this.idProducto = idProducto;
         this.nombre = nombre;
-        this.codigoProducto = codigoProducto;
+        this.codigo = codigoProducto;
         this.esInsumo = esInsumo;
         this.esUtilizado = esUtilizado;
         this.cantidad = cantidad;
@@ -53,12 +53,12 @@ public class Producto {
         this.nombre = nombre;
     }
 
-    public String getCodigoProducto() {
-        return codigoProducto;
+    public String getCodigo() {
+        return codigo;
     }
 
-    public void setCodigoProducto(String codigoProducto) {
-        this.codigoProducto = codigoProducto;
+    public void setCodigo(String codigoProducto) {
+        this.codigo = codigoProducto;
     }
 
     public Boolean getEsInsumo() {

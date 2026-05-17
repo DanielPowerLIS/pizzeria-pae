@@ -22,7 +22,7 @@ public class DetallePedido {
     // Constructor con todos los campos
     public DetallePedido(Producto producto, int cantidad) {
         this.producto = producto;
-        this.codigo = producto.getCodigoProducto();
+        this.codigo = producto.getCodigo();
         this.cantidad = cantidad;
         this.precioUnitario = producto.getPrecio();
         this.subtotal = calcularSubtotal();
@@ -52,7 +52,7 @@ public class DetallePedido {
     public void setProducto(Producto producto) {
         this.producto = producto;
         if (producto != null) {
-            this.codigo = producto.getCodigoProducto();
+            this.codigo = producto.getCodigo();
             this.precioUnitario = producto.getPrecio();
             this.subtotal = calcularSubtotal();
         }
