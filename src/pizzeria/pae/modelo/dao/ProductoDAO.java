@@ -35,7 +35,7 @@ public class ProductoDAO {
             p.setEsInsumo(resultado.getBoolean("esInsumo"));
             p.setEsUtilizado(resultado.getBoolean("esUtilizado"));
             p.setCantidad(resultado.getInt("cantidad"));
-            p.setRutaFoto(resultado.getString("foto"));
+            p.setFoto(resultado.getBlob("foto"));
             p.setRestricciones(resultado.getString("restricciones"));
             p.setPrecio(resultado.getBigDecimal("precio"));
             p.setDescripcion(resultado.getString("descripcion"));
@@ -70,7 +70,7 @@ public class ProductoDAO {
             p.setEsInsumo(resultado.getBoolean("esInsumo"));
             p.setEsUtilizado(resultado.getBoolean("esUtilizado"));
             p.setCantidad(resultado.getInt("cantidad"));
-            p.setRutaFoto(resultado.getString("foto"));
+            p.setFoto(resultado.getBlob("foto"));
             p.setRestricciones(resultado.getString("restricciones"));
             p.setPrecio(resultado.getBigDecimal("precio"));
             p.setDescripcion(resultado.getString("descripcion"));
@@ -96,7 +96,7 @@ public class ProductoDAO {
         Boolean Insumo = true;
         String consulta = "SELECT * " +
                 "FROM pizzeriapae.producto " +
-                "WHERE esInsumo = ?;";
+                "WHERE esInsumo = ?";
         
         MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
         PreparedStatement sentenciaBD = conexion.prepareStatement(consulta);
@@ -117,7 +117,7 @@ public class ProductoDAO {
                 p.setEsInsumo(resultado.getBoolean("esInsumo"));
                 p.setEsUtilizado(resultado.getBoolean("esUtilizado"));
                 p.setCantidad(resultado.getInt("cantidad"));
-                p.setRutaFoto(resultado.getString("foto"));
+                p.setFoto(resultado.getBlob("foto"));
                 p.setRestricciones(resultado.getString("restricciones"));
                 p.setPrecio(resultado.getBigDecimal("precio"));
                 p.setDescripcion(resultado.getString("descripcion"));
@@ -135,7 +135,7 @@ public class ProductoDAO {
         Boolean Insumo = false;
         String consulta = "SELECT * " +
                 "FROM pizzeriapae.producto " +
-                "WHERE esInsumo = ?;";
+                "WHERE esInsumo = ?";
         
         MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
         PreparedStatement sentenciaBD = conexion.prepareStatement(consulta);
@@ -156,7 +156,7 @@ public class ProductoDAO {
                 p.setEsInsumo(resultado.getBoolean("esInsumo"));
                 p.setEsUtilizado(resultado.getBoolean("esUtilizado"));
                 p.setCantidad(resultado.getInt("cantidad"));
-                p.setRutaFoto(resultado.getString("foto"));
+                p.setFoto(resultado.getBlob("foto"));
                 p.setRestricciones(resultado.getString("restricciones"));
                 p.setPrecio(resultado.getBigDecimal("precio"));
                 p.setDescripcion(resultado.getString("descripcion"));
@@ -170,4 +170,33 @@ public class ProductoDAO {
         return productos;
     }
     
+    public static Boolean agregarProducto(Producto productoAgregar)throws SQLException{
+        Boolean esUtilizado = false;
+        String insercionProducto = "INSERT INTO producto (nombre, codigo, descripcion, " +
+                            "precio, cantidad, restricciones, foto, esUtilizado, esInsumo) " +
+                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
+        PreparedStatement insercionProductoBD = conexion.prepareStatement(insercionProducto);
+       
+        insercionProductoBD.setString(1, productoAgregar.getNombre());
+        insercionProductoBD.setString(2, productoAgregar.getCodigo());
+        insercionProductoBD.setString(3, productoAgregar.getDescripcion());
+        insercionProductoBD.setBigDecimal(4, productoAgregar.getPrecio());
+        insercionProductoBD.setInt(5, productoAgregar.getCantidad());
+        insercionProductoBD.setString(6, productoAgregar.getRestricciones());
+        insercionProductoBD.setBlob(7, productoAgregar.getFoto());
+        insercionProductoBD.setBoolean(8, esUtilizado);
+        insercionProductoBD.setBoolean(9, productoAgregar.getEsInsumo());
+        
+        Integer productoInsertado = insercionProductoBD.executeUpdate();
+        
+        conexion.close();
+        
+        if(productoInsertado > 0){
+            return true;
+        }
+        
+        return false;
+    }
 }
