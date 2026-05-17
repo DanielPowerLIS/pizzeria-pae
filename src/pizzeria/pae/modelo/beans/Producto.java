@@ -1,6 +1,7 @@
 package pizzeria.pae.modelo.beans;
 
 import java.math.BigDecimal;
+import java.sql.Blob;
 
 /**
  * Bean que representa un producto del catálogo de la pizzería.
@@ -13,8 +14,8 @@ public class Producto {
     private String codigo;
     private Boolean esInsumo;
     private Boolean esUtilizado;
-    private int cantidad;
-    private String rutaFoto;
+    private Integer cantidad;
+    private Blob foto;
     private String restricciones;
     private BigDecimal precio;
     private String descripcion;
@@ -23,7 +24,7 @@ public class Producto {
     }
 
     public Producto(Integer idProducto, String nombre, String codigoProducto, Boolean esInsumo, 
-            Boolean esUtilizado, int cantidad, String rutaFoto, String restricciones, 
+            Boolean esUtilizado, int cantidad, Blob foto, String restricciones, 
             BigDecimal precio, String descripcion) {
         this.idProducto = idProducto;
         this.nombre = nombre;
@@ -31,7 +32,7 @@ public class Producto {
         this.esInsumo = esInsumo;
         this.esUtilizado = esUtilizado;
         this.cantidad = cantidad;
-        this.rutaFoto = rutaFoto;
+        this.foto = foto;
         this.restricciones = restricciones;
         this.precio = precio;
         this.descripcion = descripcion;
@@ -85,12 +86,12 @@ public class Producto {
         this.cantidad = cantidad;
     }
 
-    public String getRutaFoto() {
-        return rutaFoto;
+    public Blob getFoto() {
+        return foto;
     }
 
-    public void setRutaFoto(String rutaFoto) {
-        this.rutaFoto = rutaFoto;
+    public void setFoto(Blob foto) {
+        this.foto = foto;
     }
 
     public String getRestricciones() {

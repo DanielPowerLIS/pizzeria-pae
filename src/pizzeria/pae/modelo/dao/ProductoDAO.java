@@ -1,5 +1,6 @@
 package pizzeria.pae.modelo.dao;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -35,7 +36,7 @@ public class ProductoDAO {
             p.setEsInsumo(resultado.getBoolean("esInsumo"));
             p.setEsUtilizado(resultado.getBoolean("esUtilizado"));
             p.setCantidad(resultado.getInt("cantidad"));
-            p.setRutaFoto(resultado.getString("foto"));
+            p.setFoto(resultado.getBlob("foto"));
             p.setRestricciones(resultado.getString("restricciones"));
             p.setPrecio(resultado.getBigDecimal("precio"));
             p.setDescripcion(resultado.getString("descripcion"));
@@ -70,7 +71,7 @@ public class ProductoDAO {
             p.setEsInsumo(resultado.getBoolean("esInsumo"));
             p.setEsUtilizado(resultado.getBoolean("esUtilizado"));
             p.setCantidad(resultado.getInt("cantidad"));
-            p.setRutaFoto(resultado.getString("foto"));
+            p.setFoto(resultado.getBlob("foto"));
             p.setRestricciones(resultado.getString("restricciones"));
             p.setPrecio(resultado.getBigDecimal("precio"));
             p.setDescripcion(resultado.getString("descripcion"));
@@ -96,7 +97,7 @@ public class ProductoDAO {
         Boolean Insumo = true;
         String consulta = "SELECT * " +
                 "FROM pizzeriapae.producto " +
-                "WHERE esInsumo = ?;";
+                "WHERE esInsumo = ?";
         
         MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
         PreparedStatement sentenciaBD = conexion.prepareStatement(consulta);
@@ -117,7 +118,7 @@ public class ProductoDAO {
                 p.setEsInsumo(resultado.getBoolean("esInsumo"));
                 p.setEsUtilizado(resultado.getBoolean("esUtilizado"));
                 p.setCantidad(resultado.getInt("cantidad"));
-                p.setRutaFoto(resultado.getString("foto"));
+                p.setFoto(resultado.getBlob("foto"));
                 p.setRestricciones(resultado.getString("restricciones"));
                 p.setPrecio(resultado.getBigDecimal("precio"));
                 p.setDescripcion(resultado.getString("descripcion"));
@@ -135,7 +136,7 @@ public class ProductoDAO {
         Boolean Insumo = false;
         String consulta = "SELECT * " +
                 "FROM pizzeriapae.producto " +
-                "WHERE esInsumo = ?;";
+                "WHERE esInsumo = ?";
         
         MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
         PreparedStatement sentenciaBD = conexion.prepareStatement(consulta);
@@ -156,7 +157,7 @@ public class ProductoDAO {
                 p.setEsInsumo(resultado.getBoolean("esInsumo"));
                 p.setEsUtilizado(resultado.getBoolean("esUtilizado"));
                 p.setCantidad(resultado.getInt("cantidad"));
-                p.setRutaFoto(resultado.getString("foto"));
+                p.setFoto(resultado.getBlob("foto"));
                 p.setRestricciones(resultado.getString("restricciones"));
                 p.setPrecio(resultado.getBigDecimal("precio"));
                 p.setDescripcion(resultado.getString("descripcion"));
@@ -170,4 +171,77 @@ public class ProductoDAO {
         return productos;
     }
     
+    public static Boolean agregarProducto(Producto productoAgregar)throws SQLException{
+        Boolean esUtilizado = false;
+        String insercionProducto = "INSERT INTO producto (nombre, codigo, descripcion, " +
+                            "precio, cantidad, restricciones, foto, esUtilizado, esInsumo) " +
+                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
+        PreparedStatement insercionProductoBD = conexion.prepareStatement(insercionProducto);
+       
+        insercionProductoBD.setString(1, productoAgregar.getNombre());
+        insercionProductoBD.setString(2, productoAgregar.getCodigo());
+        insercionProductoBD.setString(3, productoAgregar.getDescripcion());
+        insercionProductoBD.setBigDecimal(4, productoAgregar.getPrecio());
+        insercionProductoBD.setInt(5, productoAgregar.getCantidad());
+        insercionProductoBD.setString(6, productoAgregar.getRestricciones());
+        insercionProductoBD.setBlob(7, productoAgregar.getFoto());
+        insercionProductoBD.setBoolean(8, esUtilizado);
+        insercionProductoBD.setBoolean(9, productoAgregar.getEsInsumo());
+        
+        Integer productoInsertado = insercionProductoBD.executeUpdate();
+        
+        conexion.close();
+        
+        return productoInsertado > 0;
+          
+    }
+    
+    public static Boolean actualizarProducto(Producto producoActualizar)throws SQLException{
+        String actualizarProducto = "UPDATE producto SET " +
+                        "nombre = ?, " +
+                        "descripcion = ?, " +
+                        "precio = ?, " +
+                        "cantidad = ?, " +
+                        "restricciones = ?, " +
+                        "foto = ?, " +
+                        "esUtilizado = ?, " +
+                        "esInsumo = ? " +
+                        "WHERE idProducto = ?";
+        
+        MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
+        PreparedStatement actualizarProductoBD = conexion.prepareStatement(actualizarProducto);
+        
+        actualizarProductoBD.setString(1, producoActualizar.getNombre());
+        actualizarProductoBD.setString(2, producoActualizar.getDescripcion());
+        actualizarProductoBD.setBigDecimal(3, producoActualizar.getPrecio());
+        actualizarProductoBD.setInt(4, producoActualizar.getCantidad());
+        actualizarProductoBD.setString(5, producoActualizar.getRestricciones());
+        actualizarProductoBD.setBlob(6, producoActualizar.getFoto());
+        actualizarProductoBD.setBoolean(7, producoActualizar.getEsUtilizado());
+        actualizarProductoBD.setBoolean(8, producoActualizar.getEsInsumo());
+        actualizarProductoBD.setInt(9, producoActualizar.getIdProducto());
+        
+        Integer productoActualizado = actualizarProductoBD.executeUpdate();
+        
+        conexion.close();
+        
+        return productoActualizado > 0;
+    }
+    
+    public static Boolean eliminarProducto(Integer idProducto)throws SQLException{
+        String eliminarProducto = "DELETE FROM producto WHERE idProducto = ?";
+        
+        MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
+        PreparedStatement eliminarProductoBD = conexion.prepareStatement(eliminarProducto);
+        
+        eliminarProductoBD.setInt(1, idProducto);
+        
+        Integer productoEliminado = eliminarProductoBD.executeUpdate();
+        
+        conexion.close();
+        
+        return productoEliminado > 0;
+    }
 }

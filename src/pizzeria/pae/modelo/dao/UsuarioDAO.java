@@ -314,6 +314,8 @@ public class UsuarioDAO {
         Integer usuarioActualizado = actualizarDireccionBD.executeUpdate();
         Integer direccionActualizada = actualizarDireccionBD.executeUpdate();
         
+        conexion.close();
+        
         if((usuarioActualizado > 0) && (direccionActualizada > 0)){
             return true;
         }
@@ -326,10 +328,10 @@ public class UsuarioDAO {
         
         String insercionUsuario = "INSERT INTO usuario (nombre, apellidoPaterno, apellidoMaterno, telefono, " +
                         "email, haPedido, esEmpleado, esActivo, nombreUsuario, contrasenia) " +
-                        "VALUES ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ";
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
         
         String insercionDireccion = "INSERT INTO direccion (calle, ciudad, numero, codigoPostal, idUsuario) " +
-                         "VALUES ?, ?, ?, ?, ? ";
+                         "VALUES (?, ?, ?, ?, ?) ";
         
         MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
         PreparedStatement insercionUsuarioBD = conexion.prepareStatement(insercionUsuario);
@@ -358,6 +360,8 @@ public class UsuarioDAO {
         
         Integer direccionInsertada = insercionDireccionBD.executeUpdate();
         
+        conexion.close();
+        
         if((usuarioInsertado > 0) && (direccionInsertada > 0)){
             return true;
         }
@@ -379,6 +383,8 @@ public class UsuarioDAO {
         
         Integer usuarioEliminado = eliminarUsuarioBD.executeUpdate();
         Integer  direccionEliminada = eliminarDireccionBD.executeUpdate();
+        
+        conexion.close();
         
         if((usuarioEliminado > 0) && (direccionEliminada > 0)){
             return true;
