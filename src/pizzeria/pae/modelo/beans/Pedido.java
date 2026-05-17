@@ -11,21 +11,20 @@ import java.util.List;
  */
 public class Pedido {
 
-    public int idPedido;
-    public Usuario cliente;
-    public LocalDate fecha;
-    public List<DetallePedido> detallePedido;
-    public BigDecimal total;
+    private Integer idPedido;
+    private LocalDate fecha;
+    private BigDecimal total;
+    private String estado;
+    private Usuario cliente;
+    private List<DetallePedido> detallePedido;
 
-    // Constructor vacío — inicializa la lista de detalle y la fecha actual
     public Pedido() {
         this.detallePedido = new ArrayList<>();
         this.fecha = LocalDate.now();
         this.total = BigDecimal.ZERO;
     }
 
-    // Constructor con todos los campos
-    public Pedido(int idPedido, Usuario cliente, LocalDate fecha, List<DetallePedido> detallePedido) {
+    public Pedido(Integer idPedido, Usuario cliente, LocalDate fecha, List<DetallePedido> detallePedido) {
         this.idPedido = idPedido;
         this.cliente = cliente;
         this.fecha = fecha;
@@ -33,7 +32,6 @@ public class Pedido {
         this.total = calcularTotal();
     }
 
-    // Suma todos los subtotales del detalle
     public BigDecimal calcularTotal() {
         BigDecimal suma = BigDecimal.ZERO;
         if (detallePedido != null) {
@@ -46,19 +44,16 @@ public class Pedido {
         return suma;
     }
 
-    // Agrega un renglón al detalle y recalcula el total
     public void agregarDetalle(DetallePedido detalle) {
         this.detallePedido.add(detalle);
         this.total = calcularTotal();
     }
 
-    // Quita un renglón del detalle y recalcula el total
     public void quitarDetalle(DetallePedido detalle) {
         this.detallePedido.remove(detalle);
         this.total = calcularTotal();
     }
 
-    // Getters y Setters
     public int getIdPedido() {
         return idPedido;
     }
