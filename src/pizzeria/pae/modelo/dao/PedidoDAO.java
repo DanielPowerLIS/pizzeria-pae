@@ -1,8 +1,8 @@
 package pizzeria.pae.modelo.dao;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 import pizzeria.pae.modelo.MySQLConnectionManager;
 import pizzeria.pae.modelo.beans.Pedido;
@@ -19,6 +19,8 @@ public class PedidoDAO {
         
         MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
         PreparedStatement sentenciaBD = conexion.prepareStatement(consulta);
+        
+        sentenciaBD.setDate(1, fecha);
         
         
         return null;
