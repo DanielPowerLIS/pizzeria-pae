@@ -12,6 +12,7 @@ import java.util.List;
 public class Pedido {
 
     private Integer idPedido;
+    private Integer idUsuario;
     private LocalDate fecha;
     private BigDecimal total;
     private String estado;
@@ -24,12 +25,14 @@ public class Pedido {
         this.total = BigDecimal.ZERO;
     }
 
-    public Pedido(Integer idPedido, Usuario cliente, LocalDate fecha, List<DetallePedido> detallePedido) {
+    public Pedido(Integer idPedido, Integer idUsuario, LocalDate fecha, BigDecimal total, String estado, Usuario cliente, List<DetallePedido> detallePedido) {
         this.idPedido = idPedido;
-        this.cliente = cliente;
+        this.idUsuario = idUsuario;
         this.fecha = fecha;
-        this.detallePedido = detallePedido != null ? detallePedido : new ArrayList<>();
-        this.total = calcularTotal();
+        this.total = total;
+        this.estado = estado;
+        this.cliente = cliente;
+        this.detallePedido = detallePedido;
     }
 
     public BigDecimal calcularTotal() {
