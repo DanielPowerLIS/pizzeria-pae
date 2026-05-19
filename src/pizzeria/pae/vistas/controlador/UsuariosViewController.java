@@ -1,22 +1,27 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package pizzeria.pae.vistas.controlador;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import pizzeria.pae.utilidades.UtilidadesUI;
 
 /**
- * FXML Controller class
- *
- * @author jdani
+ * @author Adair Alejandro Martinez Alejo
+ * @author Gabriel Hernández Martínez
+ * @author Víctor Hugo Vásquez Martínez
+ * @author Juan Daniel Pérez Santiago
  */
 public class UsuariosViewController implements Initializable {
 
@@ -43,12 +48,37 @@ public class UsuariosViewController implements Initializable {
     @FXML
     private Button btnEliminarUsuario;
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
-    
+        btnAgregarUsuario.setOnAction(event -> abrirFormularioUsuario(false));
+        btnEditarUsuario.setOnAction(event -> abrirFormularioUsuario(true));
+    }
+
+    private void abrirFormularioUsuario(boolean esEdicion) {
+        if (esEdicion) {
+            int indiceSeleccionado = tblUsuarios.getSelectionModel().getSelectedIndex();
+            if (indiceSeleccionado < 0) {
+                UtilidadesUI.mostrarAlertaSimple("Selección requerida", "Por favor, seleccione un usuario de la tabla para poder editarlo.", Alert.AlertType.WARNING);
+                return;
+            }
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/pizzeria/pae/vistas/fxml/UsuarioFormView.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle(esEdicion ? "Editar Usuario" : "Nuevo Usuario");
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner(btnAgregarUsuario.getScene().getWindow());
+
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            UtilidadesUI.mostrarAlertaSimple("Error de carga", "No se pudo abrir la ventana del formulario de usuario.", Alert.AlertType.ERROR);
+        }
+    }
 }
