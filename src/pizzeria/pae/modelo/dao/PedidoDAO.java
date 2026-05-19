@@ -1,6 +1,5 @@
 package pizzeria.pae.modelo.dao;
 
-import com.sun.deploy.ui.DialogTemplate;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -388,6 +387,18 @@ public class PedidoDAO {
         Integer pedidoActualizado = actualizarBD.executeUpdate();
         
         return pedidoActualizado > 0;
+    }
+    
+    public static Boolean agregarDetalles(){
+        
+        
+        return false;
+    }
+    
+    public static Boolean quitarDetalles(){
+        
+        
+        return false;
     }
     
     public static Boolean eliminarPedido(Integer idPedido)throws SQLException{
