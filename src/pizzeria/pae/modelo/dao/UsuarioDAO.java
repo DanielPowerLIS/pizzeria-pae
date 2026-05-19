@@ -8,6 +8,7 @@ import java.util.List;
 import pizzeria.pae.modelo.MySQLConnectionManager;
 import pizzeria.pae.modelo.beans.Direccion;
 import pizzeria.pae.modelo.beans.Usuario;
+import pizzeria.pae.utilidades.ConvertidorNombre;
 
 /**
  *
@@ -15,7 +16,7 @@ import pizzeria.pae.modelo.beans.Usuario;
  */
 public class UsuarioDAO {
     public static Usuario buscarUsuarioPorNombre(String nombreCompleto )throws SQLException{
-        String nombres[] = prepararNombre(nombreCompleto);
+        String nombres[] = ConvertidorNombre.prepararNombre(nombreCompleto);
         
         String nombre = nombres[0];
         String apellidoPaterno = nombres[1];
@@ -65,11 +66,6 @@ public class UsuarioDAO {
         conexion.close();
         
         return u;
-    }
-    
-    private static String[] prepararNombre(String nombreCompleto){ 
-        String nombreSeparado[] = nombreCompleto.split(" ");
-        return nombreSeparado;
     }
         
     public static Usuario buscarUsuarioPorTelefono(String telefonoBuscar )throws SQLException{
