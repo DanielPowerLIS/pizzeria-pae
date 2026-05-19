@@ -392,4 +392,48 @@ public class UsuarioDAO {
         
         return false;
     }
+    
+    public static Usuario buscarUsuario(Integer idUsuario)throws SQLException{
+        String consulta = "SELECT * " +
+                    "FROM usuario JOIN direccion ON usuario.idUsuario = direccion.idUsuario " +
+                    "WHERE usuario.idUsuario = ?";
+        
+        MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
+        PreparedStatement sentenciaBD = conexion.prepareStatement(consulta);
+        
+        sentenciaBD.setInt(1, idUsuario);
+        
+        ResultSet resultado = sentenciaBD.executeQuery();
+        Usuario u = null;
+        
+        if(resultado != null && resultado.next()){
+            u = new Usuario();
+            
+            u.setIdUsuario(resultado.getInt("idUsuario"));
+            u.setNombre(resultado.getString("nombre"));
+            u.setApellidoPaterno(resultado.getString("apellidoPaterno"));
+            u.setApellidoMaterno(resultado.getString("apellidoMaterno"));
+            u.setTelefono(resultado.getString("telefono"));
+            u.setEmail(resultado.getString("email"));
+            u.setHaPedido(resultado.getBoolean("haPedido"));
+            u.setEsEmpleado(resultado.getBoolean("esEmpleado"));
+            u.setEsActivo(resultado.getBoolean("esActivo"));
+            u.setNombreUsuario(resultado.getString("nombreUsuario"));
+            u.setContrasenia(resultado.getString("contrasenia"));
+            
+            Direccion d =  new Direccion();
+            d.setIdDireccion(resultado.getInt("idDireccion"));
+            d.setCalle(resultado.getString("calle"));
+            d.setCiudad(resultado.getString("ciudad"));
+            d.setNumero(resultado.getString("numero"));
+            d.setCodigoPostal(resultado.getString("codigoPostal"));
+            
+            u.setDireccion(d);
+            
+        }
+        resultado.close();
+        conexion.close();
+        
+        return u;
+    }
 }

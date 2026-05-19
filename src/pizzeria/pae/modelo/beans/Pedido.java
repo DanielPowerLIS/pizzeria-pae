@@ -12,22 +12,20 @@ import java.util.List;
 public class Pedido {
 
     private Integer idPedido;
-    private Integer idUsuario;
     private LocalDate fecha;
     private BigDecimal total;
     private String estado;
     private Usuario cliente;
     private List<DetallePedido> detallePedido;
-
-    public Pedido() {
+    
+    public Pedido(){
         this.detallePedido = new ArrayList<>();
-        this.fecha = LocalDate.now();
         this.total = BigDecimal.ZERO;
+        this.fecha = LocalDate.now();
     }
 
-    public Pedido(Integer idPedido, Integer idUsuario, LocalDate fecha, BigDecimal total, String estado, Usuario cliente, List<DetallePedido> detallePedido) {
+    public Pedido(Integer idPedido, LocalDate fecha, BigDecimal total, String estado, Usuario cliente, List<DetallePedido> detallePedido) {
         this.idPedido = idPedido;
-        this.idUsuario = idUsuario;
         this.fecha = fecha;
         this.total = total;
         this.estado = estado;
@@ -98,6 +96,14 @@ public class Pedido {
         this.total = total;
     }
 
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+    
     @Override
     public String toString() {
         return "Pedido #" + idPedido + " - " + (cliente != null ? cliente.getNombreCompleto() : "Sin cliente")

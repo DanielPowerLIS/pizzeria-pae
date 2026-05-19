@@ -24,15 +24,24 @@ public class PedidoDAO {
         
         sentenciaBD.setDate(1, fecha);
         
-        ResultSet resultado = sentenciaBD.executeQuery();
+        ResultSet resultadoPedido = sentenciaBD.executeQuery();
         
         List<Pedido> pedidos= null;
         
-        if(resultado != null){
+        if(resultadoPedido != null){
             pedidos = new ArrayList<>();
-            while(resultado.next()){
+            while(resultadoPedido.next()){
                 Pedido p = new Pedido();
-                
+                 p.setIdPedido(resultadoPedido.getInt("idPedido"));
+                 p.setFecha(resultadoPedido.getDate("fecha").toLocalDate());
+                 p.setTotal(resultadoPedido.getBigDecimal("totalAPagar"));
+                 p.setEstado(resultadoPedido.getString("estado"));
+                 p.setCliente(UsuarioDAO.buscarUsuario(resultadoPedido.getInt("idUsuario")));
+                 
+                 
+                 
+                 
+                 
                 
             }
         }
