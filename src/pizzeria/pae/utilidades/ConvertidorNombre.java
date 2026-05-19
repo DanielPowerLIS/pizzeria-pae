@@ -14,7 +14,7 @@ public class ConvertidorNombre {
         
         StringBuilder unirNombre = new StringBuilder();
         for(int i = 0; i < partes - 2; i++){
-            unirNombre.append(nombrePartes[i]).append("");
+            unirNombre.append(nombrePartes[i]).append(" ");
         }
         
         String nombre = unirNombre.toString().trim();
