@@ -13,6 +13,7 @@ import pizzeria.pae.modelo.beans.Direccion;
 import pizzeria.pae.modelo.beans.Pedido;
 import pizzeria.pae.modelo.beans.Producto;
 import pizzeria.pae.modelo.beans.Usuario;
+import pizzeria.pae.utilidades.ConvertidorNombre;
 
 /**
  *
@@ -198,7 +199,7 @@ public class PedidoDAO {
         return pedidos;
     }
     
-    public static List<Pedido> buscarPedidosPorUsuario(){
+    public static List<Pedido> buscarPedidosPorUsuario(String nombreCompletoBuscar){
         String consulta = "SELECT " +
                         "p.idPedido, p.codigo AS codigoPedido, p.fecha, p.estado, p.totalAPagar, " +
                         "u.idUsuario, u.nombre, u.apellidoPaterno, u.apellidoMaterno, u.telefono, " +
@@ -207,7 +208,13 @@ public class PedidoDAO {
                         "FROM pedido p " +
                         "INNER JOIN usuario u ON p.idUsuario = u.idUsuario " +
                         "INNER JOIN direccion d ON u.idUsuario = d.idUsuario " +
-                        "WHERE p.estado = ?";
+                        "WHERE u.nombre = ? AND u.apellidoPaterno = ? AND u.apellidoMaterno = ?";
+        
+        String[] nombreCompleto = ConvertidorNombre.prepararNombre(nombreCompletoBuscar);
+        
+        String nombre = nombreCompleto[0];
+        String apellidoPaterno = nombreCompleto[1];
+        String apellidoMaterno = nombreCompleto[2];
         
         return null;
     }
