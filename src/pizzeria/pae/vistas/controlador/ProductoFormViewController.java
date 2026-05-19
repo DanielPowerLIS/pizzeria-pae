@@ -1,7 +1,5 @@
 package pizzeria.pae.vistas.controlador;
 
-import java.io.File;
-import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -11,13 +9,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import pizzeria.pae.utilidades.UtilidadesUI;
 
 /**
- * FXML Controller class
- *
- *
+ * @author Adair Alejandro Martinez Alejo
+ * @author Gabriel Hernández Martínez
+ * @author Víctor Hugo Vásquez Martínez
+ * @author Juan Daniel Pérez Santiago
  */
 public class ProductoFormViewController implements Initializable {
 
@@ -38,67 +37,37 @@ public class ProductoFormViewController implements Initializable {
     @FXML
     private Label lblRutaFoto;
     @FXML
-    private Button btnCancelarProd;
-    @FXML
     private Button btnGuardarProd;
+    @FXML
+    private Button btnCancelarProd;
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        btnSeleccionarFoto.setOnAction(event -> seleccionarImagen());
-        btnCancelarProd.setOnAction(event -> cerrarVentana());
         btnGuardarProd.setOnAction(event -> guardarProducto());
-    }
-
-    public void prepararEdicion() {
-        // PENDIENTE
-    }
-
-    private void seleccionarImagen() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Seleccionar Foto del Producto");
-        fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("Imágenes", "*.png", "*.jpg", "*.jpeg")
-        );
-        File selectedFile = fileChooser.showOpenDialog(btnSeleccionarFoto.getScene().getWindow());
-        if (selectedFile != null) {
-            lblRutaFoto.setText(selectedFile.getName());
-            // PENDIENTE
-        }
+        btnCancelarProd.setOnAction(event -> cerrarVentana());
     }
 
     private void guardarProducto() {
-        if (validarDatos()) {
-            System.out.println("guardando...");
-            cerrarVentana();
-        }
-    }
+        if (txtCodigo.getText().trim().isEmpty()
+                || txtNombreProducto.getText().trim().isEmpty()
+                || txtDescripcion.getText().trim().isEmpty()
+                || txtPrecio.getText().trim().isEmpty()
+                || txtCantidad.getText().trim().isEmpty()) {
 
-    private boolean validarDatos() {
-        if (txtCodigo.getText().isEmpty() || txtNombreProducto.getText().isEmpty()
-                || txtPrecio.getText().isEmpty() || txtCantidad.getText().isEmpty()) {
-            mostrarAlerta("Error de validación", "Faltan campos obligatorios de llenar.");
-            return false;
+            UtilidadesUI.mostrarAlertaSimple("Campos incompletos", "Por favor, llene todos los campos obligatorios (*).", Alert.AlertType.WARNING);
+            return;
         }
 
         try {
-            new BigDecimal(txtPrecio.getText());
-            Integer.parseInt(txtCantidad.getText());
+            Double.parseDouble(txtPrecio.getText().trim());
+            Integer.parseInt(txtCantidad.getText().trim());
         } catch (NumberFormatException e) {
-            mostrarAlerta("Formato inválido", "El precio y la cantidad deben ser números válidos.");
-            return false;
+            UtilidadesUI.mostrarAlertaSimple("Datos inválidos", "El precio y la cantidad deben ser valores numéricos.", Alert.AlertType.WARNING);
+            return;
         }
-        return true;
-    }
 
-    private void mostrarAlerta(String titulo, String mensaje) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle(titulo);
-        alert.setHeaderText(null);
-        alert.setContentText(mensaje);
-        alert.showAndWait();
+        UtilidadesUI.mostrarAlertaSimple("Éxito", "El producto está listo para ser guardado.", Alert.AlertType.INFORMATION);
+        cerrarVentana();
     }
 
     private void cerrarVentana() {

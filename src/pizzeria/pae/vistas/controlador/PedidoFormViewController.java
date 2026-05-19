@@ -10,10 +10,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import pizzeria.pae.utilidades.UtilidadesUI;
 
 /**
- * Controlador para el formulario de registro y edición de Pedidos del sistema.
- *
  * @author Adair Alejandro Martinez Alejo
  * @author Gabriel Hernández Martínez
  * @author Víctor Hugo Vásquez Martínez
@@ -28,7 +27,7 @@ public class PedidoFormViewController implements Initializable {
     @FXML
     private ComboBox<String> cmbProducto;
     @FXML
-    private Spinner<Integer> spnCantidad;
+    private TextField txtCantidad;
     @FXML
     private Button btnAgregarAlPedido;
     @FXML
@@ -62,9 +61,7 @@ public class PedidoFormViewController implements Initializable {
 
         txtFecha.setText(LocalDate.now().toString());
         txtFecha.setEditable(false);
-
-        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 50, 1);
-        spnCantidad.setValueFactory(valueFactory);
+        txtCantidad.setText("1");
 
         colDetalleCod.setCellValueFactory(new PropertyValueFactory<>("codigoProducto"));
         colDetalleProd.setCellValueFactory(new PropertyValueFactory<>("nombreProducto"));
@@ -80,15 +77,23 @@ public class PedidoFormViewController implements Initializable {
 
     private void agregarProductoALista() {
         if (cmbProducto.getValue() == null) {
-            mostrarAlertaError("Selección requerida", "Por favor, seleccione un producto de la lista.");
+            UtilidadesUI.mostrarAlertaSimple("Selección requerida", "Por favor, seleccione un producto de la lista.", Alert.AlertType.WARNING);
             return;
         }
 
-        int cantidad = spnCantidad.getValue();
-        System.out.println("Producto agregado a la lista temporal. Cantidad: " + cantidad);
+        try {
+            int cantidad = Integer.parseInt(txtCantidad.getText().trim());
+            if (cantidad <= 0) {
+                throw new NumberFormatException();
+            }
 
-        spnCantidad.getValueFactory().setValue(1);
-        calcularTotal();
+            System.out.println("Producto agregado a la lista temporal. Cantidad: " + cantidad);
+            txtCantidad.setText("1");
+            calcularTotal();
+
+        } catch (NumberFormatException e) {
+            UtilidadesUI.mostrarAlertaSimple("Cantidad inválida", "Ingrese un número entero mayor a cero.", Alert.AlertType.WARNING);
+        }
     }
 
     private void quitarProductoSeleccionado() {
@@ -98,7 +103,7 @@ public class PedidoFormViewController implements Initializable {
             listaDetalles.remove(indiceSeleccionado);
             calcularTotal();
         } else {
-            mostrarAlertaError("Sin selección", "Debe seleccionar un producto de la tabla para eliminarlo.");
+            UtilidadesUI.mostrarAlertaSimple("Sin selección", "Debe seleccionar un producto de la tabla para eliminarlo.", Alert.AlertType.WARNING);
         }
     }
 
@@ -109,25 +114,17 @@ public class PedidoFormViewController implements Initializable {
 
     private void guardarPedido() {
         if (cmbCliente.getValue() == null) {
-            mostrarAlertaError("Cliente no seleccionado", "Debe asignar el pedido a un cliente.");
+            UtilidadesUI.mostrarAlertaSimple("Cliente no seleccionado", "Debe asignar el pedido a un cliente.", Alert.AlertType.WARNING);
             return;
         }
 
         if (listaDetalles.isEmpty()) {
-            mostrarAlertaError("Pedido vacío", "Debe agregar al menos un producto al pedido.");
+            UtilidadesUI.mostrarAlertaSimple("Pedido vacío", "Debe agregar al menos un producto al pedido.", Alert.AlertType.WARNING);
             return;
         }
 
         System.out.println("Pedido listo para guardar en BD. Total a cobrar: $" + totalAcumulado);
         cerrarVentana();
-    }
-
-    private void mostrarAlertaError(String titulo, String mensaje) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle(titulo);
-        alert.setHeaderText(null);
-        alert.setContentText(mensaje);
-        alert.showAndWait();
     }
 
     private void cerrarVentana() {

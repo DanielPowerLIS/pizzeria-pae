@@ -6,9 +6,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import pizzeria.pae.utilidades.UtilidadesUI;
 
 /**
- * Controlador para el formulario de registro y edición de Usuarios del sistema.
+ * Controlador para el formulario de usuarios.
  *
  * @author Adair Alejandro Martinez Alejo
  * @author Gabriel Hernández Martínez
@@ -42,8 +43,8 @@ public class UsuarioFormViewController implements Initializable {
 
     private void guardarUsuario() {
         if (validarCampos()) {
-            System.out.println("Validación exitosa. Listo para enviar a MySQL.");
-            mostrarAlertaInfo("Éxito", "El usuario está listo para ser guardado.");
+            System.out.println("Validación exitosa");
+            UtilidadesUI.mostrarAlertaSimple("Éxito", "Ussuario guardado exitosamente.", Alert.AlertType.INFORMATION);
             cerrarVentana();
         }
     }
@@ -53,37 +54,21 @@ public class UsuarioFormViewController implements Initializable {
                 || txtUsername.getText().trim().isEmpty()
                 || cmbRol.getValue() == null) {
 
-            mostrarAlertaError("Campos incompletos", "Por favor, llene todos los campos obligatorios.");
+            UtilidadesUI.mostrarAlertaSimple("Campos incompletos", "Por favor, llene todos los campos obligatorios.", Alert.AlertType.WARNING);
             return false;
         }
 
         if (!esEdicion && pwdContrasena.getText().trim().isEmpty()) {
-            mostrarAlertaError("Contraseña vacía", "Debe asignar una contraseña al nuevo usuario.");
+            UtilidadesUI.mostrarAlertaSimple("Contraseña vacía", "Debe asignar una contraseña al nuevo usuario.", Alert.AlertType.WARNING);
             return false;
         }
 
         if (!pwdContrasena.getText().trim().isEmpty() && pwdContrasena.getText().length() < 6) {
-            mostrarAlertaError("Contraseña débil", "La contraseña debe tener al menos 6 caracteres.");
+            UtilidadesUI.mostrarAlertaSimple("Contraseña débil", "La contraseña debe tener al menos 6 caracteres.", Alert.AlertType.WARNING);
             return false;
         }
 
         return true;
-    }
-
-    private void mostrarAlertaError(String titulo, String mensaje) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle(titulo);
-        alert.setHeaderText(null);
-        alert.setContentText(mensaje);
-        alert.showAndWait();
-    }
-
-    private void mostrarAlertaInfo(String titulo, String mensaje) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(titulo);
-        alert.setHeaderText(null);
-        alert.setContentText(mensaje);
-        alert.showAndWait();
     }
 
     private void cerrarVentana() {
