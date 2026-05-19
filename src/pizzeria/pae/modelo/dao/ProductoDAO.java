@@ -244,4 +244,39 @@ public class ProductoDAO {
         
         return productoEliminado > 0;
     }
+    
+    public static Producto buscarProducto(Integer idProducto)throws SQLException{
+        String consulta = "SELECT * " +
+                "FROM pizzeriapae.producto " +
+                "WHERE idProducto = ?";
+        
+        MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
+        PreparedStatement sentenciaBD = conexion.prepareStatement(consulta);
+        
+        sentenciaBD.setInt(1, idProducto);
+        ResultSet resultado = sentenciaBD.executeQuery();
+        
+        Producto p = null;
+        
+        if(resultado != null && resultado.next()){
+            p = new Producto();
+            
+            p.setIdProducto(resultado.getInt("idProducto"));
+            p.setNombre(resultado.getString("nombre"));
+            p.setCodigo(resultado.getString("codigo"));
+            p.setEsInsumo(resultado.getBoolean("esInsumo"));
+            p.setEsUtilizado(resultado.getBoolean("esUtilizado"));
+            p.setCantidad(resultado.getInt("cantidad"));
+            p.setFoto(resultado.getBlob("foto"));
+            p.setRestricciones(resultado.getString("restricciones"));
+            p.setPrecio(resultado.getBigDecimal("precio"));
+            p.setDescripcion(resultado.getString("descripcion"));
+            
+        }
+        
+        resultado.close();
+        conexion.close();
+        
+        return p;
+    }
 }
