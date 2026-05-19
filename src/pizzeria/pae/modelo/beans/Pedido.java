@@ -17,19 +17,20 @@ public class Pedido {
     private String estado;
     private Usuario cliente;
     private List<DetallePedido> detallePedido;
-
-    public Pedido() {
+    
+    public Pedido(){
         this.detallePedido = new ArrayList<>();
-        this.fecha = LocalDate.now();
         this.total = BigDecimal.ZERO;
+        this.fecha = LocalDate.now();
     }
 
-    public Pedido(Integer idPedido, Usuario cliente, LocalDate fecha, List<DetallePedido> detallePedido) {
+    public Pedido(Integer idPedido, LocalDate fecha, BigDecimal total, String estado, Usuario cliente, List<DetallePedido> detallePedido) {
         this.idPedido = idPedido;
-        this.cliente = cliente;
         this.fecha = fecha;
-        this.detallePedido = detallePedido != null ? detallePedido : new ArrayList<>();
-        this.total = calcularTotal();
+        this.total = total;
+        this.estado = estado;
+        this.cliente = cliente;
+        this.detallePedido = detallePedido;
     }
 
     public BigDecimal calcularTotal() {
@@ -95,6 +96,14 @@ public class Pedido {
         this.total = total;
     }
 
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+    
     @Override
     public String toString() {
         return "Pedido #" + idPedido + " - " + (cliente != null ? cliente.getNombreCompleto() : "Sin cliente")
