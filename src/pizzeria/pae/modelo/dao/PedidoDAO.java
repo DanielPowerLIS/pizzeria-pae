@@ -1,10 +1,12 @@
 package pizzeria.pae.modelo.dao;
 
 import com.sun.deploy.ui.DialogTemplate;
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import pizzeria.pae.modelo.MySQLConnectionManager;
@@ -334,5 +336,77 @@ public class PedidoDAO {
         return pedidos;
     }
     
+    public static Boolean agregarPedido(Pedido pedidoAgregar)throws SQLException{
+        String insercion = "INSERT INTO pedido ( fecha, estado, totalAPagar, idUsuario) " +
+                        "VALUES (?, ?, ?, ?)";
+        
+        MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
+        PreparedStatement insercionBD = conexion.prepareStatement(insercion, Statement.RETURN_GENERATED_KEYS);
+        Integer idPedido = null;
+        
+        insercionBD.setDate(1, Date.valueOf(pedidoAgregar.getFecha()));
+        insercionBD.setString(2, pedidoAgregar.getEstado());
+        insercionBD.setBigDecimal(3, pedidoAgregar.getTotal());
+        insercionBD.setInt(4, pedidoAgregar.getCliente().getIdUsuario());
+        
+        Integer pedidoInsertado = insercionBD.executeUpdate();
+        
+        ResultSet clavePrimaria = insercionBD.getGeneratedKeys();
+        if(clavePrimaria.next()){
+            idPedido = clavePrimaria.getInt(1);
+            pedidoAgregar.setIdPedido(idPedido);
+        }
+        
+        String insercionDetalle = "INSERT INTO detallepedido (idPedido, idProducto, cantidad, subTotal) " +
+                        "VALUES (?, ?, ?, ?)";
+        
+        PreparedStatement insercionDetalleBD = conexion.prepareStatement(insercionDetalle);
+        for(DetallePedido d : pedidoAgregar.getDetallePedido()){
+            insercionDetalleBD.setInt(1, pedidoAgregar.getIdPedido());
+            insercionDetalleBD.setInt(2, d.getProducto().getIdProducto());
+            insercionDetalleBD.setInt(3, d.getCantidad());
+            insercionDetalleBD.setBigDecimal(4, d.getSubtotal());
+            
+            insercionDetalleBD.executeUpdate();
+        }
+        
+        return pedidoInsertado > 0;
+    }
     
+    public static Boolean actualizarPedido(Pedido pedidoActualizar)throws SQLException{
+        String actualizar = "UPDATE pedido " +
+                          "SET estado = ?, totalAPagar = ? " +
+                          "WHERE idPedido = ?";
+        
+        MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
+        PreparedStatement actualizarBD = conexion.prepareStatement(actualizar);
+        
+        actualizarBD.setString(1, pedidoActualizar.getEstado());
+        actualizarBD.setBigDecimal(2, pedidoActualizar.getTotal());
+        actualizarBD.setInt(3, pedidoActualizar.getIdPedido());
+        
+        Integer pedidoActualizado = actualizarBD.executeUpdate();
+        
+        return pedidoActualizado > 0;
+    }
+    
+    public static Boolean eliminarPedido(Integer idPedido)throws SQLException{
+        String eliminarPedido = "DELETE FROM pedido WHERE idPedido = ?";
+        
+        MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
+        PreparedStatement eliminarPedidoBD = conexion.prepareStatement(eliminarPedido);
+        
+        eliminarPedidoBD.setInt(1, idPedido);
+        
+        String eliminarDetalles = "DELETE FROM detallepedido WHERE idPedido = ?";
+        
+        PreparedStatement eliminarDetalleBD = conexion.prepareStatement(eliminarDetalles);
+        
+        eliminarDetalleBD.setInt(1, idPedido);
+        
+        Integer detallesEliminados = eliminarDetalleBD.executeUpdate();
+        Integer pedidoEliminado = eliminarPedidoBD.executeUpdate();
+        
+        return (detallesEliminados + pedidoEliminado) > 1;
+    }
 }
