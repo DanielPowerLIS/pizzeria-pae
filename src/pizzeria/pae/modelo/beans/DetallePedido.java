@@ -59,5 +59,4 @@ public class DetallePedido {
     public void setSubtotal(BigDecimal subtotal) {
         this.subtotal = subtotal;
     }
-
 }

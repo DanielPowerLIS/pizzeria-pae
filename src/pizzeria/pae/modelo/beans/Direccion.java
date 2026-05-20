@@ -11,11 +11,9 @@ public class Direccion {
     private String numero;
     private String codigoPostal;
 
-    // Constructor vacío
     public Direccion() {
     }
 
-    // Constructor con todos los campos
     public Direccion(int idDireccion, String calle, String ciudad, String numero, String codigoPostal) {
         this.idDireccion = idDireccion;
         this.calle = calle;
@@ -24,7 +22,6 @@ public class Direccion {
         this.codigoPostal = codigoPostal;
     }
 
-    // Getters y Setters
     public int getIdDireccion() {
         return idDireccion;
     }

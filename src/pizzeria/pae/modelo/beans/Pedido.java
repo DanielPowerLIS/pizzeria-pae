@@ -18,19 +18,20 @@ public class Pedido {
     private Usuario cliente;
     private List<DetallePedido> detallePedido;
     
-    public Pedido(){
+    public Pedido() {
         this.detallePedido = new ArrayList<>();
         this.total = BigDecimal.ZERO;
         this.fecha = LocalDate.now();
     }
 
-    public Pedido(Integer idPedido, LocalDate fecha, BigDecimal total, String estado, Usuario cliente, List<DetallePedido> detallePedido) {
+    public Pedido(Integer idPedido, LocalDate fecha, BigDecimal total, String estado,
+                  Usuario cliente, List<DetallePedido> detallePedido) {
         this.idPedido = idPedido;
         this.fecha = fecha;
         this.total = total;
         this.estado = estado;
         this.cliente = cliente;
-        this.detallePedido = detallePedido;
+        this.detallePedido = detallePedido != null ? detallePedido : new ArrayList<>();
     }
 
     public BigDecimal calcularTotal() {
@@ -55,20 +56,12 @@ public class Pedido {
         this.total = calcularTotal();
     }
 
-    public int getIdPedido() {
+    public Integer getIdPedido() {
         return idPedido;
     }
 
-    public void setIdPedido(int idPedido) {
+    public void setIdPedido(Integer idPedido) {
         this.idPedido = idPedido;
-    }
-
-    public Usuario getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Usuario cliente) {
-        this.cliente = cliente;
     }
 
     public LocalDate getFecha() {
@@ -77,15 +70,6 @@ public class Pedido {
 
     public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
-    }
-
-    public List<DetallePedido> getDetallePedido() {
-        return detallePedido;
-    }
-
-    public void setDetallePedido(List<DetallePedido> detallePedido) {
-        this.detallePedido = detallePedido;
-        this.total = calcularTotal();
     }
 
     public BigDecimal getTotal() {
@@ -103,7 +87,24 @@ public class Pedido {
     public void setEstado(String estado) {
         this.estado = estado;
     }
-    
+
+    public Usuario getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Usuario cliente) {
+        this.cliente = cliente;
+    }
+
+    public List<DetallePedido> getDetallePedido() {
+        return detallePedido;
+    }
+
+    public void setDetallePedido(List<DetallePedido> detallePedido) {
+        this.detallePedido = detallePedido;
+        this.total = calcularTotal();
+    }
+
     @Override
     public String toString() {
         return "Pedido #" + idPedido + " - " + (cliente != null ? cliente.getNombreCompleto() : "Sin cliente")

@@ -23,12 +23,12 @@ public class Producto {
     public Producto() {
     }
 
-    public Producto(Integer idProducto, String nombre, String codigoProducto, Boolean esInsumo, 
+    public Producto(Integer idProducto, String nombre, String codigo, Boolean esInsumo, 
             Boolean esUtilizado, int cantidad, Blob foto, String restricciones, 
             BigDecimal precio, String descripcion) {
         this.idProducto = idProducto;
         this.nombre = nombre;
-        this.codigo = codigoProducto;
+        this.codigo = codigo;
         this.esInsumo = esInsumo;
         this.esUtilizado = esUtilizado;
         this.cantidad = cantidad;
@@ -58,8 +58,8 @@ public class Producto {
         return codigo;
     }
 
-    public void setCodigo(String codigoProducto) {
-        this.codigo = codigoProducto;
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
     public Boolean getEsInsumo() {
@@ -117,5 +117,9 @@ public class Producto {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-      
+
+    @Override
+    public String toString() {
+        return "[" + codigo + "] " + nombre;
+    }
 }
