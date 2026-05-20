@@ -192,6 +192,7 @@ public class ProductoDAO {
         
         Integer productoInsertado = insercionProductoBD.executeUpdate();
         
+        insercionProductoBD.close();
         conexion.close();
         
         return productoInsertado > 0;
@@ -225,6 +226,7 @@ public class ProductoDAO {
         
         Integer productoActualizado = actualizarProductoBD.executeUpdate();
         
+        actualizarProductoBD.close();
         conexion.close();
         
         return productoActualizado > 0;
@@ -240,6 +242,7 @@ public class ProductoDAO {
         
         Integer productoEliminado = eliminarProductoBD.executeUpdate();
         
+        eliminarProductoBD.close();
         conexion.close();
         
         return productoEliminado > 0;

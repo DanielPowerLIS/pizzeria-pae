@@ -369,6 +369,10 @@ public class PedidoDAO {
             insercionDetalleBD.executeUpdate();
         }
         
+        insercionBD.close();
+        insercionDetalleBD.close();
+        conexion.close();
+        
         return pedidoInsertado > 0;
     }
     
@@ -386,19 +390,57 @@ public class PedidoDAO {
         
         Integer pedidoActualizado = actualizarBD.executeUpdate();
         
+        actualizarBD.close();
+        conexion.close();
+        
         return pedidoActualizado > 0;
     }
     
-    public static Boolean agregarDetalles(){
+    public static Boolean agregarDetalles(List<DetallePedido> agregarDetalles)throws SQLException{
+        String insercionDetalles = "INSERT INTO detallepedido (idPedido, idProducto, cantidad, subTotal) " +
+                          "VALUES (?, ?, ?, ?)";
         
+        MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
+        PreparedStatement insercionDetallesBD = conexion.prepareStatement(insercionDetalles);
         
-        return false;
+        Integer numDetalles = agregarDetalles.size();
+        Integer detallesInsertados = 0;
+        
+        for(DetallePedido dp : agregarDetalles){
+            insercionDetallesBD.setInt(1, dp.getIdPedido());
+            insercionDetallesBD.setInt(2, dp.getProducto().getIdProducto());
+            insercionDetallesBD.setInt(3, dp.getCantidad());
+            insercionDetallesBD.setBigDecimal(4, dp.getSubtotal());
+            
+            detallesInsertados += insercionDetallesBD.executeUpdate();
+        }
+        
+        insercionDetallesBD.close();
+        conexion.close();
+        
+        return detallesInsertados == numDetalles;
     }
     
-    public static Boolean quitarDetalles(){
+    public static Boolean quitarDetalles(List<DetallePedido> eliminarDetalles)throws SQLException{
+        String quitarDetalles = "DELETE FROM detallepedido WHERE idPedido = ? AND idProducto = ?";
         
+        MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
+        PreparedStatement quitarDetallesBD = conexion.prepareStatement(quitarDetalles);
         
-        return false;
+        Integer numDetalles = eliminarDetalles.size();
+        Integer detallesEliminados = 0;
+        
+        for(DetallePedido dp : eliminarDetalles){
+            quitarDetallesBD.setInt(1, dp.getIdPedido());
+            quitarDetallesBD.setInt(2, dp.getProducto().getIdProducto());
+            
+            detallesEliminados += quitarDetallesBD.executeUpdate();
+        }
+        
+        quitarDetallesBD.close();
+        conexion.close();
+        
+        return detallesEliminados == numDetalles;
     }
     
     public static Boolean eliminarPedido(Integer idPedido)throws SQLException{
@@ -417,6 +459,9 @@ public class PedidoDAO {
         
         Integer detallesEliminados = eliminarDetalleBD.executeUpdate();
         Integer pedidoEliminado = eliminarPedidoBD.executeUpdate();
+        
+        eliminarDetalleBD.close();
+        conexion.close();
         
         return (detallesEliminados + pedidoEliminado) > 1;
     }
