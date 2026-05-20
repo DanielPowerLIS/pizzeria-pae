@@ -28,6 +28,20 @@ public class DetallePedido {
         return producto.getPrecio().multiply(BigDecimal.valueOf(cantidad));
     }
 
+    // Getters de conveniencia para PropertyValueFactory de la tabla en PedidoFormViewController
+    public String getCodigoProducto() {
+        return producto != null ? producto.getCodigo() : "";
+    }
+
+    public String getNombreProducto() {
+        return producto != null ? producto.getNombre() : "";
+    }
+
+    public BigDecimal getPrecioUnitario() {
+        return producto != null ? producto.getPrecio() : BigDecimal.ZERO;
+    }
+
+    // Getters y Setters
     public Integer getIdPedido() {
         return idPedido;
     }
