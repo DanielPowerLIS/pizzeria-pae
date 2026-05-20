@@ -14,7 +14,6 @@ import java.util.Properties;
  * @author adair
  */
 public class MySQLConnectionManager {
-     private static MySQLConnectionManager instancia;
    
     private Connection connection;
     private String username;
@@ -73,10 +72,6 @@ public class MySQLConnectionManager {
     }
     
     public static MySQLConnectionManager buildConnection() throws SQLException { 
-        if(instancia == null){
-            instancia = new MySQLConnectionManager();
-        }
-        instancia.connect();
-        return instancia;
+        return new MySQLConnectionManager();
     }
 }
