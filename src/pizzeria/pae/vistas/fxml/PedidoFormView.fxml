@@ -43,7 +43,7 @@
                    <Label text="Añadir Producto:" textFill="#d1cfcf" />
                    <ComboBox fx:id="cmbProducto" prefWidth="250.0" promptText="Seleccione un producto..." style="-fx-background-color: #e0e0e0;" />
                    <Label text="Cantidad:" textFill="#d1cfcf" />
-                  <TextField prefHeight="37.0" prefWidth="56.0" />
+                  <TextField fx:id="txtCantidad" prefHeight="37.0" prefWidth="56.0" />
                    <Button fx:id="btnAgregarAlPedido" prefHeight="35" style="-fx-background-color: #404040; -fx-text-fill: white; -fx-background-radius: 8;" text="Agregar" />
                    <Button fx:id="btnQuitarDelPedido" prefHeight="35" style="-fx-background-color: #a83232; -fx-text-fill: white; -fx-background-radius: 8;" text="Quitar" />
                   <Button fx:id="btnGuardarPed" prefHeight="40" prefWidth="130" style="-fx-background-color: #218c74; -fx-background-radius: 8;" text="Guardar Pedido" textFill="WHITE" />
