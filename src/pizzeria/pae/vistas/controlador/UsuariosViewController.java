@@ -2,7 +2,10 @@ package pizzeria.pae.vistas.controlador;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -13,8 +16,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import pizzeria.pae.modelo.beans.Usuario;
+import pizzeria.pae.modelo.dao.UsuarioDAO;
+import pizzeria.pae.utilidades.Alerta;
 import pizzeria.pae.utilidades.UtilidadesUI;
 
 /**
@@ -30,17 +37,15 @@ public class UsuariosViewController implements Initializable {
     @FXML
     private Button btnBuscarUsuario;
     @FXML
-    private TableView<?> tblUsuarios;
+    private TableView<Usuario> tblUsuarios;
     @FXML
-    private TableColumn<?, ?> colNombre;
+    private TableColumn<Usuario, String> colNombre;
     @FXML
-    private TableColumn<?, ?> colTelefono;
+    private TableColumn<Usuario, String> colTelefono;
     @FXML
-    private TableColumn<?, ?> colEmail;
+    private TableColumn<Usuario, String> colEmail;
     @FXML
-    private TableColumn<?, ?> colDireccion;
-    @FXML
-    private TableColumn<?, ?> colTipo;
+    private TableColumn<Usuario, String> colDireccion;
     @FXML
     private Button btnAgregarUsuario;
     @FXML
@@ -50,8 +55,32 @@ public class UsuariosViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        configurarTabla();
+        cargarDatosTabla();
+
         btnAgregarUsuario.setOnAction(event -> abrirFormularioUsuario(false));
         btnEditarUsuario.setOnAction(event -> abrirFormularioUsuario(true));
+        btnEliminarUsuario.setOnAction(event -> eliminarUsuario());
+    }
+
+    private void configurarTabla() {
+        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        colTelefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
+        colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        colDireccion.setCellValueFactory(new PropertyValueFactory<>("direccion"));
+    }
+
+    private void cargarDatosTabla() {
+        try {
+            List<Usuario> usuariosBD = UsuarioDAO.obtenerUsuarios(true);
+            tblUsuarios.setItems(FXCollections.observableArrayList(usuariosBD));
+        } catch (SQLException ex) {
+            Alerta.mostrarAlertaError(
+                    "Ocurrió un  con la base de datos",
+                    "No se pudo recuperar la lista de usuarios. Inténtalo de nuevo más tarde."
+            );
+            ex.printStackTrace();
+        }
     }
 
     private void abrirFormularioUsuario(boolean esEdicion) {
@@ -78,7 +107,18 @@ public class UsuariosViewController implements Initializable {
             stage.showAndWait();
 
         } catch (IOException e) {
-            UtilidadesUI.mostrarAlertaSimple("Error de carga", "No se pudo abrir la ventana del formulario de usuario.", Alert.AlertType.ERROR);
+            Alerta.mostrarAlertaError(
+                    "Ocurrió un error al cargar la ventana de formulario",
+                    "No se pudo recuperar la lista de usuarios. Inténtalo de nuevo más tarde."
+            );
         }
+    }
+
+    private void editarUsuario() {
+
+    }
+
+    private void eliminarUsuario() {
+
     }
 }
