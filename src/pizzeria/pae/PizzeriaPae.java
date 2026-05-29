@@ -18,7 +18,7 @@ public class PizzeriaPae extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/pizzeria/pae/vistas/fxml/MenuView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/pizzeria/pae/vistas/fxml/LoginView.fxml"));
 
         Scene scene = new Scene(root);
 

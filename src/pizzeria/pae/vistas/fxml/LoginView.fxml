@@ -49,7 +49,7 @@
                   </font>
               </Label>
               <!-- Altura mínima aumentada para facilitar el uso táctil -->
-              <TextField fx:id="txtUsuario" minHeight="45.0" promptText="Nombre de usuario" style="-fx-font-size: 14px;" />
+              <TextField fx:id="tfUsuario" minHeight="45.0" promptText="Nombre de usuario" style="-fx-font-size: 14px;" />
       </children>
        </VBox>
    
@@ -62,7 +62,7 @@
                   </font>
               </Label>
               <!-- Altura mínima aumentada para facilitar el uso táctil -->
-              <PasswordField fx:id="txtPassword" minHeight="45.0" promptText="••••••••" style="-fx-font-size: 14px;" />
+              <PasswordField fx:id="tfPassword" minHeight="45.0" promptText="••••••••" style="-fx-font-size: 14px;" />
       </children>
        </VBox>
    
@@ -70,7 +70,7 @@
    
        <!-- Botón de Inicio de Sesión -->
        <!-- Dimensiones amplias para cumplimiento de entrada dual (mouse/táctil) -->
-       <Button fx:id="btnIniciarSesion" maxWidth="Infinity" minHeight="55.0" style="-fx-background-color: #800000; -fx-font-weight: bold; -fx-cursor: hand;" text="Iniciar Sesión" textFill="WHITE" />
+       <Button fx:id="btnIniciarSesion" maxWidth="Infinity" minHeight="55.0" onAction="#clickIniciarSesion" style="-fx-background-color: #800000; -fx-font-weight: bold; -fx-cursor: hand;" text="Iniciar Sesión" textFill="WHITE" />
    </children>
 
 </VBox>
