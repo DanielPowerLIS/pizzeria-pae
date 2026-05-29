@@ -2,6 +2,7 @@ package pizzeria.pae.modelo;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -13,8 +14,8 @@ import java.util.Properties;
  *
  * @author adair
  */
-public class MySQLConnectionManager {
-   
+public class MySQLConnectionManager implements AutoCloseable{
+       
     private Connection connection;
     private String username;
     private String password;
@@ -35,7 +36,7 @@ public class MySQLConnectionManager {
     }
     
     private void cargarCredenciales(){
-        try (InputStream input = MySQLConnectionManager.class.getResourceAsStream("/pae/config/database.properties")){            
+        try (InputStream input = MySQLConnectionManager.class.getResourceAsStream("/gestionalmacenFEI/config/database.properties")){            
             if (input == null) {
                 throw new RuntimeException("Unable to find database properties.");
             }            
@@ -55,6 +56,7 @@ public class MySQLConnectionManager {
         }
     }
     
+    @Override
     public void close() throws SQLException {
         if (connection != null) {
             connection.close();
@@ -73,5 +75,26 @@ public class MySQLConnectionManager {
     
     public static MySQLConnectionManager buildConnection() throws SQLException { 
         return new MySQLConnectionManager();
+    }
+    
+    public CallableStatement prepareCall(String query)throws SQLException {
+        connect();
+        return connection.prepareCall(query);
+    }
+    
+    public void setAutoCommit(boolean autoCommit)
+        throws SQLException {
+
+        connection.setAutoCommit(autoCommit);
+    }
+    
+    public void commit() throws SQLException {
+
+        connection.commit();
+    }
+    
+    public void rollback() throws SQLException {
+
+        connection.rollback();
     }
 }
