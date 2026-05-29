@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="500.0" prefWidth="600.0" style="-fx-background-color: #323232;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pizzeria.pae.vistas.controlador.UsuarioFormViewController">
+<AnchorPane prefHeight="550.0" prefWidth="650.0" style="-fx-background-color: #323232;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pizzeria.pae.vistas.controlador.UsuarioFormViewController">
    <children>
       <VBox spacing="15.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
          <children>
@@ -18,38 +18,50 @@
             </Label>
             <GridPane hgap="15.0" vgap="15.0">
                <columnConstraints>
-                  <ColumnConstraints minWidth="100.0" />
-                  <ColumnConstraints hgrow="ALWAYS" minWidth="200.0" />
+                  <ColumnConstraints minWidth="110.0" />
+                  <ColumnConstraints hgrow="ALWAYS" minWidth="150.0" />
+                  <ColumnConstraints halignment="RIGHT" minWidth="80.0" />
+                  <ColumnConstraints hgrow="ALWAYS" minWidth="100.0" />
                </columnConstraints>
                <children>
-                  <Label text="*Nombre(s):" textFill="#d1cfcf" GridPane.columnIndex="0" />
-                  <TextField fx:id="txtNombre" style="-fx-background-color: #505050; -fx-text-fill: white;" GridPane.columnIndex="1" />
+                  <Label text="*Nombre(s):" textFill="#d1cfcf" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                  <TextField fx:id="txtNombre" style="-fx-background-color: #505050; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="0" />
                   
                   <Label text="*Apellido paterno:" textFill="#d1cfcf" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                  <TextField fx:id="txtApellidoPaterno" style="-fx-background-color: #505050; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField fx:id="txtApellidoPaterno" style="-fx-background-color: #505050; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1" />
                   
                   <Label text="Apellido materno:" textFill="#d1cfcf" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                  <TextField fx:id="txtApellidoMaterno" style="-fx-background-color: #505050; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextField fx:id="txtApellidoMaterno" style="-fx-background-color: #505050; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="2" />
                   
                   <Label text="*Teléfono:" textFill="#d1cfcf" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                  <TextField fx:id="txtTelefono" style="-fx-background-color: #505050; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <TextField fx:id="txtTelefono" style="-fx-background-color: #505050; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3" />
                   
                   <Label text="*Email:" textFill="#d1cfcf" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                  <TextField fx:id="txtEmail" style="-fx-background-color: #505050; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <TextField fx:id="txtEmail" style="-fx-background-color: #505050; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="4" />
                   
-                  <Label text="*Dirección:" textFill="#d1cfcf" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-                  <TextField fx:id="txtDireccion" promptText="Calle y número" style="-fx-background-color: #505050; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                  <Label text="*Calle:" textFill="#d1cfcf" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                  <TextField fx:id="txtCalle" style="-fx-background-color: #505050; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                   
-                  <Label text="Tipo Usuario:" textFill="#d1cfcf" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-                  <ComboBox fx:id="cmbTipoUsuario" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                  <Label text="*Número:" textFill="#d1cfcf" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                  <TextField fx:id="txtNumero" style="-fx-background-color: #505050; -fx-text-fill: white;" GridPane.columnIndex="3" GridPane.rowIndex="5" />
                   
-                  <Label text="*Usuario:" textFill="#d1cfcf" GridPane.columnIndex="0" GridPane.rowIndex="7" />
-                  <TextField fx:id="txtUsername" style="-fx-background-color: #505050; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                  <Label text="*Ciudad:" textFill="#d1cfcf" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                  <TextField fx:id="txtCiudad" style="-fx-background-color: #505050; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                   
-                  <Label text="*Contraseña:" textFill="#d1cfcf" GridPane.columnIndex="0" GridPane.rowIndex="8" />
-                  <PasswordField fx:id="txtPassword" style="-fx-background-color: #505050; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                  <Label text="*C. P.:" textFill="#d1cfcf" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                  <TextField fx:id="txtCodigoPostal" style="-fx-background-color: #505050; -fx-text-fill: white;" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+                  
+                  <Label text="*Tipo Usuario:" textFill="#d1cfcf" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                  <ComboBox fx:id="cmbTipoUsuario" prefWidth="200.0" promptText="Seleccione el tipo..." GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="7" />
+                  
+                  <Label text="*Usuario:" textFill="#d1cfcf" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+                  <TextField fx:id="txtUsername" style="-fx-background-color: #505050; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="8" />
+                  
+                  <Label text="*Contraseña:" textFill="#d1cfcf" GridPane.columnIndex="0" GridPane.rowIndex="9" />
+                  <PasswordField fx:id="txtPassword" style="-fx-background-color: #505050; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="9" />
                </children>
                <rowConstraints>
+                  <RowConstraints />
                   <RowConstraints />
                   <RowConstraints />
                   <RowConstraints />
