@@ -4,6 +4,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -36,7 +37,7 @@ public class ValidacionInventarioViewController implements Initializable {
     @FXML
     private TableColumn<Producto, Integer> tcCantidadFisica;
     @FXML
-    private TableColumn<Producto, Integer> tcDiferencia;
+    private TableColumn<Producto, String> tcDiferencia;
 
     /**
      * Initializes the controller class.
@@ -58,17 +59,48 @@ public class ValidacionInventarioViewController implements Initializable {
         tcProducto.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         tcCantidadSistema.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
         tcCantidadFisica.setCellValueFactory(new PropertyValueFactory<>("cantidadFisica"));
-        tcDiferencia.setCellValueFactory(new PropertyValueFactory<>("diferencia"));
+        tcDiferencia.setCellValueFactory(cellData -> {
+
+            Producto producto = cellData.getValue();
+
+            Integer cantidadFisica = producto.getCantidadFisica();
+
+            if (cantidadFisica == null) {
+                return new SimpleStringProperty("");
+            }
+
+            int diferencia = cantidadFisica - producto.getCantidad();
+
+            String mensaje;
+
+            if (diferencia > 0) {
+
+                mensaje = "Sobran " + diferencia;
+
+            } else if (diferencia < 0) {
+
+                mensaje = "Faltan " + Math.abs(diferencia);
+
+            } else {
+
+                mensaje = "Sin diferencia";
+            }
+
+            return new SimpleStringProperty(mensaje);
+        });
+        
         tcCantidadFisica.setCellFactory(
             TextFieldTableCell.forTableColumn(
                     new IntegerStringConverter()));
         
         tcCantidadFisica.setOnEditCommit(event -> {
+
             Producto producto = event.getRowValue();
+
             Integer cantidadFisica = event.getNewValue();
+
             producto.setCantidadFisica(cantidadFisica);
-            int diferencia = cantidadFisica - producto.getCantidad();
-            producto.setDiferencia(diferencia);
+
             tvValidacion.refresh();
         });
         
