@@ -11,7 +11,7 @@ import java.util.Properties;
 
 
 /**
- *
+ *  
  * @author adair
  */
 public class MySQLConnectionManager implements AutoCloseable{
@@ -36,7 +36,7 @@ public class MySQLConnectionManager implements AutoCloseable{
     }
     
     private void cargarCredenciales(){
-        try (InputStream input = MySQLConnectionManager.class.getResourceAsStream("/gestionalmacenFEI/config/database.properties")){            
+        try (InputStream input = MySQLConnectionManager.class.getResourceAsStream("/pizzeria/pae/config/database.properties")){            
             if (input == null) {
                 throw new RuntimeException("Unable to find database properties.");
             }            
