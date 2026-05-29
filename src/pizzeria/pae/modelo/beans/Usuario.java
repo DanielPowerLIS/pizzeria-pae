@@ -1,8 +1,8 @@
 package pizzeria.pae.modelo.beans;
 
 /**
- * Bean que representa a un usuario del sistema (cliente o empleado).
- * Los campos fueron inferidos del UsuarioDAO existente.
+ * Bean que representa a un usuario del sistema (cliente o empleado). Los campos
+ * fueron inferidos del UsuarioDAO existente.
  */
 public class Usuario {
 
@@ -26,8 +26,8 @@ public class Usuario {
 
     // Constructor con todos los campos
     public Usuario(int idUsuario, String nombre, String apellidoPaterno, String apellidoMaterno,
-                   String telefono, String email, boolean haPedido, boolean esEmpleado,
-                   boolean esActivo, String nombreUsuario, String contrasenia, Direccion direccion) {
+            String telefono, String email, boolean haPedido, boolean esEmpleado,
+            boolean esActivo, String nombreUsuario, String contrasenia, Direccion direccion) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
@@ -142,6 +142,10 @@ public class Usuario {
     // Nombre completo — útil para los ComboBox de la vista
     public String getNombreCompleto() {
         return nombre + " " + apellidoPaterno + " " + apellidoMaterno;
+    }
+
+    public String getTipo() {
+        return this.esEmpleado ? "Empleado" : "Cliente";
     }
 
     @Override
