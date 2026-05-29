@@ -19,16 +19,16 @@ public class Producto {
     private String restricciones;
     private BigDecimal precio;
     private String descripcion;
+    private Integer cantidadFisica;
+    private Integer diferencia;
 
     public Producto() {
     }
 
-    public Producto(Integer idProducto, String nombre, String codigoProducto, Boolean esInsumo, 
-            Boolean esUtilizado, int cantidad, Blob foto, String restricciones, 
-            BigDecimal precio, String descripcion) {
+    public Producto(Integer idProducto, String nombre, String codigo, Boolean esInsumo, Boolean esUtilizado, Integer cantidad, Blob foto, String restricciones, BigDecimal precio, String descripcion, Integer cantidadFisica, Integer diferencia) {
         this.idProducto = idProducto;
         this.nombre = nombre;
-        this.codigo = codigoProducto;
+        this.codigo = codigo;
         this.esInsumo = esInsumo;
         this.esUtilizado = esUtilizado;
         this.cantidad = cantidad;
@@ -36,6 +36,8 @@ public class Producto {
         this.restricciones = restricciones;
         this.precio = precio;
         this.descripcion = descripcion;
+        this.cantidadFisica = cantidadFisica;
+        this.diferencia = diferencia;
     }
 
     public Integer getIdProducto() {
@@ -45,7 +47,7 @@ public class Producto {
     public void setIdProducto(Integer idProducto) {
         this.idProducto = idProducto;
     }
-    
+
     public String getNombre() {
         return nombre;
     }
@@ -58,8 +60,8 @@ public class Producto {
         return codigo;
     }
 
-    public void setCodigo(String codigoProducto) {
-        this.codigo = codigoProducto;
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
     public Boolean getEsInsumo() {
@@ -78,11 +80,11 @@ public class Producto {
         this.esUtilizado = esUtilizado;
     }
 
-    public int getCantidad() {
+    public Integer getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(int cantidad) {
+    public void setCantidad(Integer cantidad) {
         this.cantidad = cantidad;
     }
 
@@ -117,5 +119,23 @@ public class Producto {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
+    public Integer getCantidadFisica() {
+        return cantidadFisica;
+    }
+
+    public void setCantidadFisica(Integer cantidadFisica) {
+        this.cantidadFisica = cantidadFisica;
+    }
+
+    public Integer getDiferencia() {
+        return diferencia;
+    }
+
+    public void setDiferencia(Integer diferencia) {
+        this.diferencia = diferencia;
+    } 
+
+    
       
 }
