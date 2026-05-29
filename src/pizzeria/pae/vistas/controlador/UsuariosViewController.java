@@ -5,24 +5,25 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.ToggleGroup;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import pizzeria.pae.modelo.beans.Usuario;
 import pizzeria.pae.modelo.dao.UsuarioDAO;
 import pizzeria.pae.utilidades.Alerta;
-import pizzeria.pae.utilidades.UtilidadesUI;
 
 /**
  * @author Adair Alejandro Martinez Alejo
@@ -52,6 +53,14 @@ public class UsuariosViewController implements Initializable {
     private Button btnEditarUsuario;
     @FXML
     private Button btnEliminarUsuario;
+    @FXML
+    private RadioButton rdTodos;
+    @FXML
+    private ToggleGroup tgFiltroUsuarios;
+    @FXML
+    private RadioButton rdEmpleados;
+    @FXML
+    private RadioButton rdClientes;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -64,16 +73,39 @@ public class UsuariosViewController implements Initializable {
     }
 
     private void configurarTabla() {
-        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        colTelefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
-        colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
-        colDireccion.setCellValueFactory(new PropertyValueFactory<>("direccion"));
+        colNombre.setCellValueFactory(cellData
+                -> new SimpleStringProperty(cellData.getValue().getNombreCompleto())
+        );
+        colTelefono.setCellValueFactory(cellData
+                -> new SimpleStringProperty(cellData.getValue().getTelefono())
+        );
+        colEmail.setCellValueFactory(cellData
+                -> new SimpleStringProperty(cellData.getValue().getEmail())
+        );
+        colDireccion.setCellValueFactory(cellData -> {
+            if (cellData.getValue().getDireccion() != null) {
+                return new SimpleStringProperty(cellData.getValue().getDireccion().toString());
+            } else {
+                return new SimpleStringProperty("Sin dirección");
+            }
+        });
     }
 
     private void cargarDatosTabla() {
         try {
-            List<Usuario> usuariosBD = UsuarioDAO.obtenerUsuarios(true);
-            tblUsuarios.setItems(FXCollections.observableArrayList(usuariosBD));
+            List<Usuario> listaTotal = UsuarioDAO.obtenerUsuarios(true);
+            List<Usuario> clientes = UsuarioDAO.obtenerUsuarios(false);
+
+            if (clientes != null && listaTotal != null) {
+                listaTotal.addAll(clientes);
+            }
+
+            List<Usuario> usuariosActivos = listaTotal.stream()
+                    .filter(Usuario::getEsActivo)
+                    .collect(Collectors.toList());
+
+            tblUsuarios.setItems(FXCollections.observableArrayList(usuariosActivos));
+
         } catch (SQLException ex) {
             Alerta.mostrarAlertaError(
                     "Ocurrió un  con la base de datos",
@@ -87,7 +119,7 @@ public class UsuariosViewController implements Initializable {
         if (esEdicion) {
             int indiceSeleccionado = tblUsuarios.getSelectionModel().getSelectedIndex();
             if (indiceSeleccionado < 0) {
-                UtilidadesUI.mostrarAlertaSimple("Selección requerida", "Por favor, seleccione un usuario de la tabla para poder editarlo.", Alert.AlertType.WARNING);
+                Alerta.mostrarAlertaAdvertencia("Selección requerida", "Por favor, seleccione un usuario de la tabla para poder editarlo.");
                 return;
             }
         }
@@ -115,7 +147,7 @@ public class UsuariosViewController implements Initializable {
     }
 
     private void editarUsuario() {
-
+        abrirFormularioUsuario(true);
     }
 
     private void eliminarUsuario() {
