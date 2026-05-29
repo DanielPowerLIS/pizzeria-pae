@@ -25,9 +25,9 @@ public class ProductoDAO {
                         "restricciones, " +
                         "foto, " +
                         "esUtilizado, " +
-                        "esInsumo" +
+                        "esInsumo " +
                         "FROM Producto " +
-                        "WHERE nombre = ? " +
+                        "WHERE nombre LIKE ? " +
                         "  AND esInsumo = ?;";
         
         try( MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
@@ -35,7 +35,7 @@ public class ProductoDAO {
             
             List<Producto> productos = new ArrayList<>();
             
-            sentenciaBD.setString(1, nombreProducto);
+            sentenciaBD.setString(1, "%" + nombreProducto + "%");
             sentenciaBD.setBoolean(2, esInsumo);
             
             try(ResultSet resultado = sentenciaBD.executeQuery()){
@@ -73,9 +73,9 @@ public class ProductoDAO {
                         "restricciones, " +
                         "foto, " +
                         "esUtilizado, " +
-                        "esInsumo" +
+                        "esInsumo " +
                         "FROM Producto " +
-                        "WHERE codigo = ? " +
+                        "WHERE codigo LIKE ? " +
                         "  AND esInsumo = ?;";
         
         try( MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
@@ -83,7 +83,7 @@ public class ProductoDAO {
             
             List<Producto> productos = new ArrayList<>();
             
-            sentenciaBD.setString(1, codigoProducto);
+            sentenciaBD.setString(1, "%" + codigoProducto + "%");
             sentenciaBD.setBoolean(2, esInsumo);
             
             try(ResultSet resultado = sentenciaBD.executeQuery()){

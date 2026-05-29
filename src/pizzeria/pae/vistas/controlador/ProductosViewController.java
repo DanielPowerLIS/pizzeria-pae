@@ -29,15 +29,19 @@ import pizzeria.pae.utilidades.Alerta;
 public class ProductosViewController implements Initializable {
 
     @FXML
-    private Button btnBuscarProducto;
-    @FXML
     private TextField tfBuscador;
     @FXML
     private RadioButton rdPorNombre;
     @FXML
+    private RadioButton rdConsumo;
+    @FXML
     private ToggleGroup rdBuscador;
     @FXML
     private RadioButton rdPorCodigo;
+    @FXML
+    private ToggleGroup rdTipoProducto;
+    @FXML
+    private RadioButton rdInsumo;
     @FXML
     private TableView<Producto> tvProductos;
     @FXML
@@ -52,12 +56,7 @@ public class ProductosViewController implements Initializable {
     private TableColumn<Producto, String> tcRestricciones;
 
     private ObservableList<Producto> productosObservables;
-    @FXML
-    private RadioButton rdConsumo;
-    @FXML
-    private ToggleGroup rdTipoProducto;
-    @FXML
-    private RadioButton rdInsumo;
+    
     
     /**
      * Initializes the controller class.
@@ -110,7 +109,7 @@ public class ProductosViewController implements Initializable {
     
      private void cargarInformacionCodigo(String codigo, Boolean insumo){
         try{
-            List<Producto> productos = ProductoDAO.buscarProductoPorNombre(codigo, insumo);
+            List<Producto> productos = ProductoDAO.buscarProductoPorCodigo(codigo, insumo);
             if(productos != null){
                 productosObservables = FXCollections.observableArrayList(productos);
                 tvProductos.setItems(productosObservables);
@@ -176,13 +175,5 @@ public class ProductosViewController implements Initializable {
 
     @FXML
     private void clickGenerarPDF(ActionEvent event) {
-    }
-    
-    private void buscarConsumos(){
-        
-    }
-    
-    private void buscarInsumos(){
-        
     }
 }
