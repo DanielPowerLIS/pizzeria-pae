@@ -3,6 +3,7 @@ package pizzeria.pae.vistas.controlador;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -25,12 +26,6 @@ import pizzeria.pae.modelo.beans.Usuario;
 import pizzeria.pae.modelo.dao.UsuarioDAO;
 import pizzeria.pae.utilidades.Alerta;
 
-/**
- * @author Adair Alejandro Martinez Alejo
- * @author Gabriel Hernández Martínez
- * @author Víctor Hugo Vásquez Martínez
- * @author Juan Daniel Pérez Santiago
- */
 public class UsuariosViewController implements Initializable {
 
     @FXML
@@ -70,6 +65,9 @@ public class UsuariosViewController implements Initializable {
         btnAgregarUsuario.setOnAction(event -> abrirFormularioUsuario(false));
         btnEditarUsuario.setOnAction(event -> abrirFormularioUsuario(true));
         btnEliminarUsuario.setOnAction(event -> eliminarUsuario());
+
+        tgFiltroUsuarios.selectedToggleProperty().addListener((observable, oldValue, newValue) -> cargarDatosTabla());
+        txtBuscarUsuario.textProperty().addListener((observable, oldValue, newValue) -> cargarDatosTabla());
     }
 
     private void configurarTabla() {
@@ -84,7 +82,7 @@ public class UsuariosViewController implements Initializable {
         );
         colDireccion.setCellValueFactory(cellData -> {
             if (cellData.getValue().getDireccion() != null) {
-                return new SimpleStringProperty(cellData.getValue().getDireccion().toString());
+                return new SimpleStringProperty(cellData.getValue().getDireccion().getCalle() + " " + cellData.getValue().getDireccion().getNumero());
             } else {
                 return new SimpleStringProperty("Sin dirección");
             }
@@ -93,22 +91,51 @@ public class UsuariosViewController implements Initializable {
 
     private void cargarDatosTabla() {
         try {
-            List<Usuario> listaTotal = UsuarioDAO.obtenerUsuarios(true);
-            List<Usuario> clientes = UsuarioDAO.obtenerUsuarios(false);
+            List<Usuario> listaTotal = new ArrayList<>();
 
-            if (clientes != null && listaTotal != null) {
-                listaTotal.addAll(clientes);
+            if (rdTodos.isSelected()) {
+                List<Usuario> empleados = UsuarioDAO.obtenerUsuarios(true);
+                List<Usuario> clientes = UsuarioDAO.obtenerUsuarios(false);
+                if (empleados != null) {
+                    listaTotal.addAll(empleados);
+                }
+                if (clientes != null) {
+                    listaTotal.addAll(clientes);
+                }
+            } else if (rdEmpleados.isSelected()) {
+                List<Usuario> empleados = UsuarioDAO.obtenerUsuarios(true);
+                if (empleados != null) {
+                    listaTotal.addAll(empleados);
+                }
+            } else if (rdClientes.isSelected()) {
+                List<Usuario> clientes = UsuarioDAO.obtenerUsuarios(false);
+                if (clientes != null) {
+                    listaTotal.addAll(clientes);
+                }
             }
 
-            List<Usuario> usuariosActivos = listaTotal.stream()
+            String textoBusqueda = txtBuscarUsuario.getText() != null ? txtBuscarUsuario.getText().toLowerCase() : "";
+
+            List<Usuario> usuariosFiltrados = listaTotal.stream()
                     .filter(Usuario::getEsActivo)
+                    .filter(u -> {
+                        if (textoBusqueda.isEmpty()) {
+                            return true;
+                        }
+
+                        boolean coincideNombre = u.getNombreCompleto() != null && u.getNombreCompleto().toLowerCase().contains(textoBusqueda);
+                        boolean coincideTel = u.getTelefono() != null && u.getTelefono().contains(textoBusqueda);
+                        boolean coincideDir = u.getDireccion() != null && u.getDireccion().getCalle().toLowerCase().contains(textoBusqueda);
+
+                        return coincideNombre || coincideTel || coincideDir;
+                    })
                     .collect(Collectors.toList());
 
-            tblUsuarios.setItems(FXCollections.observableArrayList(usuariosActivos));
+            tblUsuarios.setItems(FXCollections.observableArrayList(usuariosFiltrados));
 
         } catch (SQLException ex) {
             Alerta.mostrarAlertaError(
-                    "Ocurrió un  con la base de datos",
+                    "Ocurrió un error con la base de datos",
                     "No se pudo recuperar la lista de usuarios. Inténtalo de nuevo más tarde."
             );
             ex.printStackTrace();
@@ -116,9 +143,11 @@ public class UsuariosViewController implements Initializable {
     }
 
     private void abrirFormularioUsuario(boolean esEdicion) {
+        Usuario usuarioSeleccionado = null;
+
         if (esEdicion) {
-            int indiceSeleccionado = tblUsuarios.getSelectionModel().getSelectedIndex();
-            if (indiceSeleccionado < 0) {
+            usuarioSeleccionado = tblUsuarios.getSelectionModel().getSelectedItem();
+            if (usuarioSeleccionado == null) {
                 Alerta.mostrarAlertaAdvertencia("Selección requerida", "Por favor, seleccione un usuario de la tabla para poder editarlo.");
                 return;
             }
@@ -127,6 +156,11 @@ public class UsuariosViewController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/pizzeria/pae/vistas/fxml/UsuarioFormView.fxml"));
             Parent root = loader.load();
+
+            UsuarioFormViewController controlador = loader.getController();
+            if (esEdicion) {
+                controlador.cargarUsuario(usuarioSeleccionado);
+            }
 
             Stage stage = new Stage();
             stage.setTitle(esEdicion ? "Editar Usuario" : "Nuevo Usuario");
@@ -138,19 +172,40 @@ public class UsuariosViewController implements Initializable {
 
             stage.showAndWait();
 
+            cargarDatosTabla();
+
         } catch (IOException e) {
             Alerta.mostrarAlertaError(
                     "Ocurrió un error al cargar la ventana de formulario",
-                    "No se pudo recuperar la lista de usuarios. Inténtalo de nuevo más tarde."
+                    "No se pudo abrir el formulario de usuarios."
             );
+            e.printStackTrace();
         }
     }
 
-    private void editarUsuario() {
-        abrirFormularioUsuario(true);
-    }
-
     private void eliminarUsuario() {
+        Usuario usuarioSeleccionado = tblUsuarios.getSelectionModel().getSelectedItem();
+        if (usuarioSeleccionado == null) {
+            Alerta.mostrarAlertaAdvertencia("Selección requerida", "Por favor, seleccione un usuario de la tabla para poder eliminarlo.");
+            return;
+        }
 
+        if (usuarioSeleccionado.getHaPedido()) {
+            Alerta.mostrarAlertaError("Acción denegada", "No es posible eliminar a un cliente que tiene historial de pedidos.");
+            return;
+        }
+
+        try {
+            usuarioSeleccionado.setEsActivo(false);
+            if (UsuarioDAO.actualizarUsuario(usuarioSeleccionado)) {
+                Alerta.mostrarAlertaInformacion("Usuario Eliminado", "El usuario fue dado de baja exitosamente.");
+                cargarDatosTabla();
+            } else {
+                Alerta.mostrarAlertaError("Error", "No se pudo eliminar al usuario de la base de datos.");
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            Alerta.mostrarAlertaError("Error de Base de Datos", "Ocurrió un problema al intentar procesar la baja.");
+        }
     }
 }

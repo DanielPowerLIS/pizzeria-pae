@@ -17,12 +17,6 @@ import pizzeria.pae.utilidades.Alerta;
 import pizzeria.pae.utilidades.seguridad.BCryptHasher;
 
 /**
- * Controlador para el formulario de usuarios.
- *
- * @author Adair Alejandro Martinez Alejo
- * @author Gabriel Hernández Martínez
- * @author Víctor Hugo Vásquez Martínez
- * @author Juan Daniel Pérez Santiago
  */
 public class UsuarioFormViewController implements Initializable {
 
@@ -37,7 +31,13 @@ public class UsuarioFormViewController implements Initializable {
     @FXML
     private TextField txtEmail;
     @FXML
-    private TextField txtDireccion;
+    private TextField txtCalle;
+    @FXML
+    private TextField txtNumero;
+    @FXML
+    private TextField txtCiudad;
+    @FXML
+    private TextField txtCodigoPostal;
     @FXML
     private ComboBox<String> cmbTipoUsuario;
     @FXML
@@ -60,14 +60,45 @@ public class UsuarioFormViewController implements Initializable {
         btnCancelar.setOnAction(event -> cerrarVentana());
 
         cmbTipoUsuario.valueProperty().addListener((observable, oldValue, newValue) -> {
-            boolean esCliente = "Cliente".equals(newValue);
-            txtUsername.setDisable(esCliente);
-            txtPassword.setDisable(esCliente);
-            if (esCliente) {
+            boolean requiereCredenciales = "Administrador".equals(newValue);
+            txtUsername.setDisable(!requiereCredenciales);
+            txtPassword.setDisable(!requiereCredenciales);
+            if (!requiereCredenciales) {
                 txtUsername.clear();
                 txtPassword.clear();
             }
         });
+    }
+
+    public void cargarUsuario(Usuario usuario) {
+        this.usuarioActual = usuario;
+        this.esEdicion = true;
+
+        txtNombre.setText(usuario.getNombre());
+        txtApellidoPaterno.setText(usuario.getApellidoPaterno());
+        if (usuario.getApellidoMaterno() != null) {
+            txtApellidoMaterno.setText(usuario.getApellidoMaterno());
+        }
+        txtTelefono.setText(usuario.getTelefono());
+        txtEmail.setText(usuario.getEmail());
+
+        if (usuario.getDireccion() != null) {
+            txtCalle.setText(usuario.getDireccion().getCalle());
+            txtNumero.setText(usuario.getDireccion().getNumero());
+            txtCiudad.setText(usuario.getDireccion().getCiudad());
+            txtCodigoPostal.setText(usuario.getDireccion().getCodigoPostal());
+        }
+
+        if (!usuario.getEsEmpleado()) {
+            cmbTipoUsuario.setValue("Cliente");
+        } else {
+            if (usuario.getNombreUsuario() != null && !usuario.getNombreUsuario().trim().isEmpty()) {
+                cmbTipoUsuario.setValue("Administrador");
+                txtUsername.setText(usuario.getNombreUsuario());
+            } else {
+                cmbTipoUsuario.setValue("Cajero");
+            }
+        }
     }
 
     private void guardarUsuario() {
@@ -76,46 +107,47 @@ public class UsuarioFormViewController implements Initializable {
         }
 
         try {
-            Usuario u = esEdicion ? usuarioActual : new Usuario();
+            Usuario usuario = esEdicion ? usuarioActual : new Usuario();
 
-            u.setNombre(txtNombre.getText().trim());
-            u.setApellidoPaterno(txtApellidoPaterno.getText().trim());
-            u.setApellidoMaterno(txtApellidoMaterno.getText().trim());
-            u.setTelefono(txtTelefono.getText().trim());
-            u.setEmail(txtEmail.getText().trim());
+            usuario.setNombre(txtNombre.getText().trim());
+            usuario.setApellidoPaterno(txtApellidoPaterno.getText().trim());
+            usuario.setApellidoMaterno(txtApellidoMaterno.getText().trim());
+            usuario.setTelefono(txtTelefono.getText().trim());
+            usuario.setEmail(txtEmail.getText().trim());
 
             Direccion direccion = new Direccion();
-            direccion.setCalle(txtDireccion.getText().trim());
-            direccion.setCiudad("");
-            direccion.setNumero("");
-            direccion.setCodigoPostal("");
-            u.setDireccion(direccion);
+            direccion.setCalle(txtCalle.getText().trim());
+            direccion.setNumero(txtNumero.getText().trim());
+            direccion.setCiudad(txtCiudad.getText().trim());
+            direccion.setCodigoPostal(txtCodigoPostal.getText().trim());
+            usuario.setDireccion(direccion);
 
             String tipo = cmbTipoUsuario.getValue();
             boolean esEmpleado = "Administrador".equals(tipo) || "Cajero".equals(tipo);
-            u.setEsEmpleado(esEmpleado);
+            usuario.setEsEmpleado(esEmpleado);
 
             if (!esEdicion) {
-                u.setEsActivo(true);
-                u.setHaPedido(false);
+                usuario.setEsActivo(true);
+                usuario.setHaPedido(false);
             }
 
-            if (esEmpleado) {
-                u.setNombreUsuario(txtUsername.getText().trim());
+            boolean requiereCredenciales = "Administrador".equals(tipo);
+            if (requiereCredenciales) {
+                usuario.setNombreUsuario(txtUsername.getText().trim());
                 if (!txtPassword.getText().trim().isEmpty()) {
                     String hash = BCryptHasher.generarContraseniaHash(txtPassword.getText().trim());
-                    u.setContrasenia(hash);
+                    usuario.setContrasenia(hash);
                 }
             } else {
-                u.setNombreUsuario("");
-                u.setContrasenia("");
+                usuario.setNombreUsuario("");
+                usuario.setContrasenia("");
             }
 
             boolean operacionExitosa;
             if (esEdicion) {
-                operacionExitosa = UsuarioDAO.actualizarUsuario(u);
+                operacionExitosa = UsuarioDAO.actualizarUsuario(usuario);
             } else {
-                operacionExitosa = UsuarioDAO.agregarUsuario(u);
+                operacionExitosa = UsuarioDAO.agregarUsuario(usuario);
             }
 
             if (operacionExitosa) {
@@ -136,22 +168,25 @@ public class UsuarioFormViewController implements Initializable {
                 || txtApellidoPaterno.getText().trim().isEmpty()
                 || txtTelefono.getText().trim().isEmpty()
                 || txtEmail.getText().trim().isEmpty()
-                || txtDireccion.getText().trim().isEmpty()
+                || txtCalle.getText().trim().isEmpty()
+                || txtNumero.getText().trim().isEmpty()
+                || txtCiudad.getText().trim().isEmpty()
+                || txtCodigoPostal.getText().trim().isEmpty()
                 || cmbTipoUsuario.getValue() == null) {
 
-            Alerta.mostrarAlertaAdvertencia("Campos incompletos", "Por favor, llene todos los campos obligatorios (*).");
+            Alerta.mostrarAlertaAdvertencia("Campos incompletos", "Por favor, llene todos los campos obligatorios.");
             return false;
         }
 
-        boolean esEmpleado = "Administrador".equals(cmbTipoUsuario.getValue()) || "Cajero".equals(cmbTipoUsuario.getValue());
+        boolean requiereCredenciales = "Administrador".equals(cmbTipoUsuario.getValue());
 
-        if (esEmpleado) {
+        if (requiereCredenciales) {
             if (txtUsername.getText().trim().isEmpty()) {
-                Alerta.mostrarAlertaAdvertencia("Campos incompletos", "Debe asignar un nombre de usuario al empleado.");
+                Alerta.mostrarAlertaAdvertencia("Campos incompletos", "Debe asignar un nombre de usuario al administrador.");
                 return false;
             }
             if (!esEdicion && txtPassword.getText().trim().isEmpty()) {
-                Alerta.mostrarAlertaAdvertencia("Contraseña vacía", "Debe asignar una contraseña al nuevo empleado.");
+                Alerta.mostrarAlertaAdvertencia("Contraseña vacía", "Debe asignar una contraseña al nuevo administrador.");
                 return false;
             }
             if (!txtPassword.getText().trim().isEmpty() && txtPassword.getText().length() < 6) {
