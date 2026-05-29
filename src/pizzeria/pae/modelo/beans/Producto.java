@@ -20,12 +20,11 @@ public class Producto {
     private BigDecimal precio;
     private String descripcion;
     private Integer cantidadFisica;
-    private Integer diferencia;
 
     public Producto() {
     }
 
-    public Producto(Integer idProducto, String nombre, String codigo, Boolean esInsumo, Boolean esUtilizado, Integer cantidad, Blob foto, String restricciones, BigDecimal precio, String descripcion, Integer cantidadFisica, Integer diferencia) {
+    public Producto(Integer idProducto, String nombre, String codigo, Boolean esInsumo, Boolean esUtilizado, Integer cantidad, Blob foto, String restricciones, BigDecimal precio, String descripcion, Integer cantidadFisica) {
         this.idProducto = idProducto;
         this.nombre = nombre;
         this.codigo = codigo;
@@ -37,7 +36,6 @@ public class Producto {
         this.precio = precio;
         this.descripcion = descripcion;
         this.cantidadFisica = cantidadFisica;
-        this.diferencia = diferencia;
     }
 
     public Integer getIdProducto() {
@@ -127,15 +125,5 @@ public class Producto {
     public void setCantidadFisica(Integer cantidadFisica) {
         this.cantidadFisica = cantidadFisica;
     }
-
-    public Integer getDiferencia() {
-        return diferencia;
-    }
-
-    public void setDiferencia(Integer diferencia) {
-        this.diferencia = diferencia;
-    } 
-
-    
       
 }
