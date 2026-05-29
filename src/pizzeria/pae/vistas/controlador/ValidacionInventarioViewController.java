@@ -10,11 +10,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.converter.IntegerStringConverter;
 import pizzeria.pae.modelo.beans.Producto;
 import pizzeria.pae.modelo.dao.ProductoDAO;
+import pizzeria.pae.utilidades.ConfigurarSoloNumeros;
 
 /**
  * FXML Controller class
@@ -89,9 +91,23 @@ public class ValidacionInventarioViewController implements Initializable {
             return new SimpleStringProperty(mensaje);
         });
         
-        tcCantidadFisica.setCellFactory(
-            TextFieldTableCell.forTableColumn(
-                    new IntegerStringConverter()));
+        tcCantidadFisica.setCellFactory(columna -> 
+            new TextFieldTableCell<Producto, Integer>(
+                    new IntegerStringConverter()) {
+
+                @Override
+                public void startEdit() {
+
+                    super.startEdit();
+
+                    if (isEditing() && getGraphic() instanceof TextField) {
+
+                        TextField tfCelda = (TextField) getGraphic();
+
+                        ConfigurarSoloNumeros.configurarSoloNumeros(tfCelda);
+                    }
+                }
+            });
         
         tcCantidadFisica.setOnEditCommit(event -> {
 
