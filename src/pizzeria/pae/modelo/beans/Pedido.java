@@ -2,7 +2,6 @@ package pizzeria.pae.modelo.beans;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,9 +18,7 @@ public class Pedido {
     private List<DetallePedido> detallePedido;
     
     public Pedido(){
-        this.detallePedido = new ArrayList<>();
-        this.total = BigDecimal.ZERO;
-        this.fecha = LocalDate.now();
+
     }
 
     public Pedido(Integer idPedido, LocalDate fecha, BigDecimal total, String estado, Usuario cliente, List<DetallePedido> detallePedido) {
