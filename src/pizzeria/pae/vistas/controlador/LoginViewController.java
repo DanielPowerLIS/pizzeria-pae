@@ -65,7 +65,7 @@ public class LoginViewController implements Initializable {
             
             
         }catch(SQLException ex){
-            Alerta.mostrarAlertaError("Error de conexion", "Ocurrio un error de conexion, intente más tarde");
+            ex.printStackTrace();
         }catch(UsuarioNoEncontradoException une){
             Alerta.mostrarAlertaError("Usuario no encontrado", "El usuario no existe");
         }
