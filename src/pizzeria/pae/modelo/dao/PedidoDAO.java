@@ -117,7 +117,7 @@ public class PedidoDAO {
                 pro.setEsInsumo(resultado.getBoolean("esInsumo"));
                 pro.setEsUtilizado(resultado.getBoolean("esUtilizado"));
                 pro.setCantidad(resultado.getInt("cantidadInventario")); 
-                pro.setFoto(resultado.getBlob("foto"));
+                pro.setFoto(resultado.getBytes("foto"));
                 pro.setRestricciones(resultado.getString("restricciones"));
                 pro.setPrecio(resultado.getBigDecimal("precio"));
                 pro.setDescripcion(resultado.getString("descripcion"));
