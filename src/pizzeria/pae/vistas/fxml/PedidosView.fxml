@@ -36,11 +36,10 @@
             </HBox>
             <DatePicker fx:id="dpBuscarFecha" promptText="Fecha de pedido..." />
             <ComboBox fx:id="cmbBuscarEstatus" prefWidth="150.0" promptText="Estatus..." />
-            <Button fx:id="btnBuscarPedido" style="-fx-background-color: #404040; -fx-background-radius: 8;" text="Filtrar" textFill="WHITE" />
-            <Button fx:id="btnNuevoPedido" prefHeight="40" prefWidth="130" style="-fx-background-color: #218c74; -fx-background-radius: 8;" text="Nuevo Pedido" textFill="WHITE" />
-            <Button fx:id="btnEditarPedido" prefHeight="40" prefWidth="130" style="-fx-background-color: #404040; -fx-background-radius: 8;" text="Editar Pedido" textFill="WHITE" />
+            <Button fx:id="btnNuevoPedido" onAction="#clickNuevoPedido" prefHeight="40" prefWidth="130" style="-fx-background-color: #218c74; -fx-background-radius: 8;" text="Nuevo Pedido" textFill="WHITE" />
+            <Button fx:id="btnEditarPedido" onAction="#clickEditarPedido" prefHeight="40" prefWidth="130" style="-fx-background-color: #404040; -fx-background-radius: 8;" text="Editar Pedido" textFill="WHITE" />
+            <Button fx:id="btnCambiarEstatus" onAction="#clickCambiarEstatus" prefHeight="40" prefWidth="140" style="-fx-background-color: #404040; -fx-background-radius: 8;" text="Cambiar Estatus" textFill="WHITE" />
             <Region HBox.hgrow="ALWAYS" />
-            <Button fx:id="btnCambiarEstatus" prefHeight="40" prefWidth="140" style="-fx-background-color: #404040; -fx-background-radius: 8;" text="Cambiar Estatus" textFill="WHITE" />
             
             <MenuButton fx:id="btnMenuExportar" prefHeight="40" style="-fx-background-color: #227093; -fx-background-radius: 8;" text="Exportar..." textFill="WHITE">
               <items>

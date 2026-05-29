@@ -13,7 +13,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import pizzeria.pae.excepciones.UsuarioNoEncontradoException;
 import pizzeria.pae.modelo.beans.Usuario;
@@ -50,6 +49,7 @@ public class LoginViewController implements Initializable {
         if(usuarioBuscar.isEmpty() && contraseniaBuscar.isEmpty()){
             Alerta.mostrarAlertaAdvertencia("Campos vacíos",
                     "Tiene que ingresar un usuario y/o contraseña");
+            return;
         }
         
         try{

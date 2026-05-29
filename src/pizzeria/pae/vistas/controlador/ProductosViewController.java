@@ -109,7 +109,7 @@ public class ProductosViewController implements Initializable {
     
      private void cargarInformacionCodigo(String codigo, Boolean insumo){
         try{
-            List<Producto> productos = ProductoDAO.buscarProductoPorNombre(codigo, insumo);
+            List<Producto> productos = ProductoDAO.buscarProductoPorCodigo(codigo, insumo);
             if(productos != null){
                 productosObservables = FXCollections.observableArrayList(productos);
                 tvProductos.setItems(productosObservables);

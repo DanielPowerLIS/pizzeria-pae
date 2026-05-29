@@ -25,9 +25,9 @@ public class ProductoDAO {
                         "restricciones, " +
                         "foto, " +
                         "esUtilizado, " +
-                        "esInsumo" +
+                        "esInsumo " +
                         "FROM Producto " +
-                        "WHERE nombre = ? " +
+                        "WHERE nombre LIKE ? " +
                         "  AND esInsumo = ?;";
         
         try( MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
@@ -73,9 +73,9 @@ public class ProductoDAO {
                         "restricciones, " +
                         "foto, " +
                         "esUtilizado, " +
-                        "esInsumo" +
+                        "esInsumo " +
                         "FROM Producto " +
-                        "WHERE codigo = ? " +
+                        "WHERE codigo LIKE ? " +
                         "  AND esInsumo = ?;";
         
         try( MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
