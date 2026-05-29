@@ -1,5 +1,6 @@
 package pizzeria.pae.vistas.controlador;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.SQLException;
@@ -9,7 +10,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
@@ -17,6 +21,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import pizzeria.pae.modelo.beans.Producto;
 import pizzeria.pae.modelo.dao.ProductoDAO;
 import pizzeria.pae.utilidades.Alerta;
@@ -163,6 +169,20 @@ public class ProductosViewController implements Initializable {
 
     @FXML
     private void clickAgregarProducto(ActionEvent event) {
+        try{
+            Parent vista = FXMLLoader.load(getClass().getResource("/pizzeria/pae/vistas/fxml/ProductoFormView.fxml"));
+            Scene escena = new Scene(vista);
+            
+            Stage ventana = new Stage();
+            ventana.setScene(escena);
+            ventana.setTitle("Formulario de producto.");
+            ventana.initModality(Modality.APPLICATION_MODAL);
+            ventana.showAndWait();
+            
+        }catch(IOException e){
+            e.printStackTrace();
+            Alerta.mostrarAlertaError("Error al cargar", "No se pudo cargar la ventana.");
+        }
     }
 
     @FXML
