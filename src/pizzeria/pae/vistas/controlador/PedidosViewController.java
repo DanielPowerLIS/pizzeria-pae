@@ -1,8 +1,11 @@
 package pizzeria.pae.vistas.controlador;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URL;
+import java.sql.Date;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -19,6 +22,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import pizzeria.pae.modelo.beans.Pedido;
 import pizzeria.pae.utilidades.UtilidadesUI;
 
 /**
@@ -34,19 +38,17 @@ public class PedidosViewController implements Initializable {
     @FXML
     private ComboBox<?> cmbBuscarEstatus;
     @FXML
-    private Button btnBuscarPedido;
+    private TableView<Pedido> tblPedidos;
     @FXML
-    private TableView<?> tblPedidos;
+    private TableColumn<Pedido, Integer> colIdPedido;
     @FXML
-    private TableColumn<?, ?> colIdPedido;
+    private TableColumn<Pedido, Date> colFechaPedido;
     @FXML
-    private TableColumn<?, ?> colFechaPedido;
+    private TableColumn<Pedido, String> colClientePedido;
     @FXML
-    private TableColumn<?, ?> colClientePedido;
+    private TableColumn<Pedido, BigDecimal> colTotalPedido;
     @FXML
-    private TableColumn<?, ?> colTotalPedido;
-    @FXML
-    private TableColumn<?, ?> colEstatusPedido;
+    private TableColumn<Pedido, String> colEstatusPedido;
     @FXML
     private Button btnCambiarEstatus;
     @FXML
@@ -97,5 +99,17 @@ public class PedidosViewController implements Initializable {
             e.printStackTrace();
             UtilidadesUI.mostrarAlertaSimple("Error de carga", "No se pudo abrir la ventana del formulario de pedido.", Alert.AlertType.ERROR);
         }
+    }
+
+    @FXML
+    private void clickNuevoPedido(ActionEvent event) {
+    }
+
+    @FXML
+    private void clickEditarPedido(ActionEvent event) {
+    }
+
+    @FXML
+    private void clickCambiarEstatus(ActionEvent event) {
     }
 }
