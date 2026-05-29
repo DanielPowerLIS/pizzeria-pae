@@ -77,6 +77,11 @@ public class ProductosViewController implements Initializable {
         tcRestricciones.setCellValueFactory(new PropertyValueFactory<>("restricciones"));
     }
     
+    private void iniciarVista(){
+        rdConsumo.setSelected(true);
+        cargarInfomracionGeneral(false);
+    }
+    
     private void cargarInfomracionGeneral(Boolean insumo){
         try{
             List<Producto> productos = ProductoDAO.obtenerProductos(insumo);
@@ -91,8 +96,12 @@ public class ProductosViewController implements Initializable {
     private void cargarInformacionNombre(String nombre, Boolean insumo){
         try{
             List<Producto> productos = ProductoDAO.buscarProductoPorNombre(nombre, insumo);
-            productosObservables = FXCollections.observableArrayList(productos);
-            tvProductos.setItems(productosObservables);
+            if(productos != null){
+                productosObservables = FXCollections.observableArrayList(productos);
+                tvProductos.setItems(productosObservables);
+            }else{
+                Alerta.mostrarAlertaAdvertencia("No se encontró producto", "No se encontraron coincidencias.");
+            }
         }catch(SQLException e){
             e.printStackTrace();
             Alerta.mostrarAlertaError("Error de conexión.", "Lo sentimos no se pudo cargar la información.");
@@ -102,17 +111,16 @@ public class ProductosViewController implements Initializable {
      private void cargarInformacionCodigo(String codigo, Boolean insumo){
         try{
             List<Producto> productos = ProductoDAO.buscarProductoPorNombre(codigo, insumo);
-            productosObservables = FXCollections.observableArrayList(productos);
-            tvProductos.setItems(productosObservables);
+            if(productos != null){
+                productosObservables = FXCollections.observableArrayList(productos);
+                tvProductos.setItems(productosObservables);
+            }else{
+                Alerta.mostrarAlertaAdvertencia("No se encontró producto", "No se encontraron coincidencias.");
+            }
         }catch(SQLException e){
             e.printStackTrace();
             Alerta.mostrarAlertaError("Error de conexión.", "Lo sentimos no se pudo cargar la información.");
         }
-    }
-    
-    private void iniciarVista(){
-        rdConsumo.setSelected(true);
-        cargarInfomracionGeneral(false);
     }
     
     private Boolean estaVacio(String buscador){
