@@ -2,16 +2,18 @@ package pizzeria.pae.utilidades;
 
 import javafx.scene.control.Alert;
 
+/**
+ *
+ * @author Gabriel Hernández Martínez
+ */
 public class UtilidadesUI {
 
-    private UtilidadesUI() {
-    }
-
-    public static void mostrarAlertaSimple(String titulo, String contenido, Alert.AlertType tipo) {
+    public static void mostrarAlertaSimple(String titulo, String mensaje, Alert.AlertType tipo) {
         Alert alerta = new Alert(tipo);
         alerta.setTitle(titulo);
-        alerta.setContentText(contenido);
         alerta.setHeaderText(null);
+        alerta.setContentText(mensaje);
+
         alerta.showAndWait();
     }
 }
