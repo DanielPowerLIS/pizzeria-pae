@@ -28,7 +28,7 @@
             <Button mnemonicParsing="false" onAction="#clickBuscar" prefHeight="39.0" prefWidth="69.0" style="-fx-background-image: ..\..\resources\icons\icon-buscar.png; -fx-background-color: #404040; -fx-border-radius: 8;" text="Buscar" textFill="WHITE" />
             <Button onAction="#clickAgregarProducto" prefHeight="40" prefWidth="152.0" style="-fx-background-color: #404040; -fx-background-radius: 8;" text="Agregar Producto" textFill="WHITE" />
             <Button onAction="#clickEditarProuducto" prefHeight="40" prefWidth="152.0" style="-fx-background-color: #404040; -fx-background-radius: 8;" text="Editar Producto" textFill="WHITE" />
-            <Button fx:id="s" onAction="#clickEliminarProducto" prefHeight="40" prefWidth="152.0" style="-fx-background-color: #a83232; -fx-background-radius: 8;" text="Eliminar Producto" textFill="WHITE" />
+            <Button onAction="#clickEliminarProducto" prefHeight="40" prefWidth="152.0" style="-fx-background-color: #a83232; -fx-background-radius: 8;" text="Eliminar Producto" textFill="WHITE" />
             <Region HBox.hgrow="ALWAYS" />
             <Button onAction="#clickGenerarPDF" style="-fx-background-color: #191970; -fx-background-radius: 8;" text="Generar Reporte PDF" textFill="WHITE" />
          </children>

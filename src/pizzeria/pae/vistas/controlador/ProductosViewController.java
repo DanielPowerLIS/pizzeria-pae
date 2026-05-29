@@ -2,7 +2,10 @@ package pizzeria.pae.vistas.controlador;
 
 import java.math.BigDecimal;
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,6 +18,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import pizzeria.pae.modelo.beans.Producto;
+import pizzeria.pae.modelo.dao.ProductoDAO;
+import pizzeria.pae.utilidades.Alerta;
 
 /**
  * FXML Controller class
@@ -27,8 +32,6 @@ public class ProductosViewController implements Initializable {
     private Button btnBuscarProducto;
     @FXML
     private TextField tfBuscador;
-    @FXML
-    private Button s;
     @FXML
     private RadioButton rdPorNombre;
     @FXML
@@ -62,6 +65,8 @@ public class ProductosViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarTabla();
+        iniciarVista();
+        
     }    
     
     private void configurarTabla(){
@@ -71,23 +76,80 @@ public class ProductosViewController implements Initializable {
         tcExistencia.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
         tcRestricciones.setCellValueFactory(new PropertyValueFactory<>("restricciones"));
     }
+    
+    private void cargarInfomracionGeneral(Boolean insumo){
+        try{
+            List<Producto> productos = ProductoDAO.obtenerProductos(insumo);
+            productosObservables = FXCollections.observableArrayList(productos);
+            tvProductos.setItems(productosObservables);
+        }catch(SQLException e){
+            e.printStackTrace();
+            Alerta.mostrarAlertaError("Error de conexión.", "Lo sentimos no se pudo cargar la información.");
+        }
+    }
+    
+    private void cargarInformacionNombre(String nombre, Boolean insumo){
+        try{
+            List<Producto> productos = ProductoDAO.buscarProductoPorNombre(nombre, insumo);
+            productosObservables = FXCollections.observableArrayList(productos);
+            tvProductos.setItems(productosObservables);
+        }catch(SQLException e){
+            e.printStackTrace();
+            Alerta.mostrarAlertaError("Error de conexión.", "Lo sentimos no se pudo cargar la información.");
+        }
+    }
+    
+     private void cargarInformacionCodigo(String codigo, Boolean insumo){
+        try{
+            List<Producto> productos = ProductoDAO.buscarProductoPorNombre(codigo, insumo);
+            productosObservables = FXCollections.observableArrayList(productos);
+            tvProductos.setItems(productosObservables);
+        }catch(SQLException e){
+            e.printStackTrace();
+            Alerta.mostrarAlertaError("Error de conexión.", "Lo sentimos no se pudo cargar la información.");
+        }
+    }
+    
+    private void iniciarVista(){
+        rdConsumo.setSelected(true);
+        cargarInfomracionGeneral(false);
+    }
+    
+    private Boolean estaVacio(String buscador){
+        if(buscador.isEmpty() || buscador.length() < 1){
+            return true;
+        }
+        return false;
+    }
 
     @FXML
     private void clickBuscar(ActionEvent event) {
-        if(tfBuscador.getText().isEmpty()){
+        String buscador = tfBuscador.getText();
+        
+        if(estaVacio(buscador)){
             if(rdConsumo.isSelected()){
+                cargarInfomracionGeneral(false);
                 return;
             }
-            
+            cargarInfomracionGeneral(true);
             return;
             
         }
         
+        if(rdPorNombre.isSelected()){
+           if(rdConsumo.isSelected()){
+               cargarInformacionNombre(buscador, false);
+               return;
+           } 
+            cargarInformacionNombre(buscador, true);
+           return;
+        }
         
         if(rdConsumo.isSelected()){
+            cargarInformacionCodigo(buscador, false);
             return;
         }
-        
+        cargarInformacionCodigo(buscador, true);
         return;
         
     }
