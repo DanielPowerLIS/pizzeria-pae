@@ -1,15 +1,35 @@
 package pizzeria.pae.vistas.controlador;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URL;
+import java.nio.file.Files;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javax.imageio.ImageIO;
+import pizzeria.pae.modelo.beans.Producto;
+import pizzeria.pae.modelo.dao.ProductoDAO;
+import pizzeria.pae.utilidades.Alerta;
+import pizzeria.pae.utilidades.ConfigurarSoloNumeros;
 import pizzeria.pae.utilidades.UtilidadesUI;
 
 /**
@@ -21,57 +41,155 @@ import pizzeria.pae.utilidades.UtilidadesUI;
 public class ProductoFormViewController implements Initializable {
 
     @FXML
-    private TextField txtCodigo;
+    private TextField tfCodigo;
     @FXML
-    private TextField txtNombreProducto;
+    private TextField tfNombreProducto;
     @FXML
-    private TextArea txtDescripcion;
+    private TextArea tfDescripcion;
     @FXML
-    private TextField txtPrecio;
+    private TextField tfPrecio;
     @FXML
-    private TextField txtCantidad;
+    private TextField tfCantidad;
     @FXML
-    private TextField txtRestricciones;
+    private TextField tfRestricciones;
     @FXML
-    private Button btnSeleccionarFoto;
+    private ImageView ivFoto;
+    
+    private File archivoFoto;
+    
     @FXML
-    private Label lblRutaFoto;
+    private RadioButton rdConsumo;
     @FXML
-    private Button btnGuardarProd;
+    private ToggleGroup rdTipo;
     @FXML
-    private Button btnCancelarProd;
+    private RadioButton rdInsumo;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        btnGuardarProd.setOnAction(event -> guardarProducto());
-        btnCancelarProd.setOnAction(event -> cerrarVentana());
+        configurarFormulario();
+    }
+    
+    private void configurarFormulario(){
+        ConfigurarSoloNumeros.configurarSoloNumeros(tfCantidad);
+        ConfigurarSoloNumeros.configurarPrecio(tfPrecio);
+        tfRestricciones.setText("Ninguna");
     }
 
-    private void guardarProducto() {
-        if (txtCodigo.getText().trim().isEmpty()
-                || txtNombreProducto.getText().trim().isEmpty()
-                || txtDescripcion.getText().trim().isEmpty()
-                || txtPrecio.getText().trim().isEmpty()
-                || txtCantidad.getText().trim().isEmpty()) {
+    @FXML
+    private void clickSeleccionarImagen(ActionEvent event) {
+        abrirSeleccionadorFoto();
+        
+    }
 
-            UtilidadesUI.mostrarAlertaSimple("Campos incompletos", "Por favor, llene todos los campos obligatorios (*).", Alert.AlertType.WARNING);
-            return;
+    @FXML
+    private void clickGuardar(ActionEvent event) {
+        if (datosValidos()) {
+            try {
+                Producto productoNuevo = new Producto();
+                
+                productoNuevo.setCodigo(tfCodigo.getText());
+                productoNuevo.setNombre(tfNombreProducto.getText());
+                productoNuevo.setDescripcion(tfDescripcion.getText());
+                productoNuevo.setPrecio(new BigDecimal(tfPrecio.getText()));
+                productoNuevo.setCantidad(Integer.parseInt(tfCantidad.getText()));
+                productoNuevo.setRestricciones(tfRestricciones.getText());
+                productoNuevo.setEsInsumo(rdInsumo.isSelected());
+                
+                byte[] fotoBytes = Files.readAllBytes(archivoFoto.toPath());
+                productoNuevo.setFoto(fotoBytes);
+
+
+                Boolean guardadoExitoso = ProductoDAO.agregarProducto(productoNuevo);
+
+                if (guardadoExitoso) {
+                    Alerta.mostrarAlertaInformacion("Guardado exitoso", "El producto se ha guardado correctamente.");
+                    cerrarVentana();
+                } else {
+                    Alerta.mostrarAlertaError("Error", "No se pudo guardar el producto en la base de datos.");
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                Alerta.mostrarAlertaError("Error de imagen", "Hubo un problema al leer el archivo de la foto.");
+            } catch (SQLException e) {
+                e.printStackTrace();
+                Alerta.mostrarAlertaError("Error de base de datos", "Error al intentar guardar la información.");
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                Alerta.mostrarAlertaAdvertencia("Datos inválidos", "Verifica que el precio y la cantidad tengan un formato correcto.");
+            }
+        } else {
+            Alerta.mostrarAlertaAdvertencia("Campos incompletos", "Por favor, llena todos los campos marcados con asterisco (*).");
         }
+    }
 
-        try {
-            Double.parseDouble(txtPrecio.getText().trim());
-            Integer.parseInt(txtCantidad.getText().trim());
-        } catch (NumberFormatException e) {
-            UtilidadesUI.mostrarAlertaSimple("Datos inválidos", "El precio y la cantidad deben ser valores numéricos.", Alert.AlertType.WARNING);
-            return;
-        }
-
-        UtilidadesUI.mostrarAlertaSimple("Éxito", "El producto está listo para ser guardado.", Alert.AlertType.INFORMATION);
+    @FXML
+    private void clickCancelar(ActionEvent event) {
         cerrarVentana();
     }
-
+    
     private void cerrarVentana() {
-        Stage stage = (Stage) btnCancelarProd.getScene().getWindow();
+        Stage stage = (Stage) tfCodigo.getScene().getWindow();
         stage.close();
+    }
+        
+    private Boolean datosValidos(){
+        if(tfCodigo.getText().isEmpty() || tfCodigo.getText().length() < 1){
+            return false;
+        }
+        
+        if(tfNombreProducto.getText().isEmpty() || tfNombreProducto.getText().length() < 1){
+            return false;
+        }
+        
+        if(tfDescripcion.getText().isEmpty() || tfDescripcion.getText().length() < 1){
+            return false;
+        }
+        
+        if(tfCantidad.getText().isEmpty() || tfCantidad.getText().length() < 1){
+            return false;
+        }
+        
+        if(tfPrecio.getText().isEmpty() || tfPrecio.getText().length() < 1){
+            return false;
+        }
+        
+        if(archivoFoto == null){
+            return false;
+        }
+        
+        if(!rdConsumo.isSelected() && !rdInsumo.isSelected()){
+            return false;
+        }
+        
+        return true;
+    }
+    
+    private void abrirSeleccionadorFoto(){
+        FileChooser dialogoSeleccion = new FileChooser();
+        dialogoSeleccion.setTitle("Selecciona la foto del producto.");
+        String descripcionFormato = "Archivos de imagen (*.png, *.jpg, *jpeg)";
+        List<String> formatos = new ArrayList<String>();
+        formatos.add("*.png");
+        formatos.add("*.jpg");
+        formatos.add("*.jpeg");
+        FileChooser.ExtensionFilter filtroSeleccion = new FileChooser.ExtensionFilter(descripcionFormato, formatos);
+        dialogoSeleccion.getExtensionFilters().add(filtroSeleccion);
+        archivoFoto = dialogoSeleccion.showOpenDialog(tfCantidad.getScene().getWindow());
+        if(archivoFoto != null){
+            mostrarImagen(archivoFoto);
+        }
+    }
+    
+    private void mostrarImagen(File foto){
+        if( foto != null){
+            try{
+                BufferedImage buffer = ImageIO.read(foto);
+                Image image   = SwingFXUtils.toFXImage(buffer, null);
+                ivFoto.setImage(image);
+            }catch(IOException e){
+                Alerta.mostrarAlertaError("Error al cargar", "Lo sentimo no se pudo cargar la foto");
+            }
+        }
     }
 }
