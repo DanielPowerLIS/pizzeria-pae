@@ -110,17 +110,7 @@ public class ProductoDAO {
         }
     }
     
-    public static List<Producto> obtenerProductos(Boolean esInsumo)throws SQLException{
-        if(esInsumo){
-            List<Producto> productosInsumo = obtenerProductosInsumo();
-            return productosInsumo;
-        }
-        List<Producto> productosConsumo = obetenerProductosConsumo();
-        return productosConsumo;
-    }
-    
-    private static List<Producto> obtenerProductosInsumo()throws SQLException{
-        Boolean Insumo = true;
+    public static List<Producto> obtenerProductos(Boolean Insumo)throws SQLException{
         String consulta = "SELECT * " +
                 "FROM pizzeriapae.producto " +
                 "WHERE esInsumo = ?";
@@ -152,41 +142,6 @@ public class ProductoDAO {
             }
             return productos;
         }
-    }
-    
-    private static List<Producto> obetenerProductosConsumo()throws SQLException{
-        Boolean Insumo = false;
-        String consulta = "SELECT * " +
-                "FROM pizzeriapae.producto " +
-                "WHERE esInsumo = ?";
-        
-        try( MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
-        PreparedStatement sentenciaBD = conexion.prepareStatement(consulta) ){
-            
-            List<Producto> productos = new ArrayList<>();
-            
-            sentenciaBD.setBoolean(1, Insumo);
-            
-            try( ResultSet resultado = sentenciaBD.executeQuery() ){
-                while(resultado.next()){
-                    Producto p = new Producto();
-
-                    p.setIdProducto(resultado.getInt("idProducto"));
-                    p.setNombre(resultado.getString("nombre"));
-                    p.setCodigo(resultado.getString("codigo"));
-                    p.setEsInsumo(resultado.getBoolean("esInsumo"));
-                    p.setEsUtilizado(resultado.getBoolean("esUtilizado"));
-                    p.setCantidad(resultado.getInt("cantidad"));
-                    p.setFoto(resultado.getBytes("foto"));
-                    p.setRestricciones(resultado.getString("restricciones"));
-                    p.setPrecio(resultado.getBigDecimal("precio"));
-                    p.setDescripcion(resultado.getString("descripcion"));
-
-                    productos.add(p);
-                } 
-            }
-            return productos;
-        }    
     }
     
     public static Boolean agregarProducto(Producto productoAgregar)throws SQLException{
