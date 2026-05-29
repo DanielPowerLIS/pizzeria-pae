@@ -15,7 +15,7 @@ public class Producto {
     private Boolean esInsumo;
     private Boolean esUtilizado;
     private Integer cantidad;
-    private Blob foto;
+    private byte[] foto;
     private String restricciones;
     private BigDecimal precio;
     private String descripcion;
@@ -25,7 +25,9 @@ public class Producto {
     public Producto() {
     }
 
-    public Producto(Integer idProducto, String nombre, String codigo, Boolean esInsumo, Boolean esUtilizado, Integer cantidad, Blob foto, String restricciones, BigDecimal precio, String descripcion, Integer cantidadFisica, Integer diferencia) {
+    public Producto(Integer idProducto, String nombre, String codigo, Boolean esInsumo, 
+               Boolean esUtilizado, Integer cantidad, byte[] foto, String restricciones, 
+               BigDecimal precio, String descripcion, Integer cantidadFisica, Integer diferencia) {
         this.idProducto = idProducto;
         this.nombre = nombre;
         this.codigo = codigo;
@@ -88,11 +90,11 @@ public class Producto {
         this.cantidad = cantidad;
     }
 
-    public Blob getFoto() {
+    public byte[] getFoto() {
         return foto;
     }
 
-    public void setFoto(Blob foto) {
+    public void setFoto(byte[] foto) {
         this.foto = foto;
     }
 
