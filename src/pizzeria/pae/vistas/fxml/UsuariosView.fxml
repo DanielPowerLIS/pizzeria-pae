@@ -37,6 +37,26 @@
             <Button fx:id="btnEliminarUsuario" prefHeight="40" prefWidth="141.0" style="-fx-background-color: #a83232; -fx-background-radius: 8;" text="Eliminar Usuario" textFill="WHITE" />
          </children>
       </HBox>
+
+      <HBox alignment="CENTER_LEFT" spacing="30.0">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="25.0" style="-fx-background-color: #555555; -fx-background-radius: 8;">
+               <padding>
+                  <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+               </padding>
+               <children>
+                  <RadioButton fx:id="rdTodos" mnemonicParsing="false" selected="true" text="Todos" textFill="WHITE">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="tgFiltroUsuarios" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="rdEmpleados" mnemonicParsing="false" text="Empleados" textFill="WHITE" toggleGroup="$tgFiltroUsuarios" />
+                  <RadioButton fx:id="rdClientes" mnemonicParsing="false" text="Clientes" textFill="WHITE" toggleGroup="$tgFiltroUsuarios" />
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+
       <TableView fx:id="tblUsuarios" VBox.vgrow="ALWAYS">
          <columns>
             <TableColumn fx:id="colNombre" prefWidth="200.0" text="Nombre y Apellidos" />
@@ -44,9 +64,6 @@
             <TableColumn fx:id="colEmail" prefWidth="200.0" text="Email" />
             <TableColumn fx:id="colDireccion" prefWidth="250.0" text="Dirección" />
          </columns>
-         <columnResizePolicy>
-            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-         </columnResizePolicy>
       </TableView>
    </children>
 </VBox>

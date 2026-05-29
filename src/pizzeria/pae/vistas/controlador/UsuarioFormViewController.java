@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
@@ -14,7 +13,7 @@ import javafx.stage.Stage;
 import pizzeria.pae.modelo.beans.Direccion;
 import pizzeria.pae.modelo.beans.Usuario;
 import pizzeria.pae.modelo.dao.UsuarioDAO;
-import pizzeria.pae.utilidades.UtilidadesUI;
+import pizzeria.pae.utilidades.Alerta;
 import pizzeria.pae.utilidades.seguridad.BCryptHasher;
 
 /**
@@ -120,15 +119,15 @@ public class UsuarioFormViewController implements Initializable {
             }
 
             if (operacionExitosa) {
-                UtilidadesUI.mostrarAlertaSimple("Éxito", "Usuario registrado correctamente en el sistema.", Alert.AlertType.INFORMATION);
+                Alerta.mostrarAlertaInformacion("Éxito", "Usuario registrado correctamente en el sistema.");
                 cerrarVentana();
             } else {
-                UtilidadesUI.mostrarAlertaSimple("Error", "No se pudo registrar al usuario en la base de datos.", Alert.AlertType.ERROR);
+                Alerta.mostrarAlertaError("Error", "No se pudo registrar al usuario en la base de datos.");
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
-            UtilidadesUI.mostrarAlertaSimple("Error de Base de Datos", "Ocurrió un error al intentar guardar: " + e.getMessage(), Alert.AlertType.ERROR);
+            Alerta.mostrarAlertaError("Error de Base de Datos", "Ocurrió un error al intentar guardar: " + e.getMessage());
         }
     }
 
@@ -140,7 +139,7 @@ public class UsuarioFormViewController implements Initializable {
                 || txtDireccion.getText().trim().isEmpty()
                 || cmbTipoUsuario.getValue() == null) {
 
-            UtilidadesUI.mostrarAlertaSimple("Campos incompletos", "Por favor, llene todos los campos obligatorios (*).", Alert.AlertType.WARNING);
+            Alerta.mostrarAlertaAdvertencia("Campos incompletos", "Por favor, llene todos los campos obligatorios (*).");
             return false;
         }
 
@@ -148,15 +147,15 @@ public class UsuarioFormViewController implements Initializable {
 
         if (esEmpleado) {
             if (txtUsername.getText().trim().isEmpty()) {
-                UtilidadesUI.mostrarAlertaSimple("Campos incompletos", "Debe asignar un nombre de usuario al empleado.", Alert.AlertType.WARNING);
+                Alerta.mostrarAlertaAdvertencia("Campos incompletos", "Debe asignar un nombre de usuario al empleado.");
                 return false;
             }
             if (!esEdicion && txtPassword.getText().trim().isEmpty()) {
-                UtilidadesUI.mostrarAlertaSimple("Contraseña vacía", "Debe asignar una contraseña al nuevo empleado.", Alert.AlertType.WARNING);
+                Alerta.mostrarAlertaAdvertencia("Contraseña vacía", "Debe asignar una contraseña al nuevo empleado.");
                 return false;
             }
             if (!txtPassword.getText().trim().isEmpty() && txtPassword.getText().length() < 6) {
-                UtilidadesUI.mostrarAlertaSimple("Contraseña débil", "La contraseña debe tener al menos 6 caracteres.", Alert.AlertType.WARNING);
+                Alerta.mostrarAlertaAdvertencia("Contraseña débil", "La contraseña debe tener al menos 6 caracteres.");
                 return false;
             }
         }
