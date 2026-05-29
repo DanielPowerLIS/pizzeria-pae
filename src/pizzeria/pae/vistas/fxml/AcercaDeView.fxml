@@ -51,5 +51,20 @@
          </children>
           <!-- Puedes agregar más integrantes aquí si trabajas en equipo -->
       </VBox>
+      <Label text="Juan Daniel Pérez Santiago" textFill="WHITE">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label text="Adair Alejandro Martínez Alejo" textFill="WHITE">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label text="Gabriel Hernández Martínez" textFill="WHITE">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
    </children>
 </VBox>
