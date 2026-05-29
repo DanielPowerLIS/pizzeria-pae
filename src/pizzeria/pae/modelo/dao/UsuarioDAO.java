@@ -67,7 +67,38 @@ public class UsuarioDAO {
         
         return u;
     }
-        
+     
+    public static Usuario buscarUsuarioEmpleado(String contrasenia, String usuario) throws SQLException {
+        Usuario usr = new Usuario();
+        String consulta = "SELECT * FROM usuario WHERE contrasenia = ?"
+                + " AND usuario = ? AND esEmpleado = ?; ";
+        try(
+            MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
+            PreparedStatement sentencia = conexion.prepareStatement(consulta);
+        ){
+            sentencia.setString(2, usuario);
+            sentencia.setString(1, contrasenia);
+            sentencia.setBoolean(3, true);
+            ResultSet resultado = sentencia.executeQuery();
+            if(resultado.next()) {
+               
+                usr.setIdUsuario(resultado.getInt("idUsuario"));
+                usr.setApellidoMaterno(resultado.getString("apellidoMaterno"));
+                usr.setApellidoPaterno(resultado.getString("apellidoPaterno"));
+                usr.setNombre(resultado.getString("nombre"));
+                usr.setTelefono(resultado.getString("telefono"));
+                usr.setEmail(resultado.getString("email"));
+                usr.setHaPedido(resultado.getBoolean("haPedido"));
+                usr.setEsEmpleado(true);
+                usr.setEsActivo(true);
+                usr.setNombreUsuario(usuario);
+                usr.setContrasenia("");
+            }
+            return usr;
+        }
+    }
+    
+    
     public static Usuario buscarUsuarioPorTelefono(String telefonoBuscar )throws SQLException{
         String consulta = "SELECT * " +
                     "FROM usuario JOIN direccion ON usuario.idUsuario = direccion.idUsuario " +
