@@ -71,7 +71,7 @@ public class UsuarioDAO {
     public static Usuario buscarUsuarioEmpleado(String contrasenia, String usuario) throws SQLException {
         Usuario usr = new Usuario();
         String consulta = "SELECT * FROM usuario WHERE contrasenia = ?"
-                + " AND usuario = ? AND esEmpleado = ?; ";
+                + " AND nombreUsuario = ? AND esEmpleado = ?; ";
         try(
             MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
             PreparedStatement sentencia = conexion.prepareStatement(consulta);
