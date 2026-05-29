@@ -60,6 +60,7 @@ public class LoginViewController implements Initializable {
                         + "porfavor verifique sus credenciales.");
 
             }else{
+                
                 abrirMenuView();
             }
             
@@ -78,13 +79,13 @@ public class LoginViewController implements Initializable {
                                                 ("/pizzeria/pae/vistas/fxml/MenuView.fxml"));
             Parent vista  = loader.load();
             Scene escena = new Scene(vista);
-            Stage ventana = new Stage();
+            
+            Stage ventana = (Stage) tfUsuario.getScene().getWindow();
             ventana.setScene(escena);
             ventana.setTitle("Menu");
+            
 
-            ventana.initModality(Modality.APPLICATION_MODAL);
-
-            ventana.showAndWait();
+            ventana.show();
                 
 
         }catch(IOException ex){
