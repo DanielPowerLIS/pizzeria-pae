@@ -21,6 +21,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import pizzeria.pae.modelo.beans.Usuario;
 import pizzeria.pae.modelo.dao.UsuarioDAO;
+import pizzeria.pae.utilidades.Alerta;
 import pizzeria.pae.utilidades.UtilidadesUI;
 
 /**
@@ -74,7 +75,10 @@ public class UsuariosViewController implements Initializable {
             List<Usuario> usuariosBD = UsuarioDAO.obtenerUsuarios(true);
             tblUsuarios.setItems(FXCollections.observableArrayList(usuariosBD));
         } catch (SQLException ex) {
-            System.err.println("ERROR CON LA BD");
+            Alerta.mostrarAlertaError(
+                    "Ocurrió un  con la base de datos",
+                    "No se pudo recuperar la lista de usuarios. Inténtalo de nuevo más tarde."
+            );
             ex.printStackTrace();
         }
     }
@@ -103,7 +107,10 @@ public class UsuariosViewController implements Initializable {
             stage.showAndWait();
 
         } catch (IOException e) {
-            UtilidadesUI.mostrarAlertaSimple("Error de carga", "No se pudo abrir la ventana del formulario de usuario.", Alert.AlertType.ERROR);
+            Alerta.mostrarAlertaError(
+                    "Ocurrió un error al cargar la ventana de formulario",
+                    "No se pudo recuperar la lista de usuarios. Inténtalo de nuevo más tarde."
+            );
         }
     }
 
