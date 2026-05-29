@@ -15,16 +15,33 @@ public class Usuario {
     private boolean haPedido;
     private boolean esEmpleado;
     private boolean esActivo;
+    private boolean eliminado;
     private String nombreUsuario;
     private String contrasenia;
     private Direccion direccion;
 
-    // Constructor vacío — inicializa la dirección para evitar NullPointerException
     public Usuario() {
         this.direccion = new Direccion();
     }
 
-    // Constructor con todos los campos
+    public Usuario(int idUsuario, String nombre, String apellidoPaterno, String apellidoMaterno,
+            String telefono, String email, boolean haPedido, boolean esEmpleado,
+            boolean esActivo, boolean eliminado, String nombreUsuario, String contrasenia, Direccion direccion) {
+        this.idUsuario = idUsuario;
+        this.nombre = nombre;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.telefono = telefono;
+        this.email = email;
+        this.haPedido = haPedido;
+        this.esEmpleado = esEmpleado;
+        this.esActivo = esActivo;
+        this.eliminado = eliminado;
+        this.nombreUsuario = nombreUsuario;
+        this.contrasenia = contrasenia;
+        this.direccion = direccion;
+    }
+
     public Usuario(int idUsuario, String nombre, String apellidoPaterno, String apellidoMaterno,
             String telefono, String email, boolean haPedido, boolean esEmpleado,
             boolean esActivo, String nombreUsuario, String contrasenia, Direccion direccion) {
@@ -115,6 +132,14 @@ public class Usuario {
         this.esActivo = esActivo;
     }
 
+    public boolean getEliminado() {
+        return eliminado;
+    }
+
+    public void setEliminado(boolean eliminado) {
+        this.eliminado = eliminado;
+    }
+
     public String getNombreUsuario() {
         return nombreUsuario;
     }
@@ -139,7 +164,6 @@ public class Usuario {
         this.direccion = direccion;
     }
 
-    // Nombre completo — útil para los ComboBox de la vista
     public String getNombreCompleto() {
         return nombre + " " + apellidoPaterno + " " + apellidoMaterno;
     }
