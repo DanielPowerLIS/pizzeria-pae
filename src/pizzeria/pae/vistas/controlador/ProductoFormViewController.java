@@ -1,6 +1,7 @@
 package pizzeria.pae.vistas.controlador;
 
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -39,7 +40,9 @@ import pizzeria.pae.utilidades.UtilidadesUI;
  * @author Juan Daniel Pérez Santiago
  */
 public class ProductoFormViewController implements Initializable {
-
+    
+    private Producto productoEditar = null;
+    
     @FXML
     private TextField tfCodigo;
     @FXML
@@ -74,15 +77,88 @@ public class ProductoFormViewController implements Initializable {
         ConfigurarSoloNumeros.configurarPrecio(tfPrecio);
         tfRestricciones.setText("Ninguna");
     }
-
-    @FXML
-    private void clickSeleccionarImagen(ActionEvent event) {
-        abrirSeleccionadorFoto();
+    
+    public void asignarProducto(Producto producto){
+        this.productoEditar = producto;
+        cargarInformacionProducto();
+        tfCodigo.setEditable(false);
+        
+    }
+    
+    private void cargarInformacionProducto(){
+        tfCodigo.setText(productoEditar.getCodigo());
+        tfNombreProducto.setText(productoEditar.getNombre());
+        tfDescripcion.setText(productoEditar.getDescripcion());
+        tfCantidad.setText(String.valueOf(productoEditar.getCantidad()));
+        tfRestricciones.setText(productoEditar.getRestricciones());
+        tfPrecio.setText(String.valueOf(productoEditar.getPrecio()));
+        
+        if(productoEditar.getEsInsumo()) {
+            rdInsumo.setSelected(true);
+        } else {
+            rdConsumo.setSelected(true);
+        }
+        
+        if(productoEditar.getFoto() != null){
+            ByteArrayInputStream bais = new ByteArrayInputStream(productoEditar.getFoto());
+            Image imagenBD = new Image(bais);
+            ivFoto.setImage(imagenBD);
+        }
+    }
+    
+    private void modificarProducto(){
+        if(datosValidos()){
+            try{
+                productoEditar.setNombre(tfNombreProducto.getText());
+                productoEditar.setDescripcion(tfDescripcion.getText());
+                productoEditar.setCantidad(Integer.parseInt(tfCantidad.getText()));
+                productoEditar.setPrecio(new BigDecimal(tfPrecio.getText()));
+                productoEditar.setRestricciones(tfRestricciones.getText());
+                
+                productoEditar.setEsInsumo(rdInsumo.isSelected());
+                
+                if(archivoFoto != null){
+                    byte[] fotoBytes = Files.readAllBytes(archivoFoto.toPath());
+                    productoEditar.setFoto(fotoBytes);
+                }
+                
+                Boolean modificacionExitosa = ProductoDAO.actualizarProducto(productoEditar);
+                
+                if (modificacionExitosa) {
+                    Alerta.mostrarAlertaInformacion("Modificación exitosa", "El producto se ha modificado correctamente.");
+                    cerrarVentana();
+                } else {
+                    Alerta.mostrarAlertaError("Error", "No se pudo guardar el producto en la base de datos.");
+                }
+                
+            }catch(IOException e){
+                e.printStackTrace();
+                Alerta.mostrarAlertaError("Error de base de datos", "Error al intentar guardar la información.");
+            }catch(SQLException ex){
+                ex.printStackTrace();
+                Alerta.mostrarAlertaError("Error de base de datos", "Error al intentar guardar la información.");
+            }
+        }else{
+            Alerta.mostrarAlertaAdvertencia("Campos incompletos", "Por favor, llena todos los campos marcados con asterisco (*).");
+        }
         
     }
 
     @FXML
+    private void clickSeleccionarImagen(ActionEvent event) {
+        abrirSeleccionadorFoto();        
+    }
+
+    @FXML
     private void clickGuardar(ActionEvent event) {
+        if(productoEditar != null){
+            modificarProducto();
+        }else{
+           registrarProducto(); 
+        }
+    }
+    
+    private void registrarProducto(){
         if (datosValidos()) {
             try {
                 Producto productoNuevo = new Producto();
@@ -114,10 +190,7 @@ public class ProductoFormViewController implements Initializable {
             } catch (SQLException e) {
                 e.printStackTrace();
                 Alerta.mostrarAlertaError("Error de base de datos", "Error al intentar guardar la información.");
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
-                Alerta.mostrarAlertaAdvertencia("Datos inválidos", "Verifica que el precio y la cantidad tengan un formato correcto.");
-            }
+            } 
         } else {
             Alerta.mostrarAlertaAdvertencia("Campos incompletos", "Por favor, llena todos los campos marcados con asterisco (*).");
         }
@@ -154,10 +227,12 @@ public class ProductoFormViewController implements Initializable {
             return false;
         }
         
-        if(archivoFoto == null){
-            return false;
+        if(productoEditar == null){
+            if(archivoFoto == null){
+                return false;
+            }
         }
-        
+            
         if(!rdConsumo.isSelected() && !rdInsumo.isSelected()){
             return false;
         }

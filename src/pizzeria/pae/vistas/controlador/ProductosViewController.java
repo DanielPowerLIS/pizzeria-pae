@@ -179,6 +179,7 @@ public class ProductosViewController implements Initializable {
             ventana.initModality(Modality.APPLICATION_MODAL);
             ventana.showAndWait();
             
+            tvProductos.refresh();
         }catch(IOException e){
             e.printStackTrace();
             Alerta.mostrarAlertaError("Error al cargar", "No se pudo cargar la ventana.");
@@ -187,13 +188,53 @@ public class ProductosViewController implements Initializable {
 
     @FXML
     private void clickEditarProuducto(ActionEvent event) {
+        Producto productoSeleccionado = productoSeleccionado();
+        if(productoSeleccionado != null){
+            try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/pizzeria/pae/vistas/fxml/ProductoFormView.fxml"));
+            Parent vista = loader.load();
+            
+            ProductoFormViewController controlador = loader.getController();
+            controlador.asignarProducto(productoSeleccionado);
+            
+            Scene escena = new Scene(vista);
+            
+            Stage ventana = new Stage();
+            ventana.setScene(escena);
+            ventana.setTitle("Formulario de producto.");
+            ventana.initModality(Modality.APPLICATION_MODAL);
+            ventana.showAndWait();
+            
+            cargarInfomracionGeneral(rdInsumo.isSelected());
+            rdPorCodigo.setSelected(false);
+            rdPorCodigo.setSelected(false);
+            
+            }catch(IOException e){
+                e.printStackTrace();
+                Alerta.mostrarAlertaError("Error al cargar", "No se pudo cargar la ventana.");
+            }
+        }else{
+            Alerta.mostrarAlertaAdvertencia("Producto no seleccionado", "Debe seleccionar un producto.");
+        }
+        
     }
 
     @FXML
     private void clickEliminarProducto(ActionEvent event) {
+         Producto productoSeleccionado = productoSeleccionado();
+        if(productoSeleccionado != null){
+            
+        }else{
+            Alerta.mostrarAlertaAdvertencia("Producto no seleccionado", "Debe seleccionar un producto.");
+        }
     }
 
     @FXML
     private void clickGenerarPDF(ActionEvent event) {
+    }
+    
+    private Producto productoSeleccionado(){
+        Producto producto = tvProductos.getSelectionModel().getSelectedItem();
+        return producto;
     }
 }
