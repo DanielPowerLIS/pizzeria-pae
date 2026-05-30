@@ -1,5 +1,6 @@
 package pizzeria.pae.vistas.controlador;
 
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -22,11 +23,14 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import pizzeria.pae.modelo.beans.Pedido;
 import pizzeria.pae.modelo.dao.PedidoDAO;
 import pizzeria.pae.utilidades.Alerta;
+import pizzeria.pae.utilidades.ExportadorCSV;
+import pizzeria.pae.utilidades.ExportadorPDF;
 import pizzeria.pae.utilidades.UtilidadesUI;
 
 /**
@@ -195,4 +199,103 @@ public class PedidosViewController implements Initializable {
             );
         }
     }
+
+    @FXML
+    private void clickExportarCSV(ActionEvent event) {
+
+        FileChooser chooser = new FileChooser();
+
+        chooser.setTitle("Guardar reporte CSV");
+
+        chooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter(
+                        "Archivos CSV (*.csv)",
+                        "*.csv"
+                )
+        );
+
+        chooser.setInitialFileName("ReportePedidos.csv");
+
+        File archivo = chooser.showSaveDialog(
+                btnMenuExportar.getScene().getWindow()
+        );
+
+        if (archivo == null) {
+            return;
+        }
+
+        try {
+
+            ExportadorCSV exportador = new ExportadorCSV();
+
+            exportador.exportar(
+                    PedidoDAO.obtenerPedidos(),
+                    archivo.getAbsolutePath()
+            );
+
+            Alerta.mostrarAlertaInformacion(
+                    "Exportación exitosa",
+                    "El CSV se generó correctamente."
+            );
+
+        } catch (SQLException ex) {
+
+            ex.printStackTrace();
+
+            Alerta.mostrarAlertaError(
+                    "Error",
+                    "No fue posible generar el CSV."
+            );
+        }   
+    }
+
+    @FXML
+    private void clickExportarPDF(ActionEvent event) {
+        FileChooser chooser = new FileChooser();
+
+        chooser.setTitle("Guardar reporte PDF");
+
+        chooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter(
+                        "Archivos PDF (*.pdf)",
+                        "*.pdf"
+                )
+        );
+
+        chooser.setInitialFileName("ReportePedidos.pdf");
+
+        File archivo = chooser.showSaveDialog(
+                btnMenuExportar.getScene().getWindow()
+        );
+
+        if (archivo == null) {
+            return;
+        }
+
+        try {
+
+            ExportadorPDF exportador = new ExportadorPDF();
+
+            exportador.exportar(
+                    PedidoDAO.obtenerPedidos(),
+                    archivo.getAbsolutePath()
+            );
+
+            Alerta.mostrarAlertaInformacion(
+                    "Exportación exitosa",
+                    "El PDF se generó correctamente."
+            );
+
+        } catch (SQLException ex) {
+
+            ex.printStackTrace();
+
+            Alerta.mostrarAlertaError(
+                    "Error",
+                    "No fue posible generar el PDF."
+            );
+        }
+
+    }
+            
 }
