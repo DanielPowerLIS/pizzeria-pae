@@ -23,7 +23,7 @@
             </Label>
             <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="1280.0" spacing="15" style="-fx-background-color: #1A1818;">
                <children>
-                  <Label fx:id="lblUsuario" text="Sesión: Nombre de usuario" textFill="WHITE">
+                  <Label fx:id="lbUsuario" text="Sesión: Nombre de usuario" textFill="WHITE">
                      <padding>
                         <Insets left="16.0" />
                      </padding>
@@ -79,19 +79,20 @@
    <left>
       <VBox alignment="CENTER_LEFT" prefHeight="595.0" prefWidth="250.0" spacing="15.0" BorderPane.alignment="CENTER">
          <children>
-            <Separator prefWidth="200.0" />
-            <Label text="Administración" textFill="#d1cfcf">
+            <Separator fx:id="sepAdmin" prefWidth="200.0" />
+            <Label fx:id="lblAdmin" text="Administración" textFill="#d1cfcf">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
             <Button fx:id="btnModuloUsuarios" alignment="CENTER_LEFT" maxWidth="Infinity" prefHeight="60.0" style="-fx-background-color: #404040; -fx-border-radius: 8;" text="Usuarios" textFill="WHITE" wrapText="true" />
 
-                  <Separator prefWidth="200.0">
+            <Separator fx:id="sepInventario" prefWidth="200.0">
                <padding>
                   <Insets top="20.0" />
-               </padding></Separator>
-            <Label text="Inventarios" textFill="#d3d0d0">
+               </padding>
+            </Separator>
+            <Label fx:id="lblInventario" text="Inventarios" textFill="#d3d0d0">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
@@ -99,10 +100,11 @@
             <Button fx:id="btnProductos" alignment="CENTER_LEFT" maxWidth="Infinity" prefHeight="60.0" style="-fx-background-color: #404040; -fx-border-radius: 8;" text="Productos" textFill="WHITE" />
             <Button fx:id="btnValidacion" alignment="CENTER_LEFT" maxWidth="Infinity" prefHeight="60.0" style="-fx-background-color: #404040; -fx-border-radius: 8;" text="Validación de inventarios" textFill="WHITE" />
 
-                  <Separator prefWidth="200.0">
+            <Separator fx:id="sepPedidos" prefWidth="200.0">
                <padding>
                   <Insets top="20.0" />
-               </padding></Separator>
+               </padding>
+            </Separator>
             <Label text="Pedidos" textFill="#d3d0d0">
                <font>
                   <Font name="System Bold" size="12.0" />
@@ -110,7 +112,7 @@
             </Label>
             <Button fx:id="btnPedidos" alignment="CENTER_LEFT" maxWidth="Infinity" prefHeight="60.0" style="-fx-background-color: #404040; -fx-border-radius: 8;" text="Pedidos" textFill="WHITE" />
             
-               </children>
+         </children>
          <padding>
             <Insets left="15.0" right="15.0" />
          </padding>

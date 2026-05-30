@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Separator;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import pizzeria.pae.modelo.beans.Usuario;
@@ -20,23 +21,34 @@ public class MenuViewController implements Initializable {
     @FXML
     private Button btnModuloUsuarios;
     @FXML
-    private Button btnCerrarSesion;
-    @FXML
     private Button btnProductos;
     @FXML
     private Button btnValidacion;
     @FXML
     private Button btnPedidos;
     @FXML
+    private Button btnCerrarSesion;
+    @FXML
     private Button btnAcercaDe;
 
     @FXML
-    private Label lblUsuario;
+    private Label lbUsuario;
     @FXML
     private Label lblRol;
-
     @FXML
     private StackPane panelCentral;
+
+    // --- NUEVAS VARIABLES PARA OCULTAR ---
+    @FXML
+    private Separator sepAdmin;
+    @FXML
+    private Label lblAdmin;
+    @FXML
+    private Separator sepInventario;
+    @FXML
+    private Label lblInventario;
+    @FXML
+    private Separator sepPedidos;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -49,13 +61,36 @@ public class MenuViewController implements Initializable {
 
         Usuario usr = SesionUsuario.getUsuarioActual();
         if (usr != null) {
-            lblUsuario.setText("Sesión: " + usr.getNombreUsuario());
+            String identificador = (usr.getNombreUsuario() != null && !usr.getNombreUsuario().isEmpty())
+                    ? usr.getNombreUsuario() : usr.getNombre();
+
+            lbUsuario.setText("Sesión: " + identificador);
             lblRol.setText("Rol: " + usr.getRol());
 
-            if ("Cajero".equals(usr.getRol())) {
-                btnModuloUsuarios.setDisable(true);
-                btnProductos.setDisable(true);
-                btnValidacion.setDisable(true);
+            // Restricción para todos los que NO son Administradores (Cajeros)
+            if (!"Administrador".equals(usr.getRol())) {
+
+                // Ocultar Módulo Usuarios y su etiqueta/separador
+                sepAdmin.setVisible(false);
+                sepAdmin.setManaged(false);
+                lblAdmin.setVisible(false);
+                lblAdmin.setManaged(false);
+                btnModuloUsuarios.setVisible(false);
+                btnModuloUsuarios.setManaged(false);
+
+                // Ocultar Módulo Inventarios y su etiqueta/separador
+                sepInventario.setVisible(false);
+                sepInventario.setManaged(false);
+                lblInventario.setVisible(false);
+                lblInventario.setManaged(false);
+                btnProductos.setVisible(false);
+                btnProductos.setManaged(false);
+                btnValidacion.setVisible(false);
+                btnValidacion.setManaged(false);
+
+                // Ocultar el separador superior de Pedidos para que quede pegado arriba
+                sepPedidos.setVisible(false);
+                sepPedidos.setManaged(false);
             }
         }
 
