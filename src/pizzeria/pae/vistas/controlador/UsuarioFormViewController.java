@@ -60,7 +60,7 @@ public class UsuarioFormViewController implements Initializable {
         btnCancelar.setOnAction(event -> cerrarVentana());
 
         cmbTipoUsuario.valueProperty().addListener((observable, oldValue, newValue) -> {
-            boolean requiereCredenciales = "Administrador".equals(newValue);
+            boolean requiereCredenciales = "Administrador".equals(newValue) || "Cajero".equals(newValue);
 
             txtUsername.setDisable(!requiereCredenciales);
             txtPassword.setDisable(!requiereCredenciales);
@@ -126,6 +126,7 @@ public class UsuarioFormViewController implements Initializable {
             usuario.setDireccion(direccion);
 
             String tipo = cmbTipoUsuario.getValue();
+            usuario.setRol(tipo);
             boolean esEmpleado = "Administrador".equals(tipo) || "Cajero".equals(tipo);
             usuario.setEsEmpleado(esEmpleado);
 
