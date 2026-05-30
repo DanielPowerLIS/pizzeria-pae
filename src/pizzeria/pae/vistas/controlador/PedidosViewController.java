@@ -43,7 +43,7 @@ public class PedidosViewController implements Initializable {
     @FXML
     private DatePicker dpBuscarFecha;
     @FXML
-    private ComboBox<?> cmbBuscarEstatus;
+    private ComboBox<String> cmbBuscarEstatus;
     @FXML
     private Button btnCambiarEstatus;
     @FXML
@@ -77,6 +77,7 @@ public class PedidosViewController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         configurarTabla();
         cargarInformacion();
+        configurarEstatus();
     }
 
     
@@ -182,6 +183,14 @@ public class PedidosViewController implements Initializable {
         tcEstatus.setCellValueFactory(new PropertyValueFactory<>("estado"));
     }
     
+    private void configurarEstatus() {
+        cmbBuscarEstatus.getItems().addAll(
+                "Pendiente",
+                "Aprobado",
+                "Entregado",
+                "Cancelado"
+        );
+    }
     
     private void cargarInformacion() {
 
@@ -233,7 +242,7 @@ public class PedidosViewController implements Initializable {
             ExportadorCSV exportador = new ExportadorCSV();
 
             exportador.exportar(
-                    PedidoDAO.obtenerPedidos(),
+                    tvPedidos.getItems(),
                     archivo.getAbsolutePath()
             );
 
@@ -242,13 +251,13 @@ public class PedidosViewController implements Initializable {
                     "El CSV se generó correctamente."
             );
 
-        } catch (SQLException ex) {
+        } catch (RuntimeException ex) {
 
             ex.printStackTrace();
 
             Alerta.mostrarAlertaError(
-                    "Error",
-                    "No fue posible generar el CSV."
+                    "Error de exportación",
+                    ex.getMessage()
             );
         }   
     }
@@ -281,7 +290,7 @@ public class PedidosViewController implements Initializable {
             ExportadorPDF exportador = new ExportadorPDF();
 
             exportador.exportar(
-                    PedidoDAO.obtenerPedidos(),
+                    tvPedidos.getItems(),
                     archivo.getAbsolutePath()
             );
 
@@ -290,16 +299,104 @@ public class PedidosViewController implements Initializable {
                     "El PDF se generó correctamente."
             );
 
+        } catch (RuntimeException ex) {
+
+            ex.printStackTrace();
+
+            Alerta.mostrarAlertaError(
+                    "Error de exportación",
+                    ex.getMessage()
+            );
+        }
+
+    }
+
+    @FXML
+    private void clickBuscarFecha(ActionEvent event) {
+        
+
+        if (dpBuscarFecha.getValue() == null) {
+            return;
+        }
+
+        try {
+
+            tvPedidos.getItems().clear();
+
+            tvPedidos.getItems().addAll(
+                    PedidoDAO.buscarPedidoPorFecha(
+                            Date.valueOf(dpBuscarFecha.getValue())
+                    )
+            );
+
         } catch (SQLException ex) {
 
             ex.printStackTrace();
 
             Alerta.mostrarAlertaError(
                     "Error",
-                    "No fue posible generar el PDF."
+                    "No fue posible realizar la búsqueda."
             );
         }
+    }
 
+    @FXML
+    private void clickBuscasEstatus(ActionEvent event) {
+        String estado = cmbBuscarEstatus.getValue();
+
+        if (estado == null) {
+            return;
+        }
+
+        try {
+
+            tvPedidos.getItems().clear();
+
+            tvPedidos.getItems().addAll(
+                    PedidoDAO.buscarPedidoPorEstado(estado)
+            );
+
+        } catch (SQLException ex) {
+
+            ex.printStackTrace();
+
+            Alerta.mostrarAlertaError(
+                    "Error",
+                    "No fue posible realizar la búsqueda."
+            );
+        }        
+    }
+
+    @FXML
+    private void clickBuscarUsuario(ActionEvent event) {
+        
+        String nombre = txtBuscarUsuario.getText().trim();
+
+        if (nombre.isEmpty()) {
+            Alerta.mostrarAlertaAdvertencia(
+                    "Campo vacío",
+                    "Ingrese el nombre del cliente."
+            );
+            return;
+        }
+
+        try {
+
+            tvPedidos.getItems().clear();
+
+            tvPedidos.getItems().addAll(
+                    PedidoDAO.buscarPedidosPorUsuario(nombre)
+            );
+
+        } catch (SQLException ex) {
+
+            ex.printStackTrace();
+
+            Alerta.mostrarAlertaError(
+                    "Error",
+                    "No fue posible realizar la búsqueda."
+            );
+        }
     }
             
 }
