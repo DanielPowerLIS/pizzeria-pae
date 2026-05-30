@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -66,7 +67,30 @@ public class PedidoFormViewController implements Initializable {
     private ObservableList<DetallePedido> listaDetalles;
     private ObservableList<Producto> listaProductos;
 
+    private Pedido pedidoEditar = null;
+    private List<DetallePedido> detallesAQuitar = new ArrayList<>();
+    private List<DetallePedido> detallesNuevos = new ArrayList<>();
 
+
+    public void asignarPedido(Pedido pedido) {
+        this.pedidoEditar = pedido;
+        
+        for (Usuario u : cmbCliente.getItems()) {
+            if (u.getIdUsuario() == pedido.getCliente().getIdUsuario()) {
+                cmbCliente.getSelectionModel().select(u);
+                break;
+            }
+        }
+        cmbCliente.setDisable(true);
+        
+        txtFecha.setText(pedido.getFecha().toString());
+        
+        listaDetalles.clear();
+        listaDetalles.addAll(pedido.getDetallePedido());
+        
+        calcularTotal();
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarTabla();
@@ -121,32 +145,25 @@ public class PedidoFormViewController implements Initializable {
             });
 
         colDetalleCant.setOnEditCommit(event -> {
-
             if (event.getNewValue() <= 0) {
-
                 tblDetallePedido.refresh();
-
-                Alerta.mostrarAlertaAdvertencia(
-                        "Cantidad inválida",
-                        "La cantidad debe ser mayor que cero."
-                );
-
+                Alerta.mostrarAlertaAdvertencia("Cantidad inválida", "La cantidad debe ser mayor que cero.");
                 return;
             }
 
             DetallePedido detalle = event.getRowValue();
 
-            detalle.setCantidad(event.getNewValue());
+            if (pedidoEditar != null && !detallesNuevos.contains(detalle)) {
+                DetallePedido clonViejo = new DetallePedido(detalle.getIdPedido(), detalle.getProducto(), detalle.getCantidad());
+                detallesAQuitar.add(clonViejo);
+                
+                detallesNuevos.add(detalle);
+            }
 
-            detalle.setSubtotal(
-                    detalle.getProducto().getPrecio()
-                            .multiply(
-                                    BigDecimal.valueOf(event.getNewValue())
-                            )
-            );
+            detalle.setCantidad(event.getNewValue());
+            detalle.setSubtotal(detalle.getProducto().getPrecio().multiply(BigDecimal.valueOf(event.getNewValue())));
 
             calcularTotal();
-
             tblDetallePedido.refresh();
         });
     }
@@ -245,11 +262,14 @@ public class PedidoFormViewController implements Initializable {
             );
             return;
         }
+        
+        DetallePedido nuevoDetalle = crearDetallePedido(producto);
+        if (pedidoEditar != null) {
+            nuevoDetalle.setIdPedido(pedidoEditar.getIdPedido());
+            detallesNuevos.add(nuevoDetalle);
+        }
 
-        listaDetalles.add(
-                crearDetallePedido(producto)
-        );
-
+        listaDetalles.add(nuevoDetalle);
         calcularTotal();
     }
 
@@ -280,46 +300,41 @@ public class PedidoFormViewController implements Initializable {
         }
 
         try {
+            if (pedidoEditar == null) {
+                Pedido pedido = new Pedido();
+                pedido.setCliente(cmbCliente.getValue());
+                pedido.setFecha(LocalDate.now());
+                pedido.setEstado("PENDIENTE");
+                pedido.setDetallePedido(listaDetalles);
+                pedido.setTotal(calcularTotalPedido());
 
-            Pedido pedido = new Pedido();
-
-            pedido.setCliente(cmbCliente.getValue());
-            pedido.setFecha(LocalDate.now());
-            pedido.setEstado("PENDIENTE");
-
-            pedido.setDetallePedido(listaDetalles);
-
-            pedido.setTotal(
-                    listaDetalles.stream()
-                            .map(DetallePedido::getSubtotal)
-                            .reduce(BigDecimal.ZERO, BigDecimal::add)
-            );
-
-            if (PedidoDAO.agregarPedido(pedido)) {
-
-                Alerta.mostrarAlertaInformacion(
-                        "Pedido registrado",
-                        "El pedido se registró correctamente."
-                );
-
-                cerrarVentana();
+                if (PedidoDAO.agregarPedido(pedido)) {
+                    Alerta.mostrarAlertaInformacion("Pedido registrado", "El pedido se registró correctamente.");
+                    cerrarVentana();
+                } else {
+                    Alerta.mostrarAlertaAdvertencia("Operación no realizada", "No fue posible registrar el pedido.");
+                }
 
             } else {
+                pedidoEditar.setTotal(calcularTotalPedido());
 
-                Alerta.mostrarAlertaAdvertencia(
-                        "Operación no realizada",
-                        "No fue posible registrar el pedido."
-                );
+                PedidoDAO.actualizarPedido(pedidoEditar);
+
+                if (!detallesAQuitar.isEmpty()) {
+                    PedidoDAO.quitarDetalles(detallesAQuitar);
+                }
+
+                if (!detallesNuevos.isEmpty()) {
+                    PedidoDAO.agregarDetalles(detallesNuevos);
+                }
+
+                Alerta.mostrarAlertaInformacion("Actualización exitosa", "El pedido se ha modificado correctamente.");
+                cerrarVentana();
             }
 
         } catch (SQLException ex) {
-
             ex.printStackTrace();
-
-            Alerta.mostrarAlertaError(
-                    "Error de base de datos",
-                    ex.getMessage()
-            );
+            Alerta.mostrarAlertaError("Error de base de datos", ex.getMessage());
         }
     }
 
@@ -328,6 +343,16 @@ public class PedidoFormViewController implements Initializable {
         int indiceSeleccionado = tblDetallePedido.getSelectionModel().getSelectedIndex();
 
         if (indiceSeleccionado >= 0) {
+            DetallePedido detalleRemovido = listaDetalles.get(indiceSeleccionado);
+            
+            if (pedidoEditar != null) {
+                if (detallesNuevos.contains(detalleRemovido)) {
+                    detallesNuevos.remove(detalleRemovido);
+                } else {
+                    detallesAQuitar.add(detalleRemovido);
+                }
+            }
+
             listaDetalles.remove(indiceSeleccionado);
             calcularTotal();
         } else {
