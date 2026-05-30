@@ -478,7 +478,7 @@ public class PedidoDAO {
         return detallesEliminados == numDetalles;
     }
     
-    public static Boolean eliminarPedido(Integer idPedido, String estadoNuevo)throws SQLException{
+    public static Boolean actualizarEstatusPedido(Integer idPedido, String estadoNuevo)throws SQLException{
         int pedidoEliminado = 0;
         String eliminarPedido = "UPDATE pedido SET estado = ? WHERE idPedido = ?";
         

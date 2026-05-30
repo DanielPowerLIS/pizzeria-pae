@@ -41,7 +41,8 @@ public class ExportadorPDF extends Exportador<Pedido>{
     protected void escribirDatos(List<Pedido> pedidos) {
         for(Pedido p : pedidos){
             documento.add(new Paragraph("Pedido: " + p.getIdPedido()));
-            documento.add(new Paragraph("Cliente: " + p.getCliente().getNombre()));
+            documento.add(new Paragraph("Cliente: " + p.getCliente().getNombre() + " " +
+                    p.getCliente().getApellidoPaterno() + " " + p.getCliente().getApellidoMaterno()));
             
             documento.add(new Paragraph(" "));
             
