@@ -170,7 +170,11 @@ public class ProductosViewController implements Initializable {
     @FXML
     private void clickAgregarProducto(ActionEvent event) {
         try{
-            Parent vista = FXMLLoader.load(getClass().getResource("/pizzeria/pae/vistas/fxml/ProductoFormView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/pizzeria/pae/vistas/fxml/ProductoFormView.fxml"));
+            Parent vista = loader.load();
+            
+            ProductoFormViewController controlador = loader.getController();
+            
             Scene escena = new Scene(vista);
             
             Stage ventana = new Stage();
@@ -178,6 +182,14 @@ public class ProductosViewController implements Initializable {
             ventana.setTitle("Formulario de producto.");
             ventana.initModality(Modality.APPLICATION_MODAL);
             ventana.showAndWait();
+            
+            Producto nuevo = controlador.obtenerProductoNuevo();
+            
+            if(nuevo != null){
+                if(nuevo.getEsInsumo() == rdInsumo.isSelected()){
+                    productosObservables.add(nuevo);
+                }
+            }
             
             tvProductos.refresh();
         }catch(IOException e){
