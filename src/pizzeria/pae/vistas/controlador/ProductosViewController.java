@@ -187,13 +187,27 @@ public class ProductosViewController implements Initializable {
 
     @FXML
     private void clickEditarProuducto(ActionEvent event) {
+        Producto productoSeleccionado = productoSeleccionado();
+        if(productoSeleccionado != null){
+            
+        }
+        
     }
 
     @FXML
     private void clickEliminarProducto(ActionEvent event) {
+         Producto productoSeleccionado = productoSeleccionado();
+        if(productoSeleccionado != null){
+            
+        }
     }
 
     @FXML
     private void clickGenerarPDF(ActionEvent event) {
+    }
+    
+    private Producto productoSeleccionado(){
+        Producto producto = tvProductos.getSelectionModel().getSelectedItem();
+        return producto;
     }
 }
