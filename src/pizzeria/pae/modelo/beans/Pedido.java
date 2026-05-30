@@ -17,13 +17,15 @@ public class Pedido {
     private String estado;
     private Usuario cliente;
     private List<DetallePedido> detallePedido;
-    
+
+    // Constructor vacío
     public Pedido() {
         this.detallePedido = new ArrayList<>();
         this.total = BigDecimal.ZERO;
         this.fecha = LocalDate.now();
     }
 
+    // Constructor completo
     public Pedido(Integer idPedido, LocalDate fecha, BigDecimal total, String estado,
                   Usuario cliente, List<DetallePedido> detallePedido) {
         this.idPedido = idPedido;
@@ -56,50 +58,28 @@ public class Pedido {
         this.total = calcularTotal();
     }
 
-    public Integer getIdPedido() {
-        return idPedido;
+    // Getter de conveniencia para PropertyValueFactory<>("nombreCliente") en PedidosViewController
+    public String getNombreCliente() {
+        return this.cliente != null ? this.cliente.getNombreCompleto() : "";
     }
 
-    public void setIdPedido(Integer idPedido) {
-        this.idPedido = idPedido;
-    }
+    // Getters y Setters
+    public int getIdPedido() { return idPedido; }
+    public void setIdPedido(int idPedido) { this.idPedido = idPedido; }
 
-    public LocalDate getFecha() {
-        return fecha;
-    }
+    public LocalDate getFecha() { return fecha; }
+    public void setFecha(LocalDate fecha) { this.fecha = fecha; }
 
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
-    }
+    public BigDecimal getTotal() { return total; }
+    public void setTotal(BigDecimal total) { this.total = total; }
 
-    public BigDecimal getTotal() {
-        return total;
-    }
+    public String getEstado() { return estado; }
+    public void setEstado(String estado) { this.estado = estado; }
 
-    public void setTotal(BigDecimal total) {
-        this.total = total;
-    }
+    public Usuario getCliente() { return cliente; }
+    public void setCliente(Usuario cliente) { this.cliente = cliente; }
 
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    public Usuario getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Usuario cliente) {
-        this.cliente = cliente;
-    }
-
-    public List<DetallePedido> getDetallePedido() {
-        return detallePedido;
-    }
-
+    public List<DetallePedido> getDetallePedido() { return detallePedido; }
     public void setDetallePedido(List<DetallePedido> detallePedido) {
         this.detallePedido = detallePedido;
         this.total = calcularTotal();
