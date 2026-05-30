@@ -173,7 +173,7 @@ public class PedidoFormViewController implements Initializable {
         Pedido pedido = new Pedido();
 
         pedido.setFecha(LocalDate.now());
-        pedido.setEstado("PENDIENTE");
+        pedido.setEstado("EN PROCESO");
         pedido.setCliente(cmbCliente.getValue());
 
         pedido.setDetallePedido(listaDetalles);
