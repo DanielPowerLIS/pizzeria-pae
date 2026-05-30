@@ -146,6 +146,13 @@ public class PedidosViewController implements Initializable {
 
             return;
         }
+        if (!pedidoSeleccionado.getEstado().equalsIgnoreCase("PENDIENTE")) {
+            Alerta.mostrarAlertaAdvertencia(
+                "Acción no permitida", 
+                "El pedido ya se encuentra " + pedidoSeleccionado.getEstado() + " y no se puede modificar."
+            );
+            return;
+        }
         try {
 
             FXMLLoader loader = new FXMLLoader(

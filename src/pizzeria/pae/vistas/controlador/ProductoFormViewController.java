@@ -212,7 +212,8 @@ public class ProductoFormViewController implements Initializable {
     }
         
     private Boolean datosValidos(){
-        if(tfCodigo.getText().isEmpty() || tfCodigo.getText().length() < 1){
+        if(tfCodigo.getText().isEmpty() || tfCodigo.getText().length() != 5){
+            Alerta.mostrarAlertaAdvertencia("Formato inválido", "El código debe tener 5 caracteres (Números o letras).");
             return false;
         }
         

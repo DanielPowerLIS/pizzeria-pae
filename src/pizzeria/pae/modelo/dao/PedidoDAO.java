@@ -391,22 +391,20 @@ public class PedidoDAO {
                                     : pedidoAgregar.getDetallePedido()) {
 
                                 psDetalle.setInt(1, idPedido);
-
                                 psDetalle.setInt(2, detalle.getProducto().getIdProducto());
-
                                 psDetalle.setInt(3, detalle.getCantidad());
-
                                 psDetalle.setBigDecimal(4, detalle.getSubtotal());
 
                                 psDetalle.addBatch();
                             }
 
                             psDetalle.executeBatch();
-                            UsuarioDAO.marcarComoHaPedido(pedidoAgregar.getCliente().getIdUsuario());
+                            
                             conexion.commit();
+                            
                         }
 
-                        conexion.commit();
+                        UsuarioDAO.marcarComoHaPedido(pedidoAgregar.getCliente().getIdUsuario());
 
                         return true;
 
