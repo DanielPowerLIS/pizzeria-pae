@@ -27,7 +27,6 @@ import javafx.stage.Stage;
 import pizzeria.pae.modelo.beans.Pedido;
 import pizzeria.pae.modelo.dao.PedidoDAO;
 import pizzeria.pae.utilidades.Alerta;
-import pizzeria.pae.utilidades.UtilidadesUI;
 
 /**
  * @author Adair Alejandro Martinez Alejo
@@ -95,7 +94,7 @@ public class PedidosViewController implements Initializable {
 
         } catch (IOException e) {
             e.printStackTrace();
-            UtilidadesUI.mostrarAlertaSimple("Error de carga", "No se pudo abrir la ventana del formulario de pedido.", Alert.AlertType.ERROR);
+            Alerta.mostrarAlertaError("Error de carga", "No se pudo abrir la ventana del formulario de pedido.");
         }
     }
 
@@ -103,7 +102,7 @@ public class PedidosViewController implements Initializable {
     private void clickEditarPedido(ActionEvent event) {
         Pedido pedidoSeleccionado = tvPedidos.getSelectionModel().getSelectedItem();
         if (pedidoSeleccionado == null) {
-            UtilidadesUI.mostrarAlertaSimple("Selección requerida", "Por favor, seleccione un pedido de la tabla para poder editarlo.", Alert.AlertType.WARNING);
+            Alerta.mostrarAlertaAdvertencia("Selección requerida", "Por favor, seleccione un pedido de la tabla para poder editarlo.");
             return;
         }
       
@@ -124,7 +123,7 @@ public class PedidosViewController implements Initializable {
             cargarInformacion();
         } catch (IOException e) {
             e.printStackTrace();
-            UtilidadesUI.mostrarAlertaSimple("Error de carga", "No se pudo abrir la ventana del formulario de pedido.", Alert.AlertType.ERROR);
+            Alerta.mostrarAlertaError("Error de carga", "No se pudo abrir la ventana del formulario de pedido.");
         }
     }
 
@@ -132,9 +131,9 @@ public class PedidosViewController implements Initializable {
     private void clickCambiarEstatus(ActionEvent event) {
         Pedido pedidoSeleccionado = tvPedidos.getSelectionModel().getSelectedItem();
         if (pedidoSeleccionado == null) {
-            UtilidadesUI.mostrarAlertaSimple("Selección requerida", "Por favor, seleccione un pedido de la "
-                    + "tabla para poder cambiar el estatus.",
-                    Alert.AlertType.WARNING);
+            Alerta.mostrarAlertaAdvertencia("Selección requerida", "Por favor, seleccione un pedido de la "
+                                                                    + "tabla para poder cambiar el estatus.");
+
             return;
         }
         try {

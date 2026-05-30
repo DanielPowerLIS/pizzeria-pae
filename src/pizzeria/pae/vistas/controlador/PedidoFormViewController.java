@@ -25,7 +25,6 @@ import pizzeria.pae.modelo.dao.ProductoDAO;
 import pizzeria.pae.modelo.dao.UsuarioDAO;
 import pizzeria.pae.utilidades.Alerta;
 import pizzeria.pae.utilidades.ConfigurarSoloNumeros;
-import pizzeria.pae.utilidades.UtilidadesUI;
 
 /**
  * @author Adair Alejandro Martinez Alejo
@@ -258,20 +257,12 @@ public class PedidoFormViewController implements Initializable {
     private void clickGuardarPedido(ActionEvent event) {
 
         if (cmbCliente.getValue() == null) {
-            UtilidadesUI.mostrarAlertaSimple(
-                    "Cliente no seleccionado",
-                    "Debe asignar el pedido a un cliente.",
-                    Alert.AlertType.WARNING
-            );
+            Alerta.mostrarAlertaAdvertencia( "Cliente no seleccionado", "Debe asignar el pedido a un cliente.");
             return;
         }
 
         if (listaDetalles.isEmpty()) {
-            UtilidadesUI.mostrarAlertaSimple(
-                    "Pedido vacío",
-                    "Debe agregar al menos un producto al pedido.",
-                    Alert.AlertType.WARNING
-            );
+            Alerta.mostrarAlertaAdvertencia( "Pedido vacío", "Debe agregar al menos un producto al pedido.");
             return;
         }
 
@@ -340,7 +331,7 @@ public class PedidoFormViewController implements Initializable {
             listaDetalles.remove(indiceSeleccionado);
             calcularTotal();
         } else {
-            UtilidadesUI.mostrarAlertaSimple("Sin selección", "Debe seleccionar un producto de la tabla para eliminarlo.", Alert.AlertType.WARNING);
+            Alerta.mostrarAlertaAdvertencia( "Sin selección", "Debe seleccionar un producto de la tabla para eliminarlo.");
         }
     }
 
