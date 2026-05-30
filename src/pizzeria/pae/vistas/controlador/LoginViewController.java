@@ -21,8 +21,6 @@ import pizzeria.pae.utilidades.Alerta;
 import pizzeria.pae.utilidades.SesionUsuario;
 import pizzeria.pae.utilidades.seguridad.BCryptHasher;
 
-/**
- */
 public class LoginViewController implements Initializable {
 
     @FXML
@@ -52,6 +50,7 @@ public class LoginViewController implements Initializable {
             if (usuario == null || !BCryptHasher.verificarContraseniaHash(contraseniaBuscar, usuario.getContrasenia())) {
                 throw new UsuarioNoEncontradoException("El usuario no ha sido encontrado o la contraseña es incorrecta.");
             } else {
+                UsuarioDAO.cambiarEstadoSesion(usuario.getIdUsuario(), true);
                 SesionUsuario.setUsuarioActual(usuario);
                 abrirMenuView();
             }
