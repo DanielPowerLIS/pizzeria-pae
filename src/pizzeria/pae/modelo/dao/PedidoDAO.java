@@ -335,45 +335,80 @@ public class PedidoDAO {
         return pedidos;
     }
     
-    public static Boolean agregarPedido(Pedido pedidoAgregar)throws SQLException{
-        String insercion = "INSERT INTO pedido ( fecha, estado, totalAPagar, idUsuario) " +
-                        "VALUES (?, ?, ?, ?)";
-        
-        MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
-        PreparedStatement insercionBD = conexion.prepareStatement(insercion, Statement.RETURN_GENERATED_KEYS);
-        Integer idPedido = null;
-        
-        insercionBD.setDate(1, Date.valueOf(pedidoAgregar.getFecha()));
-        insercionBD.setString(2, pedidoAgregar.getEstado());
-        insercionBD.setBigDecimal(3, pedidoAgregar.getTotal());
-        insercionBD.setInt(4, pedidoAgregar.getCliente().getIdUsuario());
-        
-        Integer pedidoInsertado = insercionBD.executeUpdate();
-        
-        ResultSet clavePrimaria = insercionBD.getGeneratedKeys();
-        if(clavePrimaria.next()){
-            idPedido = clavePrimaria.getInt(1);
-            pedidoAgregar.setIdPedido(idPedido);
+    public static Boolean agregarPedido(Pedido pedidoAgregar) throws SQLException {
+
+        String sqlPedido = "INSERT INTO pedido(fecha, estado, totalAPagar, idUsuario) VALUES (?, ?, ?, ?)";
+
+        String sqlDetalle = "INSERT INTO detallepedido(idPedido, idProducto, cantidad, subTotal) VALUES (?, ?, ?, ?)";
+
+        try (
+            MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection()
+        ) {
+
+            conexion.setAutoCommit(false);
+            try (
+                PreparedStatement psPedido =
+                        conexion.prepareStatement(
+                                sqlPedido,
+                                Statement.RETURN_GENERATED_KEYS
+                        )
+            ) {
+
+                psPedido.setDate(1,Date.valueOf(pedidoAgregar.getFecha()));
+                psPedido.setString(2,pedidoAgregar.getEstado());
+                psPedido.setBigDecimal(3,pedidoAgregar.getTotal());
+                psPedido.setInt(4,pedidoAgregar.getCliente().getIdUsuario());
+                int filasPedido = psPedido.executeUpdate();
+
+                if (filasPedido == 0) {
+                    conexion.rollback();
+                    return false;
+                }
+
+                ResultSet keys = psPedido.getGeneratedKeys();
+
+                if (!keys.next()) {
+                    conexion.rollback();
+                    return false;
+                }
+
+                int idPedido = keys.getInt(1);
+
+                pedidoAgregar.setIdPedido(idPedido);
+
+                try (
+                    PreparedStatement psDetalle =
+                            conexion.prepareStatement(sqlDetalle)
+                ) {
+
+                    for (DetallePedido detalle :
+                            pedidoAgregar.getDetallePedido()) {
+
+                        psDetalle.setInt(1,idPedido);
+
+                        psDetalle.setInt(2,detalle.getProducto().getIdProducto());
+
+                        psDetalle.setInt(3,detalle.getCantidad());
+
+                        psDetalle.setBigDecimal(4,detalle.getSubtotal());
+
+                        psDetalle.addBatch();
+                    }
+
+                    psDetalle.executeBatch();
+                }
+
+                conexion.commit();
+
+                return true;
+
+            } catch (SQLException ex) {
+
+                conexion.rollback();
+
+                throw ex;
+            }
         }
-        
-        String insercionDetalle = "INSERT INTO detallepedido (idPedido, idProducto, cantidad, subTotal) " +
-                        "VALUES (?, ?, ?, ?)";
-        
-        PreparedStatement insercionDetalleBD = conexion.prepareStatement(insercionDetalle);
-        for(DetallePedido d : pedidoAgregar.getDetallePedido()){
-            insercionDetalleBD.setInt(1, pedidoAgregar.getIdPedido());
-            insercionDetalleBD.setInt(2, d.getProducto().getIdProducto());
-            insercionDetalleBD.setInt(3, d.getCantidad());
-            insercionDetalleBD.setBigDecimal(4, d.getSubtotal());
-            
-            insercionDetalleBD.executeUpdate();
-        }
-        
-        insercionBD.close();
-        insercionDetalleBD.close();
-        conexion.close();
-        
-        return pedidoInsertado > 0;
     }
     
     public static Boolean actualizarPedido(Pedido pedidoActualizar)throws SQLException{
