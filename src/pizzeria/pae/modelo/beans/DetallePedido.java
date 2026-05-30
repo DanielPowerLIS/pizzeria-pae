@@ -59,5 +59,16 @@ public class DetallePedido {
     public void setSubtotal(BigDecimal subtotal) {
         this.subtotal = subtotal;
     }
-
+    
+    public BigDecimal getPrecioUnitario(){
+        return this.getProducto().getPrecio();
+    }
+    
+    public String getCodigoProducto() {
+        return this.getProducto().getCodigo();
+    }
+    
+    public String getNombreProducto() {
+        return this.getProducto().getNombre();
+    }
 }

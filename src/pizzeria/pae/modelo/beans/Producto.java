@@ -128,4 +128,8 @@ public class Producto {
         this.cantidadFisica = cantidadFisica;
     }
       
+    @Override
+    public String toString() {
+        return nombre;
+    }
 }
