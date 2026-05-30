@@ -459,4 +459,26 @@ public class UsuarioDAO {
             return stmt.executeUpdate() > 0;
         }
     }
+
+    public static boolean existeNombreUsuario(String nombreUsuario, int idUsuarioExcluido) throws SQLException {
+        String consulta = "SELECT COUNT(*) FROM usuario WHERE nombreUsuario = ? AND idUsuario != ? AND eliminado = 0";
+        try (MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection(); PreparedStatement sentencia = conexion.prepareStatement(consulta)) {
+            sentencia.setString(1, nombreUsuario);
+            sentencia.setInt(2, idUsuarioExcluido);
+            ResultSet rs = sentencia.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        }
+        return false;
+    }
+
+    public static boolean cambiarEstadoSesion(Integer idUsuario, boolean estaActivo) throws SQLException {
+        String sql = "UPDATE usuario SET esActivo = ? WHERE idUsuario = ?";
+        try (MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection(); PreparedStatement stmt = conexion.prepareStatement(sql)) {
+            stmt.setBoolean(1, estaActivo);
+            stmt.setInt(2, idUsuario);
+            return stmt.executeUpdate() > 0;
+        }
+    }
 }
