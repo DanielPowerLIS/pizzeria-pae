@@ -26,10 +26,12 @@ public class ProductoDAO {
                         "restricciones, " +
                         "foto, " +
                         "esUtilizado, " +
-                        "esInsumo " +
+                        "esInsumo, " +
+                        "vigente " +
                         "FROM Producto " +
                         "WHERE nombre LIKE ? " +
-                        "  AND esInsumo = ?;";
+                        "AND esInsumo = ? " +
+                        "AND vigente = 1;";
         
         try( MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
                 PreparedStatement sentenciaBD = conexion.prepareStatement(consulta) ){
@@ -74,10 +76,12 @@ public class ProductoDAO {
                         "restricciones, " +
                         "foto, " +
                         "esUtilizado, " +
-                        "esInsumo " +
+                        "esInsumo, " +
+                        "vigente " +
                         "FROM Producto " +
                         "WHERE codigo LIKE ? " +
-                        "  AND esInsumo = ?;";
+                        "AND esInsumo = ? " +
+                        "AND vigente = 1;";
         
         try( MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
                 PreparedStatement sentenciaBD = conexion.prepareStatement(consulta) ){
@@ -114,7 +118,8 @@ public class ProductoDAO {
     public static List<Producto> obtenerProductos(Boolean Insumo)throws SQLException{
         String consulta = "SELECT * " +
                 "FROM pizzeriapae.producto " +
-                "WHERE esInsumo = ?";
+                "WHERE esInsumo = ? " +
+                "AND vigente = 1;";
         
         try( MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
         PreparedStatement sentenciaBD = conexion.prepareStatement(consulta) ){
@@ -148,8 +153,8 @@ public class ProductoDAO {
     public static Boolean agregarProducto(Producto productoAgregar)throws SQLException{
         Boolean esUtilizado = false;
         String insercionProducto = "INSERT INTO producto (nombre, codigo, descripcion, " +
-                            "precio, cantidad, restricciones, foto, esUtilizado, esInsumo) " +
-                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                            "precio, cantidad, restricciones, foto, esUtilizado, esInsumo, vigente) " +
+                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         try( MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
             PreparedStatement insercionProductoBD = conexion.prepareStatement(insercionProducto)){
@@ -163,6 +168,7 @@ public class ProductoDAO {
             insercionProductoBD.setBytes(7, productoAgregar.getFoto());
             insercionProductoBD.setBoolean(8, esUtilizado);
             insercionProductoBD.setBoolean(9, productoAgregar.getEsInsumo());
+            insercionProductoBD.setBoolean(10, true);
 
             Integer productoInsertado = insercionProductoBD.executeUpdate();
 
