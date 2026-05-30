@@ -95,6 +95,8 @@ public class PedidosViewController implements Initializable {
             stage.initOwner(btnNuevoPedido.getScene().getWindow());
 
             stage.showAndWait();
+            
+            cargarInformacion();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -105,29 +107,32 @@ public class PedidosViewController implements Initializable {
     @FXML
     private void clickEditarPedido(ActionEvent event) {
         Pedido pedidoSeleccionado = tvPedidos.getSelectionModel().getSelectedItem();
-        if (pedidoSeleccionado == null) {
+        
+        if (pedidoSeleccionado != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/pizzeria/pae/vistas/fxml/PedidoFormView.fxml"));
+                Parent root = loader.load();
+
+                PedidoFormViewController controlador = loader.getController();
+                controlador.asignarPedido(pedidoSeleccionado);
+
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
+                stage.setResizable(false);
+                stage.setTitle("Editar pedido");
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.initOwner(btnNuevoPedido.getScene().getWindow());
+
+                stage.showAndWait();
+                
+                cargarInformacion();
+                
+            } catch (IOException e) {
+                e.printStackTrace();
+                Alerta.mostrarAlertaError("Error de carga", "No se pudo abrir la ventana del formulario de pedido.");
+            }
+        } else {
             Alerta.mostrarAlertaAdvertencia("Selección requerida", "Por favor, seleccione un pedido de la tabla para poder editarlo.");
-            return;
-        }
-      
-
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/pizzeria/pae/vistas/fxml/PedidoFormView.fxml"));
-            Parent root = loader.load();
-
-            Stage stage = new Stage();
-
-            stage.setScene(new Scene(root));
-            stage.setResizable(false);
-            stage.setTitle("Editar pedido");
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initOwner(btnNuevoPedido.getScene().getWindow());
-
-            stage.showAndWait();
-            cargarInformacion();
-        } catch (IOException e) {
-            e.printStackTrace();
-            Alerta.mostrarAlertaError("Error de carga", "No se pudo abrir la ventana del formulario de pedido.");
         }
     }
 
