@@ -38,7 +38,6 @@ public class EleccionEstatusController implements Initializable {
     
     private void cargarInformacion() {
         cmbEstatus.getItems().addAll(
-            "PENDIENTE",
             "CANCELADO",
             "APROBADO"
         );

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import pizzeria.pae.excepciones.ProductoUtilizadoException;
 import pizzeria.pae.modelo.MySQLConnectionManager;
+import pizzeria.pae.modelo.beans.DetallePedido;
 import pizzeria.pae.modelo.beans.Producto;
 
 /**
@@ -301,5 +302,11 @@ public class ProductoDAO {
             }
             return productos;
         }
+    }
+    
+    public static Boolean utilizarProducto(List<DetallePedido> detalles){
+        
+        
+        return false;
     }
 }
