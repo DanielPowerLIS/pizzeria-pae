@@ -13,7 +13,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -21,12 +20,12 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import pizzeria.pae.modelo.beans.Pedido;
+import pizzeria.pae.modelo.beans.Usuario;
 import pizzeria.pae.modelo.dao.PedidoDAO;
 import pizzeria.pae.utilidades.Alerta;
 import pizzeria.pae.utilidades.ExportadorCSV;
@@ -51,10 +50,6 @@ public class PedidosViewController implements Initializable {
     @FXML
     private Button btnNuevoPedido;
     @FXML
-    private TextField txtBuscarUsuario;
-    @FXML
-    private Button btnBuscarUsuario;
-    @FXML
     private MenuButton btnMenuExportar;
     @FXML
     private MenuItem menuItemExportarCSV;
@@ -72,12 +67,15 @@ public class PedidosViewController implements Initializable {
     private TableColumn<Pedido, BigDecimal> tcTotalPedido;
     @FXML
     private TableColumn<Pedido, String> tcEstatus;
+    @FXML
+    private ComboBox<Usuario> cmbBuscarUsuario;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarTabla();
         cargarInformacion();
         configurarEstatus();
+        cargarClientes();
     }
 
     
@@ -192,10 +190,9 @@ public class PedidosViewController implements Initializable {
     
     private void configurarEstatus() {
         cmbBuscarEstatus.getItems().addAll(
-                "Pendiente",
-                "Aprobado",
-                "Entregado",
-                "Cancelado"
+                "ENTREGADO",
+                "CANCELADO",
+                "PROCESO"
         );
     }
     
@@ -375,28 +372,26 @@ public class PedidosViewController implements Initializable {
     }
 
     @FXML
-    private void clickBuscarUsuario(ActionEvent event) {
-        
-        String nombre = txtBuscarUsuario.getText().trim();
+    private void clickBuscarPorUsuario(ActionEvent event) {
 
-        if (nombre.isEmpty()) {
+        Usuario cliente = cmbBuscarUsuario.getValue();
+
+        if (cliente == null) {
             Alerta.mostrarAlertaAdvertencia(
-                    "Campo vacío",
-                    "Ingrese el nombre del cliente."
+                    "Selección requerida",
+                    "Seleccione un cliente."
             );
             return;
         }
 
         try {
-
             tvPedidos.getItems().clear();
 
             tvPedidos.getItems().addAll(
-                    PedidoDAO.buscarPedidosPorUsuario(nombre)
+                    PedidoDAO.buscarPedidosPorUsuario(cliente.getIdUsuario())
             );
 
         } catch (SQLException ex) {
-
             ex.printStackTrace();
 
             Alerta.mostrarAlertaError(
@@ -404,6 +399,21 @@ public class PedidosViewController implements Initializable {
                     "No fue posible realizar la búsqueda."
             );
         }
+    }
+
+    private void cargarClientes() {
+        try {
+            cmbBuscarUsuario.getItems().clear();
+            cmbBuscarUsuario.getItems().addAll(PedidoDAO.obtenerClientes());
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+
+            Alerta.mostrarAlertaError(
+                    "Error",
+                    "No se pudieron cargar los clientes."
+            );
+        }        
+        
     }
             
 }

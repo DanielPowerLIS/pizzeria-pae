@@ -20,20 +20,8 @@
       </Label>
       <HBox alignment="CENTER_LEFT" spacing="10.0">
          <children>
-            <HBox>
-               <children>
-                  <TextField fx:id="txtBuscarUsuario" prefHeight="37.0" prefWidth="318.0" promptText="Buscar por nombre, dirección o teléfono..." style="-fx-background-color: #323232; -fx-text-fill: white;" />
-                  <Button fx:id="btnBuscarUsuario" onAction="#clickBuscarUsuario" style="-fx-background-color: transparent; -fx-background-radius: 8;" textFill="WHITE">
-                     <graphic>
-                        <ImageView fitHeight="26.0" fitWidth="165.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../resources/icons/icon-buscar.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-               </children>
-            </HBox>
+            <HBox />
+            <ComboBox fx:id="cmbBuscarUsuario" layoutX="268.0" layoutY="15.0" onAction="#clickBuscarPorUsuario" prefWidth="150.0" promptText="Usuario" />
             <DatePicker fx:id="dpBuscarFecha" onAction="#clickBuscarFecha" promptText="Fecha de pedido..." />
             <ComboBox fx:id="cmbBuscarEstatus" onAction="#clickBuscasEstatus" prefWidth="150.0" promptText="Estatus..." />
             <Button fx:id="btnNuevoPedido" onAction="#clickNuevoPedido" prefHeight="40" prefWidth="130" style="-fx-background-color: #218c74; -fx-background-radius: 8;" text="Nuevo Pedido" textFill="WHITE" />

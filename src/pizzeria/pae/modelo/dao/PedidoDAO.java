@@ -136,6 +136,82 @@ public class PedidoDAO {
         return detalles;
     }
 
+    public static List<Usuario> obtenerClientes() throws SQLException {
+
+        String consulta =
+                "SELECT idUsuario, nombre, apellidoPaterno, apellidoMaterno "
+                + "FROM usuario "
+                + "WHERE esEmpleado = FALSE";
+
+        List<Usuario> clientes = new ArrayList<>();
+
+        try (
+            MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
+            PreparedStatement sentencia = conexion.prepareStatement(consulta);
+            ResultSet resultado = sentencia.executeQuery()
+        ) {
+
+            while (resultado.next()) {
+
+                Usuario cliente = new Usuario();
+
+                cliente.setIdUsuario(resultado.getInt("idUsuario"));
+                cliente.setNombre(resultado.getString("nombre"));
+                cliente.setApellidoPaterno(resultado.getString("apellidoPaterno"));
+                cliente.setApellidoMaterno(resultado.getString("apellidoMaterno"));
+
+                clientes.add(cliente);
+            }
+        }
+
+        return clientes;
+    }
+    
+    public static List<Pedido> buscarPedidosPorUsuario(int idUsuario) throws SQLException {
+
+        String consulta =
+                "SELECT p.idPedido, p.fecha, p.estado, p.totalAPagar, "
+              + "u.idUsuario, u.nombre, u.apellidoPaterno, u.apellidoMaterno, "
+              + "d.idDireccion, d.calle, d.ciudad, d.numero, d.codigoPostal "
+              + "FROM pedido p "
+              + "INNER JOIN usuario u ON p.idUsuario = u.idUsuario "
+              + "INNER JOIN direccion d ON u.idUsuario = d.idUsuario "
+              + "WHERE p.idUsuario = ?";
+
+        MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
+        PreparedStatement sentencia = conexion.prepareStatement(consulta);
+
+        sentencia.setInt(1, idUsuario);
+
+        ResultSet resultado = sentencia.executeQuery();
+
+        List<Pedido> pedidos = new ArrayList<>();
+
+        while (resultado.next()) {
+
+            Pedido p = new Pedido();
+            p.setIdPedido(resultado.getInt("idPedido"));
+            p.setFecha(resultado.getDate("fecha").toLocalDate());
+            p.setEstado(resultado.getString("estado"));
+            p.setTotal(resultado.getBigDecimal("totalAPagar"));
+
+            Usuario u = new Usuario();
+            u.setIdUsuario(resultado.getInt("idUsuario"));
+            u.setNombre(resultado.getString("nombre"));
+            u.setApellidoPaterno(resultado.getString("apellidoPaterno"));
+            u.setApellidoMaterno(resultado.getString("apellidoMaterno"));
+
+            p.setCliente(u);
+
+            pedidos.add(p);
+        }
+
+        resultado.close();
+        sentencia.close();
+        conexion.close();
+
+        return pedidos;
+    }
     public static List<Pedido> buscarPedidoPorEstado(String estado) throws SQLException {
         String consulta = "SELECT "
                 + "p.idPedido, p.fecha, p.estado, p.totalAPagar, "
