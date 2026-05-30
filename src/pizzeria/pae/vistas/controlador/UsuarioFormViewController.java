@@ -69,6 +69,8 @@ public class UsuarioFormViewController implements Initializable {
                 txtPassword.clear();
             }
         });
+        pizzeria.pae.utilidades.ConfigurarSoloNumeros.configurarSoloNumeros(txtTelefono);
+        pizzeria.pae.utilidades.ConfigurarSoloNumeros.configurarSoloNumeros(txtCodigoPostal);
     }
 
     public void cargarUsuario(Usuario usuario) {
@@ -180,6 +182,10 @@ public class UsuarioFormViewController implements Initializable {
         }
 
         boolean requiereCredenciales = "Administrador".equals(cmbTipoUsuario.getValue());
+        if (!txtEmail.getText().contains("@") || !txtEmail.getText().contains(".")) {
+            Alerta.mostrarAlertaAdvertencia("Email inválido", "Por favor, ingrese un correo electrónico válido.");
+            return false;
+        }
 
         if (requiereCredenciales) {
             if (txtUsername.getText().trim().isEmpty()) {

@@ -1,9 +1,5 @@
 package pizzeria.pae.modelo.beans;
 
-/**
- * Bean que representa a un usuario del sistema (cliente o empleado). Los campos
- * fueron inferidos del UsuarioDAO existente.
- */
 public class Usuario {
 
     private int idUsuario;
@@ -18,6 +14,7 @@ public class Usuario {
     private boolean eliminado;
     private String nombreUsuario;
     private String contrasenia;
+    private String rol;
     private Direccion direccion;
 
     public Usuario() {
@@ -26,7 +23,7 @@ public class Usuario {
 
     public Usuario(int idUsuario, String nombre, String apellidoPaterno, String apellidoMaterno,
             String telefono, String email, boolean haPedido, boolean esEmpleado,
-            boolean esActivo, boolean eliminado, String nombreUsuario, String contrasenia, Direccion direccion) {
+            boolean esActivo, boolean eliminado, String nombreUsuario, String contrasenia, String rol, Direccion direccion) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
@@ -39,27 +36,10 @@ public class Usuario {
         this.eliminado = eliminado;
         this.nombreUsuario = nombreUsuario;
         this.contrasenia = contrasenia;
-        this.direccion = direccion;
+        this.rol = rol;
+        this.direccion = (direccion != null) ? direccion : new Direccion();
     }
 
-    public Usuario(int idUsuario, String nombre, String apellidoPaterno, String apellidoMaterno,
-            String telefono, String email, boolean haPedido, boolean esEmpleado,
-            boolean esActivo, String nombreUsuario, String contrasenia, Direccion direccion) {
-        this.idUsuario = idUsuario;
-        this.nombre = nombre;
-        this.apellidoPaterno = apellidoPaterno;
-        this.apellidoMaterno = apellidoMaterno;
-        this.telefono = telefono;
-        this.email = email;
-        this.haPedido = haPedido;
-        this.esEmpleado = esEmpleado;
-        this.esActivo = esActivo;
-        this.nombreUsuario = nombreUsuario;
-        this.contrasenia = contrasenia;
-        this.direccion = direccion;
-    }
-
-    // Getters y Setters
     public int getIdUsuario() {
         return idUsuario;
     }
@@ -156,6 +136,14 @@ public class Usuario {
         this.contrasenia = contrasenia;
     }
 
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
+
     public Direccion getDireccion() {
         return direccion;
     }
@@ -165,7 +153,7 @@ public class Usuario {
     }
 
     public String getNombreCompleto() {
-        return nombre + " " + apellidoPaterno + " " + apellidoMaterno;
+        return nombre + " " + apellidoPaterno + " " + (apellidoMaterno != null ? apellidoMaterno : "");
     }
 
     public String getTipo() {

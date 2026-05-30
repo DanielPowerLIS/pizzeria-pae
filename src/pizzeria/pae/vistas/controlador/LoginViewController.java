@@ -18,11 +18,10 @@ import pizzeria.pae.excepciones.UsuarioNoEncontradoException;
 import pizzeria.pae.modelo.beans.Usuario;
 import pizzeria.pae.modelo.dao.UsuarioDAO;
 import pizzeria.pae.utilidades.Alerta;
+import pizzeria.pae.utilidades.SesionUsuario;
+import pizzeria.pae.utilidades.seguridad.BCryptHasher;
 
 /**
- * FXML Controller class
- *
- * @author jdani
  */
 public class LoginViewController implements Initializable {
 
@@ -33,64 +32,49 @@ public class LoginViewController implements Initializable {
     @FXML
     private PasswordField tfPassword;
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
-    }    
+    }
 
     @FXML
     private void clickIniciarSesion(ActionEvent event) {
-        
         String usuarioBuscar = tfUsuario.getText().trim();
         String contraseniaBuscar = tfPassword.getText().trim();
-        if(usuarioBuscar.isEmpty() || contraseniaBuscar.isEmpty()){
-            Alerta.mostrarAlertaAdvertencia("Campos vacíos",
-                    "Tiene que ingresar un usuario y/o contraseña");
+
+        if (usuarioBuscar.isEmpty() || contraseniaBuscar.isEmpty()) {
+            Alerta.mostrarAlertaAdvertencia("Campos vacíos", "Tiene que ingresar un usuario y contraseña");
             return;
         }
-        
-        try{
-            Usuario usuario = UsuarioDAO.buscarUsuarioEmpleado(contraseniaBuscar,
-                usuarioBuscar);
-            if(usuario == null){
-                throw new UsuarioNoEncontradoException("El usuario no ha sido encontrado, "
-                        + "porfavor verifique sus credenciales.");
 
-            }else{
-                
+        try {
+            Usuario usuario = UsuarioDAO.buscarUsuarioEmpleado(usuarioBuscar);
+
+            if (usuario == null || !BCryptHasher.verificarContraseniaHash(contraseniaBuscar, usuario.getContrasenia())) {
+                throw new UsuarioNoEncontradoException("El usuario no ha sido encontrado o la contraseña es incorrecta.");
+            } else {
+                SesionUsuario.setUsuarioActual(usuario);
                 abrirMenuView();
             }
-            
-            
-        }catch(SQLException ex){
-            ex.printStackTrace();
-        }catch(UsuarioNoEncontradoException une){
-            Alerta.mostrarAlertaError("Usuario no encontrado", "El usuario no existe");
+
+        } catch (SQLException ex) {
+            Alerta.mostrarAlertaError("Error de Base de Datos", "Error de conexión.");
+        } catch (UsuarioNoEncontradoException une) {
+            Alerta.mostrarAlertaError("Credenciales inválidas", une.getMessage());
         }
     }
-    
-    private void abrirMenuView() {
 
-        try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource
-                                                ("/pizzeria/pae/vistas/fxml/MenuView.fxml"));
-            Parent vista  = loader.load();
+    private void abrirMenuView() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/pizzeria/pae/vistas/fxml/MenuView.fxml"));
+            Parent vista = loader.load();
             Scene escena = new Scene(vista);
-            
+
             Stage ventana = (Stage) tfUsuario.getScene().getWindow();
             ventana.setScene(escena);
-            ventana.setTitle("Menu");
-            
-
+            ventana.setTitle("Italia Pizza - Menú Principal");
             ventana.show();
-                
-
-        }catch(IOException ex){
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
-    
 }
