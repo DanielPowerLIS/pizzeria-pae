@@ -61,6 +61,7 @@ public class UsuarioFormViewController implements Initializable {
 
         cmbTipoUsuario.valueProperty().addListener((observable, oldValue, newValue) -> {
             boolean requiereCredenciales = "Administrador".equals(newValue);
+
             txtUsername.setDisable(!requiereCredenciales);
             txtPassword.setDisable(!requiereCredenciales);
             if (!requiereCredenciales) {
@@ -131,7 +132,7 @@ public class UsuarioFormViewController implements Initializable {
                 usuario.setHaPedido(false);
             }
 
-            boolean requiereCredenciales = "Administrador".equals(tipo);
+            boolean requiereCredenciales = "Administrador".equals(tipo) || "Cajero".equals(tipo);
             if (requiereCredenciales) {
                 usuario.setNombreUsuario(txtUsername.getText().trim());
                 if (!txtPassword.getText().trim().isEmpty()) {

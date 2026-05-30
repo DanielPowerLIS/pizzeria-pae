@@ -1,5 +1,6 @@
 package pizzeria.pae.vistas.controlador;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.SQLException;
@@ -9,7 +10,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
@@ -17,6 +21,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import pizzeria.pae.modelo.beans.Producto;
 import pizzeria.pae.modelo.dao.ProductoDAO;
 import pizzeria.pae.utilidades.Alerta;
@@ -29,15 +35,19 @@ import pizzeria.pae.utilidades.Alerta;
 public class ProductosViewController implements Initializable {
 
     @FXML
-    private Button btnBuscarProducto;
-    @FXML
     private TextField tfBuscador;
     @FXML
     private RadioButton rdPorNombre;
     @FXML
+    private RadioButton rdConsumo;
+    @FXML
     private ToggleGroup rdBuscador;
     @FXML
     private RadioButton rdPorCodigo;
+    @FXML
+    private ToggleGroup rdTipoProducto;
+    @FXML
+    private RadioButton rdInsumo;
     @FXML
     private TableView<Producto> tvProductos;
     @FXML
@@ -52,12 +62,7 @@ public class ProductosViewController implements Initializable {
     private TableColumn<Producto, String> tcRestricciones;
 
     private ObservableList<Producto> productosObservables;
-    @FXML
-    private RadioButton rdConsumo;
-    @FXML
-    private ToggleGroup rdTipoProducto;
-    @FXML
-    private RadioButton rdInsumo;
+    
     
     /**
      * Initializes the controller class.
@@ -110,7 +115,7 @@ public class ProductosViewController implements Initializable {
     
      private void cargarInformacionCodigo(String codigo, Boolean insumo){
         try{
-            List<Producto> productos = ProductoDAO.buscarProductoPorNombre(codigo, insumo);
+            List<Producto> productos = ProductoDAO.buscarProductoPorCodigo(codigo, insumo);
             if(productos != null){
                 productosObservables = FXCollections.observableArrayList(productos);
                 tvProductos.setItems(productosObservables);
@@ -164,6 +169,20 @@ public class ProductosViewController implements Initializable {
 
     @FXML
     private void clickAgregarProducto(ActionEvent event) {
+        try{
+            Parent vista = FXMLLoader.load(getClass().getResource("/pizzeria/pae/vistas/fxml/ProductoFormView.fxml"));
+            Scene escena = new Scene(vista);
+            
+            Stage ventana = new Stage();
+            ventana.setScene(escena);
+            ventana.setTitle("Formulario de producto.");
+            ventana.initModality(Modality.APPLICATION_MODAL);
+            ventana.showAndWait();
+            
+        }catch(IOException e){
+            e.printStackTrace();
+            Alerta.mostrarAlertaError("Error al cargar", "No se pudo cargar la ventana.");
+        }
     }
 
     @FXML
@@ -176,13 +195,5 @@ public class ProductosViewController implements Initializable {
 
     @FXML
     private void clickGenerarPDF(ActionEvent event) {
-    }
-    
-    private void buscarConsumos(){
-        
-    }
-    
-    private void buscarInsumos(){
-        
     }
 }
