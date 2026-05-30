@@ -22,7 +22,7 @@ public class UsuarioDAO {
         String apellidoMaterno = nombres[2];
 
         String consulta = "SELECT * "
-                + "FROM usuario JOIN direccion ON usuario.idDireccion = direccion.idDireccion "
+                + "FROM usuario JOIN direccion ON usuario.idUsuario = direccion.idUsuario "
                 + "WHERE nombre = ? AND apellidoPaterno = ? AND apellidoMaterno = ?";
 
         MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();

@@ -2,10 +2,6 @@ package pizzeria.pae.utilidades;
 
 import pizzeria.pae.modelo.beans.Usuario;
 
-/**
- *
- * @author Gabriel Hernández Martínez
- */
 public class SesionUsuario {
 
     private static Usuario usuarioActual;
