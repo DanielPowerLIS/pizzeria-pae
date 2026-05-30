@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 import pizzeria.pae.modelo.beans.Usuario;
 import pizzeria.pae.modelo.dao.UsuarioDAO;
 import pizzeria.pae.utilidades.Alerta;
+import pizzeria.pae.utilidades.SesionUsuario;
 
 public class UsuariosViewController implements Initializable {
 
@@ -71,15 +72,9 @@ public class UsuariosViewController implements Initializable {
     }
 
     private void configurarTabla() {
-        colNombre.setCellValueFactory(cellData
-                -> new SimpleStringProperty(cellData.getValue().getNombreCompleto())
-        );
-        colTelefono.setCellValueFactory(cellData
-                -> new SimpleStringProperty(cellData.getValue().getTelefono())
-        );
-        colEmail.setCellValueFactory(cellData
-                -> new SimpleStringProperty(cellData.getValue().getEmail())
-        );
+        colNombre.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNombreCompleto()));
+        colTelefono.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTelefono()));
+        colEmail.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEmail()));
         colDireccion.setCellValueFactory(cellData -> {
             if (cellData.getValue().getDireccion() != null) {
                 return new SimpleStringProperty(cellData.getValue().getDireccion().getCalle() + " " + cellData.getValue().getDireccion().getNumero());
@@ -118,15 +113,13 @@ public class UsuariosViewController implements Initializable {
 
             List<Usuario> usuariosFiltrados = listaTotal.stream()
                     .filter(Usuario::getEsActivo)
-                    .filter(u -> {
+                    .filter(usr -> {
                         if (textoBusqueda.isEmpty()) {
                             return true;
                         }
-
-                        boolean coincideNombre = u.getNombreCompleto() != null && u.getNombreCompleto().toLowerCase().contains(textoBusqueda);
-                        boolean coincideTel = u.getTelefono() != null && u.getTelefono().contains(textoBusqueda);
-                        boolean coincideDir = u.getDireccion() != null && u.getDireccion().getCalle().toLowerCase().contains(textoBusqueda);
-
+                        boolean coincideNombre = usr.getNombreCompleto() != null && usr.getNombreCompleto().toLowerCase().contains(textoBusqueda);
+                        boolean coincideTel = usr.getTelefono() != null && usr.getTelefono().contains(textoBusqueda);
+                        boolean coincideDir = usr.getDireccion() != null && usr.getDireccion().toString().toLowerCase().contains(textoBusqueda);
                         return coincideNombre || coincideTel || coincideDir;
                     })
                     .collect(Collectors.toList());
@@ -134,11 +127,7 @@ public class UsuariosViewController implements Initializable {
             tblUsuarios.setItems(FXCollections.observableArrayList(usuariosFiltrados));
 
         } catch (SQLException ex) {
-            Alerta.mostrarAlertaError(
-                    "Ocurrió un error con la base de datos",
-                    "No se pudo recuperar la lista de usuarios. Inténtalo de nuevo más tarde."
-            );
-            ex.printStackTrace();
+            Alerta.mostrarAlertaError("Error de base de datos", "No se pudo recuperar la lista de usuarios.");
         }
     }
 
@@ -148,7 +137,7 @@ public class UsuariosViewController implements Initializable {
         if (esEdicion) {
             usuarioSeleccionado = tblUsuarios.getSelectionModel().getSelectedItem();
             if (usuarioSeleccionado == null) {
-                Alerta.mostrarAlertaAdvertencia("Selección requerida", "Por favor, seleccione un usuario de la tabla para poder editarlo.");
+                Alerta.mostrarAlertaAdvertencia("Selección requerida", "Por favor, seleccione un usuario.");
                 return;
             }
         }
@@ -166,45 +155,43 @@ public class UsuariosViewController implements Initializable {
             stage.setTitle(esEdicion ? "Editar Usuario" : "Nuevo Usuario");
             stage.setScene(new Scene(root));
             stage.setResizable(false);
-
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initOwner(btnAgregarUsuario.getScene().getWindow());
-
             stage.showAndWait();
 
             cargarDatosTabla();
 
         } catch (IOException e) {
-            Alerta.mostrarAlertaError(
-                    "Ocurrió un error al cargar la ventana de formulario",
-                    "No se pudo abrir el formulario de usuarios."
-            );
-            e.printStackTrace();
+            Alerta.mostrarAlertaError("Error", "No se pudo abrir el formulario.");
         }
     }
 
     private void eliminarUsuario() {
         Usuario usuarioSeleccionado = tblUsuarios.getSelectionModel().getSelectedItem();
         if (usuarioSeleccionado == null) {
-            Alerta.mostrarAlertaAdvertencia("Selección requerida", "Por favor, seleccione un usuario de la tabla para poder eliminarlo.");
+            Alerta.mostrarAlertaAdvertencia("Selección requerida", "Seleccione un usuario para eliminar.");
             return;
         }
 
         if (usuarioSeleccionado.getHaPedido()) {
-            Alerta.mostrarAlertaError("Acción denegada", "No es posible eliminar a un cliente que tiene historial de pedidos.");
+            Alerta.mostrarAlertaError("Acción denegada", "No es posible eliminar a un cliente con historial de pedidos.");
+            return;
+        }
+
+        Usuario sesionActiva = SesionUsuario.getUsuarioActual();
+        if (sesionActiva != null && usuarioSeleccionado.getIdUsuario() == sesionActiva.getIdUsuario()) {
+            Alerta.mostrarAlertaError("Acción denegada", "No puedes eliminar tu propia cuenta mientras estás en sesión.");
             return;
         }
 
         try {
-            usuarioSeleccionado.setEsActivo(false);
-            if (UsuarioDAO.actualizarUsuario(usuarioSeleccionado)) {
+            if (UsuarioDAO.eliminarUsuario(usuarioSeleccionado.getIdUsuario())) {
                 Alerta.mostrarAlertaInformacion("Usuario Eliminado", "El usuario fue dado de baja exitosamente.");
                 cargarDatosTabla();
             } else {
-                Alerta.mostrarAlertaError("Error", "No se pudo eliminar al usuario de la base de datos.");
+                Alerta.mostrarAlertaError("Error", "No se pudo eliminar al usuario.");
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
             Alerta.mostrarAlertaError("Error de Base de Datos", "Ocurrió un problema al intentar procesar la baja.");
         }
     }
