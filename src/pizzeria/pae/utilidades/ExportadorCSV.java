@@ -20,7 +20,10 @@ public class ExportadorCSV extends Exportador<Pedido>{
         try {
             writer = new PrintWriter(ruta);
         } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
+            throw new RuntimeException(
+                    "No se pudo crear el archivo CSV",
+                    ex
+            );
         }
     }
 
