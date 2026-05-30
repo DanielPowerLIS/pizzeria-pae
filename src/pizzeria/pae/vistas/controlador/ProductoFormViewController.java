@@ -31,7 +31,6 @@ import pizzeria.pae.modelo.beans.Producto;
 import pizzeria.pae.modelo.dao.ProductoDAO;
 import pizzeria.pae.utilidades.Alerta;
 import pizzeria.pae.utilidades.ConfigurarSoloNumeros;
-import pizzeria.pae.utilidades.UtilidadesUI;
 
 /**
  * @author Adair Alejandro Martinez Alejo
