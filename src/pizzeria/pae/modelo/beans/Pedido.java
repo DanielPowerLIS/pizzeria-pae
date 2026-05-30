@@ -63,7 +63,11 @@ public class Pedido {
     public Usuario getCliente() {
         return cliente;
     }
-
+    
+    public String getNombreCliente() {
+        return this.cliente.getNombreCompleto();
+    }
+    
     public void setCliente(Usuario cliente) {
         this.cliente = cliente;
     }
