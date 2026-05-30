@@ -13,7 +13,6 @@ import pizzeria.pae.modelo.beans.Direccion;
 import pizzeria.pae.modelo.beans.Pedido;
 import pizzeria.pae.modelo.beans.Producto;
 import pizzeria.pae.modelo.beans.Usuario;
-import pizzeria.pae.utilidades.ConvertidorNombre;
 
 /**
  *
@@ -25,7 +24,7 @@ public class PedidoDAO {
         String consulta = "SELECT "
                 + "p.idPedido, p.fecha, p.estado, p.totalAPagar, "
                 + "u.idUsuario, u.nombre, u.apellidoPaterno, u.apellidoMaterno, u.telefono, "
-                + "u.email, u.haPedido, u.esEmpleado, u.esActivo, u.nombreUsuario, u.contrasenia, "
+                + "u.email, u.haPedido, u.esEmpleado, u.esActivo, u.eliminado, u.nombreUsuario, u.contrasenia, u.rol, "
                 + "d.idDireccion, d.calle, d.ciudad, d.numero, d.codigoPostal "
                 + "FROM pedido p "
                 + "INNER JOIN usuario u ON p.idUsuario = u.idUsuario "
@@ -67,8 +66,10 @@ public class PedidoDAO {
                 u.setHaPedido(resultado.getBoolean("haPedido"));
                 u.setEsEmpleado(resultado.getBoolean("esEmpleado"));
                 u.setEsActivo(resultado.getBoolean("esActivo"));
+                u.setEliminado(resultado.getBoolean("eliminado"));
                 u.setNombreUsuario(resultado.getString("nombreUsuario"));
                 u.setContrasenia(resultado.getString("contrasenia"));
+                u.setRol(resultado.getString("rol"));
 
                 u.setDireccion(d);
                 p.setCliente(u);
@@ -139,7 +140,7 @@ public class PedidoDAO {
         String consulta = "SELECT "
                 + "p.idPedido, p.fecha, p.estado, p.totalAPagar, "
                 + "u.idUsuario, u.nombre, u.apellidoPaterno, u.apellidoMaterno, u.telefono, "
-                + "u.email, u.haPedido, u.esEmpleado, u.esActivo, u.nombreUsuario, u.contrasenia, "
+                + "u.email, u.haPedido, u.esEmpleado, u.esActivo, u.eliminado, u.nombreUsuario, u.contrasenia, u.rol, "
                 + "d.idDireccion, d.calle, d.ciudad, d.numero, d.codigoPostal "
                 + "FROM pedido p "
                 + "INNER JOIN usuario u ON p.idUsuario = u.idUsuario "
@@ -181,8 +182,10 @@ public class PedidoDAO {
                 u.setHaPedido(resultado.getBoolean("haPedido"));
                 u.setEsEmpleado(resultado.getBoolean("esEmpleado"));
                 u.setEsActivo(resultado.getBoolean("esActivo"));
+                u.setEliminado(resultado.getBoolean("eliminado"));
                 u.setNombreUsuario(resultado.getString("nombreUsuario"));
                 u.setContrasenia(resultado.getString("contrasenia"));
+                u.setRol(resultado.getString("rol"));
 
                 u.setDireccion(d);
                 p.setCliente(u);
@@ -199,86 +202,89 @@ public class PedidoDAO {
 
         return pedidos;
     }
-    
+
     public static List<Pedido> buscarPedidosPorUsuario(String textoBusqueda)
-         throws SQLException {
+            throws SQLException {
 
-     String consulta =
-             "SELECT " +
-             "p.idPedido, p.fecha, p.estado, p.totalAPagar, " +
-             "u.idUsuario, u.nombre, u.apellidoPaterno, u.apellidoMaterno, u.telefono, " +
-             "u.email, u.haPedido, u.esEmpleado, u.esActivo, u.nombreUsuario, u.contrasenia, " +
-             "d.idDireccion, d.calle, d.ciudad, d.numero, d.codigoPostal " +
-             "FROM pedido p " +
-             "INNER JOIN usuario u ON p.idUsuario = u.idUsuario " +
-             "INNER JOIN direccion d ON u.idUsuario = d.idUsuario " +
-             "WHERE CONCAT(u.nombre, ' ', u.apellidoPaterno, ' ', u.apellidoMaterno) LIKE ?";
+        String consulta
+                = "SELECT "
+                + "p.idPedido, p.fecha, p.estado, p.totalAPagar, "
+                + "u.idUsuario, u.nombre, u.apellidoPaterno, u.apellidoMaterno, u.telefono, "
+                + "u.email, u.haPedido, u.esEmpleado, u.esActivo, u.eliminado, u.nombreUsuario, u.contrasenia, u.rol, "
+                + "d.idDireccion, d.calle, d.ciudad, d.numero, d.codigoPostal "
+                + "FROM pedido p "
+                + "INNER JOIN usuario u ON p.idUsuario = u.idUsuario "
+                + "INNER JOIN direccion d ON u.idUsuario = d.idUsuario "
+                + "WHERE CONCAT(u.nombre, ' ', u.apellidoPaterno, ' ', u.apellidoMaterno) LIKE ?";
 
-     MySQLConnectionManager conexion =
-             MySQLConnectionManager.buildConnection();
+        MySQLConnectionManager conexion
+                = MySQLConnectionManager.buildConnection();
 
-     PreparedStatement sentenciaBD =
-             conexion.prepareStatement(consulta);
+        PreparedStatement sentenciaBD
+                = conexion.prepareStatement(consulta);
 
-     sentenciaBD.setString(
-             1,
-             "%" + textoBusqueda + "%"
-     );
+        sentenciaBD.setString(
+                1,
+                "%" + textoBusqueda + "%"
+        );
 
-     ResultSet resultado = sentenciaBD.executeQuery();
+        ResultSet resultado = sentenciaBD.executeQuery();
 
-     List<Pedido> pedidos = new ArrayList<>();
+        List<Pedido> pedidos = new ArrayList<>();
 
-     while (resultado.next()) {
+        while (resultado.next()) {
 
-         Pedido p = new Pedido();
+            Pedido p = new Pedido();
 
-         p.setIdPedido(resultado.getInt("idPedido"));
-         p.setFecha(resultado.getDate("fecha").toLocalDate());
-         p.setEstado(resultado.getString("estado"));
-         p.setTotal(resultado.getBigDecimal("totalAPagar"));
+            p.setIdPedido(resultado.getInt("idPedido"));
+            p.setFecha(resultado.getDate("fecha").toLocalDate());
+            p.setEstado(resultado.getString("estado"));
+            p.setTotal(resultado.getBigDecimal("totalAPagar"));
 
-         Direccion d = new Direccion();
-         d.setIdDireccion(resultado.getInt("idDireccion"));
-         d.setCalle(resultado.getString("calle"));
-         d.setCiudad(resultado.getString("ciudad"));
-         d.setNumero(resultado.getString("numero"));
-         d.setCodigoPostal(resultado.getString("codigoPostal"));
+            Direccion d = new Direccion();
+            d.setIdDireccion(resultado.getInt("idDireccion"));
+            d.setCalle(resultado.getString("calle"));
+            d.setCiudad(resultado.getString("ciudad"));
+            d.setNumero(resultado.getString("numero"));
+            d.setCodigoPostal(resultado.getString("codigoPostal"));
 
-         Usuario u = new Usuario();
-         u.setIdUsuario(resultado.getInt("idUsuario"));
-         u.setNombre(resultado.getString("nombre"));
-         u.setApellidoPaterno(resultado.getString("apellidoPaterno"));
-         u.setApellidoMaterno(resultado.getString("apellidoMaterno"));
-         u.setTelefono(resultado.getString("telefono"));
-         u.setEmail(resultado.getString("email"));
-         u.setHaPedido(resultado.getBoolean("haPedido"));
-         u.setEsEmpleado(resultado.getBoolean("esEmpleado"));
-         u.setEsActivo(resultado.getBoolean("esActivo"));
-         u.setNombreUsuario(resultado.getString("nombreUsuario"));
-         u.setContrasenia(resultado.getString("contrasenia"));
+            Usuario u = new Usuario();
+            u.setIdUsuario(resultado.getInt("idUsuario"));
+            u.setNombre(resultado.getString("nombre"));
+            u.setApellidoPaterno(resultado.getString("apellidoPaterno"));
+            u.setApellidoMaterno(resultado.getString("apellidoMaterno"));
+            u.setTelefono(resultado.getString("telefono"));
+            u.setEmail(resultado.getString("email"));
+            u.setHaPedido(resultado.getBoolean("haPedido"));
+            u.setEsEmpleado(resultado.getBoolean("esEmpleado"));
+            u.setEsActivo(resultado.getBoolean("esActivo"));
+            u.setEliminado(resultado.getBoolean("eliminado"));
+            u.setNombreUsuario(resultado.getString("nombreUsuario"));
+            u.setContrasenia(resultado.getString("contrasenia"));
+            u.setRol(resultado.getString("rol"));
 
-         u.setDireccion(d);
-         p.setCliente(u);
+            u.setDireccion(d);
+            p.setCliente(u);
 
-         p.setDetallePedido(
-                 obtenerDetalles(p.getIdPedido())
-         );
+            p.setDetallePedido(
+                    obtenerDetalles(p.getIdPedido())
+            );
 
-         pedidos.add(p);
-     }
+            pedidos.add(p);
+        }
 
-     resultado.close();
-     sentenciaBD.close();
-     conexion.close();
+        resultado.close();
+        sentenciaBD.close();
+        conexion.close();
 
-     return pedidos;
- }
+        return pedidos;
+    }
+
     public static List<Pedido> obtenerPedidos() throws SQLException {
         String consulta = "SELECT "
                 + "p.idPedido, p.fecha, p.estado, p.totalAPagar, "
                 + "u.idUsuario, u.nombre, u.apellidoPaterno, u.apellidoMaterno, u.telefono, "
-                + "u.email, u.haPedido, u.esEmpleado, u.esActivo, u.nombreUsuario, u.contrasenia, "
+                + "u.email, u.haPedido, u.esEmpleado, u.esActivo, u.eliminado, u.nombreUsuario, u.contrasenia, u.rol, "
                 + "d.idDireccion, d.calle, d.ciudad, d.numero, d.codigoPostal "
                 + "FROM pedido p "
                 + "INNER JOIN usuario u ON p.idUsuario = u.idUsuario "
@@ -317,8 +323,10 @@ public class PedidoDAO {
                 u.setHaPedido(resultado.getBoolean("haPedido"));
                 u.setEsEmpleado(resultado.getBoolean("esEmpleado"));
                 u.setEsActivo(resultado.getBoolean("esActivo"));
+                u.setEliminado(resultado.getBoolean("eliminado"));
                 u.setNombreUsuario(resultado.getString("nombreUsuario"));
                 u.setContrasenia(resultado.getString("contrasenia"));
+                u.setRol(resultado.getString("rol"));
 
                 u.setDireccion(d);
                 p.setCliente(u);

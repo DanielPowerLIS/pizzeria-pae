@@ -15,11 +15,6 @@ import javafx.stage.Stage;
 import pizzeria.pae.modelo.beans.Usuario;
 import pizzeria.pae.utilidades.SesionUsuario;
 
-/**
- * Controlador del meú principal que gestiona la navegación entre las diferentes
- * vistas
- *
- */
 public class MenuViewController implements Initializable {
 
     @FXML
@@ -34,10 +29,10 @@ public class MenuViewController implements Initializable {
     private Button btnPedidos;
     @FXML
     private Button btnAcercaDe;
+
     @FXML
-    private Label lblUsuario;
-    @FXML
-    private Label lblRol;
+    private Label lbUsuario;
+
     @FXML
     private StackPane panelCentral;
 
@@ -52,8 +47,7 @@ public class MenuViewController implements Initializable {
 
         Usuario usr = SesionUsuario.getUsuarioActual();
         if (usr != null) {
-            lblUsuario.setText("Sesión: " + usr.getNombreUsuario());
-            lblRol.setText("Rol: " + usr.getRol());
+            lbUsuario.setText("Sesión: " + usr.getNombreUsuario() + " | Rol: " + usr.getRol());
 
             if ("Cajero".equals(usr.getRol())) {
                 btnModuloUsuarios.setDisable(true);
