@@ -304,9 +304,30 @@ public class ProductoDAO {
         }
     }
     
-    public static Boolean utilizarProducto(List<DetallePedido> detalles){
+    public static Boolean utilizarProducto(List<DetallePedido> detalles)throws SQLException{
+        if (detalles == null || detalles.isEmpty()) {
+            return false;
+        }
+
+        String consulta = "UPDATE producto SET esUtilizado = 1 WHERE idProducto = ? AND esUtilizado = 0";
         
+        try( MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
+             PreparedStatement sentenciaBD = conexion.prepareStatement(consulta) ){
+            
+
+            for (DetallePedido detalle : detalles) {
+                sentenciaBD.setInt(1, detalle.getProducto().getIdProducto());
+                sentenciaBD.addBatch(); 
+            }
+            
+            int[] resultados = sentenciaBD.executeBatch();
+            
+            for (int res : resultados) {
+                if (res > 0) return true;
+            }
+            
+            return false;
+        }
         
-        return false;
     }
 }
