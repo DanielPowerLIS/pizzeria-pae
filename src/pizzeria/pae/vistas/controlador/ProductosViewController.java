@@ -291,9 +291,13 @@ public class ProductosViewController implements Initializable {
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 Alerta.mostrarAlertaError("Error de base de datos", "No se pudo obtener la información de los productos.");
-            } catch (Exception ex) { 
+            } catch (IOException ex) {
                 ex.printStackTrace();
-                Alerta.mostrarAlertaError("Error al generar PDF", "Hubo un problema al exportar el archivo.");
+                Alerta.mostrarAlertaError("Error de apertura", "El reporte se creó, pero no se pudo abrir automáticamente.");
+                
+            } catch (RuntimeException ex) {
+                ex.printStackTrace();
+                Alerta.mostrarAlertaError("Error al generar PDF", "Hubo un problema al construir el documento.");
             }
         }
     }
