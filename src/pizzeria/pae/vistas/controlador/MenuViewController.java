@@ -31,7 +31,9 @@ public class MenuViewController implements Initializable {
     private Button btnAcercaDe;
 
     @FXML
-    private Label lbUsuario;
+    private Label lblUsuario;
+    @FXML
+    private Label lblRol;
 
     @FXML
     private StackPane panelCentral;
@@ -47,7 +49,8 @@ public class MenuViewController implements Initializable {
 
         Usuario usr = SesionUsuario.getUsuarioActual();
         if (usr != null) {
-            lbUsuario.setText("Sesión: " + usr.getNombreUsuario() + " | Rol: " + usr.getRol());
+            lblUsuario.setText("Sesión: " + usr.getNombreUsuario());
+            lblRol.setText("Rol: " + usr.getRol());
 
             if ("Cajero".equals(usr.getRol())) {
                 btnModuloUsuarios.setDisable(true);
