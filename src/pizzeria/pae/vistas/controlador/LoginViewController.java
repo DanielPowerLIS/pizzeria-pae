@@ -49,39 +49,13 @@ public class LoginViewController implements Initializable {
         try {
             Usuario usuario = UsuarioDAO.buscarUsuarioEmpleado(usuarioBuscar);
 
-            System.out.println("=== LOGIN DEBUG ===");
-            System.out.println("Usuario ingresado: " + usuarioBuscar);
-
-            if (usuario == null) {
-                System.out.println("Usuario NO encontrado en la BD");
-            } else {
-                System.out.println("Usuario encontrado");
-                System.out.println("Nombre usuario BD: " + usuario.getNombreUsuario());
-                System.out.println("Hash guardado: " + usuario.getContrasenia());
-                System.out.println("Rol: " + usuario.getRol());
-                System.out.println("Es empleado: " + usuario.getEsEmpleado());
-                System.out.println("Eliminado: " + usuario.getEliminado());
-
-                boolean coincide = BCryptHasher.verificarContraseniaHash(
-                        contraseniaBuscar,
-                        usuario.getContrasenia()
-                );
-
-                System.out.println("Contraseña coincide: " + coincide);
-                System.out.println("Password ingresada: [" + contraseniaBuscar + "]");
-                System.out.println(
-                        BCryptHasher.generarContraseniaHash("admin123")
-                );
-                System.out.println("Contraseña coincide: " + coincide);
-                System.out.println("Password ingresada: [" + contraseniaBuscar + "]");
-            }
-
             if (usuario == null || !BCryptHasher.verificarContraseniaHash(contraseniaBuscar, usuario.getContrasenia())) {
                 throw new UsuarioNoEncontradoException("El usuario no ha sido encontrado o la contraseña es incorrecta.");
             } else {
                 SesionUsuario.setUsuarioActual(usuario);
                 abrirMenuView();
             }
+
         } catch (SQLException ex) {
             Alerta.mostrarAlertaError("Error de Base de Datos", "Error de conexión.");
         } catch (UsuarioNoEncontradoException une) {
