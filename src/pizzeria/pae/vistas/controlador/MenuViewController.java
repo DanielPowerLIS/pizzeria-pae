@@ -38,7 +38,6 @@ public class MenuViewController implements Initializable {
     @FXML
     private StackPane panelCentral;
 
-    // --- NUEVAS VARIABLES PARA OCULTAR ---
     @FXML
     private Separator sepAdmin;
     @FXML
@@ -67,10 +66,8 @@ public class MenuViewController implements Initializable {
             lbUsuario.setText("Sesión: " + identificador);
             lblRol.setText("Rol: " + usr.getRol());
 
-            // Restricción para todos los que NO son Administradores (Cajeros)
             if (!"Administrador".equals(usr.getRol())) {
 
-                // Ocultar Módulo Usuarios y su etiqueta/separador
                 sepAdmin.setVisible(false);
                 sepAdmin.setManaged(false);
                 lblAdmin.setVisible(false);
@@ -78,7 +75,6 @@ public class MenuViewController implements Initializable {
                 btnModuloUsuarios.setVisible(false);
                 btnModuloUsuarios.setManaged(false);
 
-                // Ocultar Módulo Inventarios y su etiqueta/separador
                 sepInventario.setVisible(false);
                 sepInventario.setManaged(false);
                 lblInventario.setVisible(false);
@@ -88,7 +84,6 @@ public class MenuViewController implements Initializable {
                 btnValidacion.setVisible(false);
                 btnValidacion.setManaged(false);
 
-                // Ocultar el separador superior de Pedidos para que quede pegado arriba
                 sepPedidos.setVisible(false);
                 sepPedidos.setManaged(false);
             }
@@ -125,6 +120,11 @@ public class MenuViewController implements Initializable {
 
     private void cerrarSesion() {
         try {
+            Usuario usrActual = SesionUsuario.getUsuarioActual();
+            if (usrActual != null) {
+                pizzeria.pae.modelo.dao.UsuarioDAO.cambiarEstadoSesion(usrActual.getIdUsuario(), false);
+            }
+
             SesionUsuario.limpiarSesion();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/pizzeria/pae/vistas/fxml/LoginView.fxml"));
             Parent root = loader.load();
@@ -133,7 +133,7 @@ public class MenuViewController implements Initializable {
             stage.setScene(new Scene(root));
             stage.setTitle("Italia Pizza");
             stage.centerOnScreen();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

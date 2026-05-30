@@ -16,8 +16,6 @@ import pizzeria.pae.modelo.dao.UsuarioDAO;
 import pizzeria.pae.utilidades.Alerta;
 import pizzeria.pae.utilidades.seguridad.BCryptHasher;
 
-/**
- */
 public class UsuarioFormViewController implements Initializable {
 
     @FXML
@@ -92,15 +90,13 @@ public class UsuarioFormViewController implements Initializable {
             txtCodigoPostal.setText(usuario.getDireccion().getCodigoPostal());
         }
 
-        if (!usuario.getEsEmpleado()) {
-            cmbTipoUsuario.setValue("Cliente");
-        } else {
-            if (usuario.getNombreUsuario() != null && !usuario.getNombreUsuario().trim().isEmpty()) {
-                cmbTipoUsuario.setValue("Administrador");
-                txtUsername.setText(usuario.getNombreUsuario());
-            } else {
-                cmbTipoUsuario.setValue("Cajero");
-            }
+        // Asignación directa del rol guardado en base de datos
+        if (usuario.getRol() != null && !usuario.getRol().isEmpty()) {
+            cmbTipoUsuario.setValue(usuario.getRol());
+        }
+
+        if (usuario.getEsEmpleado() && usuario.getNombreUsuario() != null) {
+            txtUsername.setText(usuario.getNombreUsuario());
         }
     }
 
@@ -137,7 +133,16 @@ public class UsuarioFormViewController implements Initializable {
 
             boolean requiereCredenciales = "Administrador".equals(tipo) || "Cajero".equals(tipo);
             if (requiereCredenciales) {
-                usuario.setNombreUsuario(txtUsername.getText().trim());
+                String nuevoUsername = txtUsername.getText().trim();
+
+                // Validación para evitar usuarios duplicados
+                int idActual = esEdicion ? usuarioActual.getIdUsuario() : -1;
+                if (UsuarioDAO.existeNombreUsuario(nuevoUsername, idActual)) {
+                    Alerta.mostrarAlertaError("Usuario Duplicado", "El nombre de usuario '" + nuevoUsername + "' ya está en uso por otro empleado.");
+                    return;
+                }
+
+                usuario.setNombreUsuario(nuevoUsername);
                 if (!txtPassword.getText().trim().isEmpty()) {
                     String hash = BCryptHasher.generarContraseniaHash(txtPassword.getText().trim());
                     usuario.setContrasenia(hash);
@@ -182,7 +187,7 @@ public class UsuarioFormViewController implements Initializable {
             return false;
         }
 
-        boolean requiereCredenciales = "Administrador".equals(cmbTipoUsuario.getValue());
+        boolean requiereCredenciales = "Administrador".equals(cmbTipoUsuario.getValue()) || "Cajero".equals(cmbTipoUsuario.getValue());
         if (!txtEmail.getText().contains("@") || !txtEmail.getText().contains(".")) {
             Alerta.mostrarAlertaAdvertencia("Email inválido", "Por favor, ingrese un correo electrónico válido.");
             return false;
@@ -190,11 +195,11 @@ public class UsuarioFormViewController implements Initializable {
 
         if (requiereCredenciales) {
             if (txtUsername.getText().trim().isEmpty()) {
-                Alerta.mostrarAlertaAdvertencia("Campos incompletos", "Debe asignar un nombre de usuario al administrador.");
+                Alerta.mostrarAlertaAdvertencia("Campos incompletos", "Debe asignar un nombre de usuario al empleado.");
                 return false;
             }
             if (!esEdicion && txtPassword.getText().trim().isEmpty()) {
-                Alerta.mostrarAlertaAdvertencia("Contraseña vacía", "Debe asignar una contraseña al nuevo administrador.");
+                Alerta.mostrarAlertaAdvertencia("Contraseña vacía", "Debe asignar una contraseña al nuevo empleado.");
                 return false;
             }
             if (!txtPassword.getText().trim().isEmpty() && txtPassword.getText().length() < 6) {

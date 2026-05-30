@@ -25,7 +25,6 @@ import javafx.stage.Stage;
 import pizzeria.pae.modelo.beans.Usuario;
 import pizzeria.pae.modelo.dao.UsuarioDAO;
 import pizzeria.pae.utilidades.Alerta;
-import pizzeria.pae.utilidades.SesionUsuario;
 
 public class UsuariosViewController implements Initializable {
 
@@ -112,7 +111,6 @@ public class UsuariosViewController implements Initializable {
             String textoBusqueda = txtBuscarUsuario.getText() != null ? txtBuscarUsuario.getText().toLowerCase() : "";
 
             List<Usuario> usuariosFiltrados = listaTotal.stream()
-                    .filter(Usuario::getEsActivo)
                     .filter(usr -> {
                         if (textoBusqueda.isEmpty()) {
                             return true;
@@ -178,9 +176,8 @@ public class UsuariosViewController implements Initializable {
             return;
         }
 
-        Usuario sesionActiva = SesionUsuario.getUsuarioActual();
-        if (sesionActiva != null && usuarioSeleccionado.getIdUsuario() == sesionActiva.getIdUsuario()) {
-            Alerta.mostrarAlertaError("Acción denegada", "No puedes eliminar tu propia cuenta mientras estás en sesión.");
+        if (usuarioSeleccionado.getEsActivo()) {
+            Alerta.mostrarAlertaError("Acción denegada", "No es posible eliminar a este usuario porque tiene la sesión activa.");
             return;
         }
 
