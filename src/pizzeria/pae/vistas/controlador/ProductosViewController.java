@@ -179,8 +179,6 @@ public class ProductosViewController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/pizzeria/pae/vistas/fxml/ProductoFormView.fxml"));
             Parent vista = loader.load();
             
-            ProductoFormViewController controlador = loader.getController();
-            
             Scene escena = new Scene(vista);
             
             Stage ventana = new Stage();
@@ -188,16 +186,12 @@ public class ProductosViewController implements Initializable {
             ventana.setTitle("Formulario de producto.");
             ventana.initModality(Modality.APPLICATION_MODAL);
             ventana.showAndWait();
+
+            cargarInfomracionGeneral(rdInsumo.isSelected());
             
-            Producto nuevo = controlador.obtenerProductoNuevo();
+            rdPorCodigo.setSelected(false);
+            rdPorNombre.setSelected(false);
             
-            if(nuevo != null){
-                if(nuevo.getEsInsumo() == rdInsumo.isSelected()){
-                    productosObservables.add(nuevo);
-                }
-            }
-            
-            tvProductos.refresh();
         }catch(IOException e){
             e.printStackTrace();
             Alerta.mostrarAlertaError("Error al cargar", "No se pudo cargar la ventana.");
