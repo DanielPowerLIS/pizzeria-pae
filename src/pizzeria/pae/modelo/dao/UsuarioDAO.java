@@ -70,17 +70,30 @@ public class UsuarioDAO {
         return usuario;
     }
 
-    public static Usuario buscarUsuarioEmpleado(String contrasenia, String usuario) throws SQLException {
-        Usuario usr = new Usuario();
-        String consulta = "SELECT * FROM usuario WHERE contrasenia = ?"
-                + " AND nombreUsuario = ? AND esEmpleado = ? AND eliminado = 0; ";
+    public static Usuario buscarUsuarioEmpleado(String contrasenia,
+                                                String usuario) throws SQLException {
+        Usuario usr = null;
+        String consulta =
+                "SELECT * FROM usuario "
+                + "WHERE contrasenia = ? "
+                + "AND nombreUsuario = ? "
+                + "AND esEmpleado = ? "
+                + "AND eliminado = 0";
+
         try (
-                MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection(); PreparedStatement sentencia = conexion.prepareStatement(consulta);) {
-            sentencia.setString(2, usuario);
+            MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
+            PreparedStatement sentencia = conexion.prepareStatement(consulta);
+        ) {
+
             sentencia.setString(1, contrasenia);
+            sentencia.setString(2, usuario);
             sentencia.setBoolean(3, true);
+
             ResultSet resultado = sentencia.executeQuery();
+
             if (resultado.next()) {
+
+                usr = new Usuario();
 
                 usr.setIdUsuario(resultado.getInt("idUsuario"));
                 usr.setApellidoMaterno(resultado.getString("apellidoMaterno"));
@@ -89,12 +102,13 @@ public class UsuarioDAO {
                 usr.setTelefono(resultado.getString("telefono"));
                 usr.setEmail(resultado.getString("email"));
                 usr.setHaPedido(resultado.getBoolean("haPedido"));
-                usr.setEsEmpleado(true);
-                usr.setEsActivo(true);
-                usr.setEliminado(false);
-                usr.setNombreUsuario(usuario);
-                usr.setContrasenia("");
+                usr.setEsEmpleado(resultado.getBoolean("esEmpleado"));
+                usr.setEsActivo(resultado.getBoolean("esActivo"));
+                usr.setEliminado(resultado.getBoolean("eliminado"));
+                usr.setNombreUsuario(resultado.getString("nombreUsuario"));
+
             }
+
             return usr;
         }
     }

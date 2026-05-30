@@ -46,7 +46,7 @@ public class LoginViewController implements Initializable {
         
         String usuarioBuscar = tfUsuario.getText().trim();
         String contraseniaBuscar = tfPassword.getText().trim();
-        if(usuarioBuscar.isEmpty() && contraseniaBuscar.isEmpty()){
+        if(usuarioBuscar.isEmpty() || contraseniaBuscar.isEmpty()){
             Alerta.mostrarAlertaAdvertencia("Campos vacíos",
                     "Tiene que ingresar un usuario y/o contraseña");
             return;
