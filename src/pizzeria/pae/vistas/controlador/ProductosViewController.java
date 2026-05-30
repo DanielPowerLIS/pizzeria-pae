@@ -23,6 +23,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import pizzeria.pae.excepciones.ProductoUtilizadoException;
 import pizzeria.pae.modelo.beans.Producto;
 import pizzeria.pae.modelo.dao.ProductoDAO;
 import pizzeria.pae.utilidades.Alerta;
@@ -235,7 +236,18 @@ public class ProductosViewController implements Initializable {
     private void clickEliminarProducto(ActionEvent event) {
          Producto productoSeleccionado = productoSeleccionado();
         if(productoSeleccionado != null){
-            
+            try{
+                if(ProductoDAO.eliminarProducto(productoSeleccionado.getIdProducto())){
+                    Alerta.mostrarAlertaInformacion("Eliminación exitosa", "Se eliminó correctamente el producto.");
+                    cargarInfomracionGeneral(productoSeleccionado.getEsInsumo());
+                    rdPorCodigo.setSelected(false);
+                    rdPorNombre.setSelected(false);
+                }
+            }catch(SQLException e){
+                Alerta.mostrarAlertaError("Error de conexión", "No se pudo realizar la eliminación.");
+            }catch(ProductoUtilizadoException ex){
+                Alerta.mostrarAlertaError("Eliminación cancelada", ex.getMessage());
+            }
         }else{
             Alerta.mostrarAlertaAdvertencia("Producto no seleccionado", "Debe seleccionar un producto.");
         }
