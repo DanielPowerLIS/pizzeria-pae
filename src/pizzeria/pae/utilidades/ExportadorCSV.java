@@ -26,7 +26,7 @@ public class ExportadorCSV extends Exportador<Pedido>{
 
     @Override
     protected void escribirCabecera() {
-        writer.println("Nombre del cliente,Item,Cantidad,Subtotal,Total");
+        writer.println("Nombre del cliente, Apellido Paterno, Apellido Materno, Item, Cantidad, Subtotal, Total");
         
     }
 
@@ -36,6 +36,8 @@ public class ExportadorCSV extends Exportador<Pedido>{
             for(DetallePedido dp : p.getDetallePedido()) {
                 writer.println(
                         p.getCliente().getNombre() + "," +
+                        p.getCliente().getApellidoPaterno() + "," +
+                        p.getCliente().getApellidoMaterno() + "," +
                         dp.getProducto().getNombre() + "," +
                         dp.getCantidad() + "," +
                         dp.getSubtotal() + "," +

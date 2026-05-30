@@ -43,8 +43,8 @@
             
             <MenuButton fx:id="btnMenuExportar" prefHeight="40" style="-fx-background-color: #227093; -fx-background-radius: 8;" text="Exportar..." textFill="WHITE">
               <items>
-                <MenuItem fx:id="menuItemExportarCSV" text="Exportar a CSV" />
-                <MenuItem fx:id="menuItemExportarPDF" text="Exportar a PDF" />
+                <MenuItem fx:id="menuItemExportarCSV" onAction="#clickExportarCSV" text="Exportar a CSV" />
+                <MenuItem fx:id="menuItemExportarPDF" onAction="#clickExportarPDF" text="Exportar a PDF" />
               </items>
             </MenuButton>
             

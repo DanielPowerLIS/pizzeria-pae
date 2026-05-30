@@ -62,7 +62,7 @@ public class EleccionEstatusController implements Initializable {
         
         try{
         
-            if(PedidoDAO.eliminarPedido(pedido.getIdPedido(), estatusSeleccionado)){
+            if(PedidoDAO.actualizarEstatusPedido(pedido.getIdPedido(), estatusSeleccionado)){
                 Alerta.mostrarAlertaInformacion("Pedido actualizado",
                         "Su pedido ha cambiado de estado exitosamente");
                 
