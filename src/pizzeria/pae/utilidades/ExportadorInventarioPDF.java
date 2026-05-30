@@ -1,6 +1,7 @@
 package pizzeria.pae.utilidades;
 
 import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
 import com.lowagie.text.Font;
 import com.lowagie.text.FontFactory;
@@ -10,6 +11,7 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import java.awt.Color;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.List;
 import pizzeria.pae.modelo.beans.Producto;
@@ -32,9 +34,11 @@ public class ExportadorInventarioPDF extends Exportador<Producto> {
             titulo.setAlignment(Element.ALIGN_CENTER);
             titulo.setSpacingAfter(20);
             documento.add(titulo);
-        } catch (Exception e) {
-            // Se envuelve en RuntimeException porque el método padre no lanza excepciones
-            throw new RuntimeException("Error al abrir e inicializar el PDF", e);
+        }catch (FileNotFoundException ex) {
+            throw new RuntimeException("No se pudo crear el archivo PDF", ex);
+        }
+        catch (com.lowagie.text.DocumentException ex) {
+            throw new RuntimeException("Error al configurar el documento PDF", ex);
         }
     }
 
@@ -46,8 +50,11 @@ public class ExportadorInventarioPDF extends Exportador<Producto> {
         try {
             float[] anchosColumnas = {1.5f, 2.5f, 3f, 1f, 1.5f, 2f};
             tabla.setWidths(anchosColumnas);
-        } catch (Exception e) {
-            throw new RuntimeException("Error al configurar el ancho de las columnas", e);
+        }catch (DocumentException ex) {
+            throw new RuntimeException(
+                    "Error al configurar el ancho de las columnas",
+                    ex
+            );
         }
 
         tabla.addCell(crearHeaderCelda("CÓDIGO"));
@@ -80,8 +87,11 @@ public class ExportadorInventarioPDF extends Exportador<Producto> {
                 documento.add(tabla);
                 documento.close();
             }
-        } catch (Exception e) {
-            throw new RuntimeException("Error al finalizar y cerrar el PDF", e);
+        } catch (DocumentException ex) {
+            throw new RuntimeException(
+                    "Error al finalizar y cerrar el PDF",
+                    ex
+            );
         }
     }
 
