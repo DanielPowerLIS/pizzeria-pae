@@ -23,7 +23,7 @@ import pizzeria.pae.utilidades.ConvertidorNombre;
 public class PedidoDAO {
     public static List<Pedido> buscarPedidoPorFecha(Date fecha)throws SQLException{
         String consulta = "SELECT " +
-                        "p.idPedido, p.codigo AS codigoPedido, p.fecha, p.estado, p.totalAPagar, " +
+                        "p.idPedido, p.fecha, p.estado, p.totalAPagar, " +
                         "u.idUsuario, u.nombre, u.apellidoPaterno, u.apellidoMaterno, u.telefono, " +
                         "u.email, u.haPedido, u.esEmpleado, u.esActivo, u.nombreUsuario, u.contrasenia, " +
                         "d.idDireccion, d.calle, d.ciudad, d.numero, d.codigoPostal " +
@@ -137,7 +137,7 @@ public class PedidoDAO {
     
     public static List<Pedido> buscarPedidoPorEstado(String estado)throws SQLException{
         String consulta = "SELECT " +
-                        "p.idPedido, p.codigo AS codigoPedido, p.fecha, p.estado, p.totalAPagar, " +
+                        "p.idPedido, p.fecha, p.estado, p.totalAPagar, " +
                         "u.idUsuario, u.nombre, u.apellidoPaterno, u.apellidoMaterno, u.telefono, " +
                         "u.email, u.haPedido, u.esEmpleado, u.esActivo, u.nombreUsuario, u.contrasenia, " +
                         "d.idDireccion, d.calle, d.ciudad, d.numero, d.codigoPostal " +
@@ -202,7 +202,7 @@ public class PedidoDAO {
     
     public static List<Pedido> buscarPedidosPorUsuario(String nombreCompletoBuscar)throws SQLException{
         String consulta = "SELECT " +
-                        "p.idPedido, p.codigo AS codigoPedido, p.fecha, p.estado, p.totalAPagar, " +
+                        "p.idPedido, p.fecha, p.estado, p.totalAPagar, " +
                         "u.idUsuario, u.nombre, u.apellidoPaterno, u.apellidoMaterno, u.telefono, " +
                         "u.email, u.haPedido, u.esEmpleado, u.esActivo, u.nombreUsuario, u.contrasenia, " +
                         "d.idDireccion, d.calle, d.ciudad, d.numero, d.codigoPostal " +
@@ -275,13 +275,13 @@ public class PedidoDAO {
     
     public static List<Pedido> obtenerPedidos()throws SQLException{
         String consulta = "SELECT " +
-                        "p.idPedido, p.codigo AS codigoPedido, p.fecha, p.estado, p.totalAPagar, " +
+                        "p.idPedido, p.fecha, p.estado, p.totalAPagar, " +
                         "u.idUsuario, u.nombre, u.apellidoPaterno, u.apellidoMaterno, u.telefono, " +
                         "u.email, u.haPedido, u.esEmpleado, u.esActivo, u.nombreUsuario, u.contrasenia, " +
                         "d.idDireccion, d.calle, d.ciudad, d.numero, d.codigoPostal " +
                         "FROM pedido p " +
                         "INNER JOIN usuario u ON p.idUsuario = u.idUsuario " +
-                        "INNER JOIN direccion d ON u.idUsuario = d.idUsuario ";
+                        "INNER JOIN direccion d ON u.idUsuario = d.idUsuario";
         
         MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
         PreparedStatement sentenciaBD = conexion.prepareStatement(consulta);
@@ -443,26 +443,20 @@ public class PedidoDAO {
         return detallesEliminados == numDetalles;
     }
     
-    public static Boolean eliminarPedido(Integer idPedido)throws SQLException{
-        String eliminarPedido = "DELETE FROM pedido WHERE idPedido = ?";
+    public static Boolean eliminarPedido(Integer idPedido, String estadoNuevo)throws SQLException{
+        int pedidoEliminado = 0;
+        String eliminarPedido = "UPDATE pedido SET estado = ? WHERE idPedido = ?";
         
-        MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
-        PreparedStatement eliminarPedidoBD = conexion.prepareStatement(eliminarPedido);
+        try(
+            MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
+            PreparedStatement eliminarPedidoBD = conexion.prepareStatement(eliminarPedido);
+        ){
+            eliminarPedidoBD.setInt(2, idPedido);
+            eliminarPedidoBD.setString(1, estadoNuevo);
         
-        eliminarPedidoBD.setInt(1, idPedido);
-        
-        String eliminarDetalles = "DELETE FROM detallepedido WHERE idPedido = ?";
-        
-        PreparedStatement eliminarDetalleBD = conexion.prepareStatement(eliminarDetalles);
-        
-        eliminarDetalleBD.setInt(1, idPedido);
-        
-        Integer detallesEliminados = eliminarDetalleBD.executeUpdate();
-        Integer pedidoEliminado = eliminarPedidoBD.executeUpdate();
-        
-        eliminarDetalleBD.close();
-        conexion.close();
-        
-        return (detallesEliminados + pedidoEliminado) > 1;
+            pedidoEliminado = eliminarPedidoBD.executeUpdate();
+        }
+                
+        return pedidoEliminado > 0;
     }
 }
