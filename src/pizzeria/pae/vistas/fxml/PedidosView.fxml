@@ -50,13 +50,13 @@
             
          </children>
       </HBox>
-      <TableView fx:id="tblPedidos" VBox.vgrow="ALWAYS">
+      <TableView fx:id="tvPedidos" VBox.vgrow="ALWAYS">
          <columns>
-            <TableColumn fx:id="colIdPedido" prefWidth="80.0" text="Folio" />
-            <TableColumn fx:id="colFechaPedido" prefWidth="150.0" text="Fecha" />
-            <TableColumn fx:id="colClientePedido" prefWidth="250.0" text="Cliente" />
-            <TableColumn fx:id="colTotalPedido" prefWidth="100.0" text="Total ($)" />
-            <TableColumn fx:id="colEstatusPedido" prefWidth="150.0" text="Estatus" />
+            <TableColumn fx:id="tcFolio" prefWidth="80.0" text="Folio" />
+            <TableColumn fx:id="tcFecha" prefWidth="150.0" text="Fecha" />
+            <TableColumn fx:id="tcCliente" prefWidth="250.0" text="Cliente" />
+            <TableColumn fx:id="tcTotalPedido" prefWidth="100.0" text="Total ($)" />
+            <TableColumn fx:id="tcEstatus" prefWidth="150.0" text="Estatus" />
          </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
