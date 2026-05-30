@@ -1,5 +1,7 @@
 package pizzeria.pae.vistas.controlador;
 
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -21,12 +23,15 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import pizzeria.pae.excepciones.ProductoUtilizadoException;
 import pizzeria.pae.modelo.beans.Producto;
 import pizzeria.pae.modelo.dao.ProductoDAO;
 import pizzeria.pae.utilidades.Alerta;
+import pizzeria.pae.utilidades.Exportador;
+import pizzeria.pae.utilidades.ExportadorInventarioPDF;
 
 /**
  * FXML Controller class
@@ -255,7 +260,46 @@ public class ProductosViewController implements Initializable {
 
     @FXML
     private void clickGenerarPDF(ActionEvent event) {
-        
+        FileChooser selector = new FileChooser();
+        selector.setTitle("Guardar Reporte de Inventario PDF");
+        selector.getExtensionFilters().add(
+            new FileChooser.ExtensionFilter("Archivos PDF", "*.pdf")
+        );
+        selector.setInitialFileName("ReporteInventario_Existencias.pdf");
+
+        Stage stageActual = (Stage) tvProductos.getScene().getWindow();
+        File archivo = selector.showSaveDialog(stageActual);
+
+        if (archivo != null) {
+            try {
+                List<Producto> productosConStock = ProductoDAO.obtenerProductosConStock();
+                
+                if(productosConStock.isEmpty()){
+                    Alerta.mostrarAlertaAdvertencia("Sin datos", "No hay productos en existencia para generar el reporte.");
+                    return;
+                }
+
+                Exportador<Producto> exportador = new ExportadorInventarioPDF();
+                exportador.exportar(productosConStock, archivo.getAbsolutePath());
+
+                File pdf = new File(archivo.getAbsolutePath());
+                if(pdf.exists()){
+                    Desktop desktop = Desktop.getDesktop();
+                    desktop.open(pdf);
+                }
+
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                Alerta.mostrarAlertaError("Error de base de datos", "No se pudo obtener la información de los productos.");
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                Alerta.mostrarAlertaError("Error de apertura", "El reporte se creó, pero no se pudo abrir automáticamente.");
+                
+            } catch (RuntimeException ex) {
+                ex.printStackTrace();
+                Alerta.mostrarAlertaError("Error al generar PDF", "Hubo un problema al construir el documento.");
+            }
+        }
     }
     
     private Producto productoSeleccionado(){
