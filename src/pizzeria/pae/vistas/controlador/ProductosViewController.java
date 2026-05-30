@@ -255,6 +255,7 @@ public class ProductosViewController implements Initializable {
 
     @FXML
     private void clickGenerarPDF(ActionEvent event) {
+        
     }
     
     private Producto productoSeleccionado(){
