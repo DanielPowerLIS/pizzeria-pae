@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import pizzeria.pae.modelo.beans.Pedido;
 import pizzeria.pae.modelo.dao.PedidoDAO;
+import pizzeria.pae.modelo.dao.ProductoDAO;
 import pizzeria.pae.utilidades.Alerta;
 
 /**
@@ -38,7 +39,6 @@ public class EleccionEstatusController implements Initializable {
     
     private void cargarInformacion() {
         cmbEstatus.getItems().addAll(
-            "PENDIENTE",
             "CANCELADO",
             "APROBADO"
         );
@@ -63,6 +63,11 @@ public class EleccionEstatusController implements Initializable {
         try{
         
             if(PedidoDAO.actualizarEstatusPedido(pedido.getIdPedido(), estatusSeleccionado)){
+                
+                if (estatusSeleccionado.equals("APROBADO")) {
+                    ProductoDAO.utilizarProducto(pedido.getDetallePedido());
+                }
+                
                 Alerta.mostrarAlertaInformacion("Pedido actualizado",
                         "Su pedido ha cambiado de estado exitosamente");
                 
