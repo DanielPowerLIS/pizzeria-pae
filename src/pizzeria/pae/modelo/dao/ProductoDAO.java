@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import pizzeria.pae.excepciones.ProductoUtilizadoException;
 import pizzeria.pae.modelo.MySQLConnectionManager;
 import pizzeria.pae.modelo.beans.Producto;
 
@@ -201,18 +202,38 @@ public class ProductoDAO {
         }
     }
     
-    public static Boolean eliminarProducto(Integer idProducto)throws SQLException{
-        String eliminarProducto = "DELETE FROM producto WHERE idProducto = ?";
-        
-        try(MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
-            PreparedStatement eliminarProductoBD = conexion.prepareStatement(eliminarProducto)){
+    public static Boolean eliminarProducto(Integer idProducto)throws SQLException, ProductoUtilizadoException{
+        if(verificarUtilidad(idProducto)){
+            int productoEliminado = 0;
+            String eliminar =  "UPDATE producto SET vigente = 0 WHERE idProducto = ?;";
+            try(MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
+                PreparedStatement eliminarBD = conexion.prepareStatement(eliminar)){
 
-            eliminarProductoBD.setInt(1, idProducto);
-        
-            Integer productoEliminado = eliminarProductoBD.executeUpdate();
+                eliminarBD.setInt(1, idProducto);
+                
+                productoEliminado = eliminarBD.executeUpdate();
 
             return productoEliminado > 0;
-        }  
+            }  
+        }else{
+            throw new ProductoUtilizadoException("El producto ya ha sido utilizado anteriormente.");
+        }
+    }
+    
+    public static Boolean verificarUtilidad(Integer idProducto)throws SQLException{
+        String consulta = "SELECT idProducto FROM pizzeriapae.productossinutilizar WHERE idProducto = ?";
+        try(MySQLConnectionManager conexion = MySQLConnectionManager.buildConnection();
+                PreparedStatement sentenciaBD = conexion.prepareStatement(consulta)){
+            
+            sentenciaBD.setInt(1,idProducto);
+            
+            try(ResultSet resultado = sentenciaBD.executeQuery()){
+                if(resultado.next()){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
     
     public static Producto buscarProducto(Integer idProducto)throws SQLException{
