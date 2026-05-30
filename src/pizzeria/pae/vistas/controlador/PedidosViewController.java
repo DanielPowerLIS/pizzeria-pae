@@ -87,7 +87,7 @@ public class PedidosViewController implements Initializable {
 
             stage.setScene(new Scene(root));
             stage.setResizable(false);
-            stage.setTitle("Nuevo Pedido");
+            stage.setTitle("Registrar Pedido");
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initOwner(btnNuevoPedido.getScene().getWindow());
 
