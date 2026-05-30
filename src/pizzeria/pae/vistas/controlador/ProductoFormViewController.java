@@ -42,6 +42,7 @@ import pizzeria.pae.utilidades.UtilidadesUI;
 public class ProductoFormViewController implements Initializable {
     
     private Producto productoEditar = null;
+    private Producto productoNuevo = null;
     
     @FXML
     private TextField tfCodigo;
@@ -83,6 +84,10 @@ public class ProductoFormViewController implements Initializable {
         cargarInformacionProducto();
         tfCodigo.setEditable(false);
         
+    }
+    
+    public Producto obtenerProductoNuevo(){
+        return this.productoNuevo;
     }
     
     private void cargarInformacionProducto(){
@@ -176,7 +181,8 @@ public class ProductoFormViewController implements Initializable {
 
 
                 Boolean guardadoExitoso = ProductoDAO.agregarProducto(productoNuevo);
-
+                this.productoNuevo = productoNuevo;
+                
                 if (guardadoExitoso) {
                     Alerta.mostrarAlertaInformacion("Guardado exitoso", "El producto se ha guardado correctamente.");
                     cerrarVentana();
