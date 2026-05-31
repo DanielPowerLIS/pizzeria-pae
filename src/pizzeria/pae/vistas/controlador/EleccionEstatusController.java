@@ -39,8 +39,8 @@ public class EleccionEstatusController implements Initializable {
     
     private void cargarInformacion() {
         cmbEstatus.getItems().addAll(
-            "CANCELADO",
-            "APROBADO"
+            "ENTREGADO",
+            "CANCELADO"
         );
     }
 
@@ -64,7 +64,7 @@ public class EleccionEstatusController implements Initializable {
         
             if(PedidoDAO.actualizarEstatusPedido(pedido.getIdPedido(), estatusSeleccionado)){
                 
-                if (estatusSeleccionado.equals("APROBADO")) {
+                if (estatusSeleccionado.equals("ENTREGADO")) {
                     ProductoDAO.utilizarProducto(pedido.getDetallePedido());
                 }
                 
