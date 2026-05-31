@@ -108,6 +108,14 @@ public class PedidosViewController implements Initializable {
         Pedido pedidoSeleccionado = tvPedidos.getSelectionModel().getSelectedItem();
         
         if (pedidoSeleccionado != null) {
+            if (pedidoSeleccionado.getEstado().equals("ENTREGADO") ||
+                pedidoSeleccionado.getEstado().equals("CANCELADO")) {
+
+                Alerta.mostrarAlertaAdvertencia("Actualizacion no permitida",
+                    "Un pedido que ya fue cancelado o aprobado no se puede editar");
+                return;
+            }
+            
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/pizzeria/pae/vistas/fxml/PedidoFormView.fxml"));
                 Parent root = loader.load();
@@ -144,7 +152,7 @@ public class PedidosViewController implements Initializable {
 
             return;
         }
-        if (!pedidoSeleccionado.getEstado().equalsIgnoreCase("PENDIENTE")) {
+        if (!pedidoSeleccionado.getEstado().equalsIgnoreCase("EN PROCESO")) {
             Alerta.mostrarAlertaAdvertencia(
                 "Acción no permitida", 
                 "El pedido ya se encuentra " + pedidoSeleccionado.getEstado() + " y no se puede modificar."
@@ -192,7 +200,7 @@ public class PedidosViewController implements Initializable {
         cmbBuscarEstatus.getItems().addAll(
                 "ENTREGADO",
                 "CANCELADO",
-                "PROCESO"
+                "EN PROCESO"
         );
     }
     
