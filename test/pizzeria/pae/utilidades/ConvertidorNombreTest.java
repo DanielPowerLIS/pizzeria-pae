@@ -1,53 +1,21 @@
-/*
 package pizzeria.pae.utilidades;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
-/**
- *
- * @author jdani
- */
-/*
 public class ConvertidorNombreTest {
-    
-    public ConvertidorNombreTest() {
-    }
-    
-    @BeforeAll
-    public static void setUpClass() {
-    }
-    
-    @AfterAll
-    public static void tearDownClass() {
-    }
-    
-    @BeforeEach
-    public void setUp() {
-    }
-    
-    @AfterEach
-    public void tearDown() {
-    }
 
-    /**
-     * Test of prepararNombre method, of class ConvertidorNombre.
-     */
-/*
     @Test
     public void testPrepararNombre() {
-        System.out.println("prepararNombre");
-        String nombreCompleto = "";
-        String[] expResult = null;
-        String[] result = ConvertidorNombre.prepararNombre(nombreCompleto);
-        assertArrayEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        String[] resultado =
+                ConvertidorNombre.prepararNombre(
+                        "Gabriel Hernández Martínez"
+                );
+
+        assertNotNull(resultado);
+        assertEquals("Gabriel", resultado[0]);
+        assertEquals("Hernández", resultado[1]);
+        assertEquals("Martínez", resultado[2]);
     }
-    
 }
-*/
