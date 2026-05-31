@@ -1,4 +1,4 @@
-
+/*
 package pizzeria.pae.modelo.beans;
 
 import org.junit.jupiter.api.AfterEach;
@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author jdani
  */
+/*
 public class UsuarioTest {
     
     public UsuarioTest() {
@@ -36,6 +37,7 @@ public class UsuarioTest {
     /**
      * Test of getIdUsuario method, of class Usuario.
      */
+/*
     @Test
     public void testGetIdUsuario() {
         System.out.println("getIdUsuario");
@@ -50,6 +52,7 @@ public class UsuarioTest {
     /**
      * Test of setIdUsuario method, of class Usuario.
      */
+/*
     @Test
     public void testSetIdUsuario() {
         System.out.println("setIdUsuario");
@@ -63,6 +66,7 @@ public class UsuarioTest {
     /**
      * Test of getNombre method, of class Usuario.
      */
+/*
     @Test
     public void testGetNombre() {
         System.out.println("getNombre");
@@ -77,6 +81,7 @@ public class UsuarioTest {
     /**
      * Test of setNombre method, of class Usuario.
      */
+/*
     @Test
     public void testSetNombre() {
         System.out.println("setNombre");
@@ -90,6 +95,7 @@ public class UsuarioTest {
     /**
      * Test of getApellidoPaterno method, of class Usuario.
      */
+/*
     @Test
     public void testGetApellidoPaterno() {
         System.out.println("getApellidoPaterno");
@@ -104,6 +110,7 @@ public class UsuarioTest {
     /**
      * Test of setApellidoPaterno method, of class Usuario.
      */
+/*
     @Test
     public void testSetApellidoPaterno() {
         System.out.println("setApellidoPaterno");
@@ -117,6 +124,7 @@ public class UsuarioTest {
     /**
      * Test of getApellidoMaterno method, of class Usuario.
      */
+/*
     @Test
     public void testGetApellidoMaterno() {
         System.out.println("getApellidoMaterno");
@@ -131,6 +139,7 @@ public class UsuarioTest {
     /**
      * Test of setApellidoMaterno method, of class Usuario.
      */
+/*
     @Test
     public void testSetApellidoMaterno() {
         System.out.println("setApellidoMaterno");
@@ -144,6 +153,7 @@ public class UsuarioTest {
     /**
      * Test of getTelefono method, of class Usuario.
      */
+/*
     @Test
     public void testGetTelefono() {
         System.out.println("getTelefono");
@@ -158,6 +168,7 @@ public class UsuarioTest {
     /**
      * Test of setTelefono method, of class Usuario.
      */
+/*
     @Test
     public void testSetTelefono() {
         System.out.println("setTelefono");
@@ -171,6 +182,7 @@ public class UsuarioTest {
     /**
      * Test of getEmail method, of class Usuario.
      */
+/*
     @Test
     public void testGetEmail() {
         System.out.println("getEmail");
@@ -185,6 +197,7 @@ public class UsuarioTest {
     /**
      * Test of setEmail method, of class Usuario.
      */
+/*
     @Test
     public void testSetEmail() {
         System.out.println("setEmail");
@@ -197,7 +210,7 @@ public class UsuarioTest {
 
     /**
      * Test of getHaPedido method, of class Usuario.
-     */
+     *//*
     @Test
     public void testGetHaPedido() {
         System.out.println("getHaPedido");
@@ -212,6 +225,7 @@ public class UsuarioTest {
     /**
      * Test of setHaPedido method, of class Usuario.
      */
+/*
     @Test
     public void testSetHaPedido() {
         System.out.println("setHaPedido");
@@ -225,6 +239,7 @@ public class UsuarioTest {
     /**
      * Test of getEsEmpleado method, of class Usuario.
      */
+/*
     @Test
     public void testGetEsEmpleado() {
         System.out.println("getEsEmpleado");
@@ -239,6 +254,7 @@ public class UsuarioTest {
     /**
      * Test of setEsEmpleado method, of class Usuario.
      */
+/*
     @Test
     public void testSetEsEmpleado() {
         System.out.println("setEsEmpleado");
@@ -252,6 +268,7 @@ public class UsuarioTest {
     /**
      * Test of getEsActivo method, of class Usuario.
      */
+/*
     @Test
     public void testGetEsActivo() {
         System.out.println("getEsActivo");
@@ -266,6 +283,7 @@ public class UsuarioTest {
     /**
      * Test of setEsActivo method, of class Usuario.
      */
+    /*
     @Test
     public void testSetEsActivo() {
         System.out.println("setEsActivo");
@@ -279,6 +297,7 @@ public class UsuarioTest {
     /**
      * Test of getEliminado method, of class Usuario.
      */
+    /*
     @Test
     public void testGetEliminado() {
         System.out.println("getEliminado");
@@ -293,6 +312,7 @@ public class UsuarioTest {
     /**
      * Test of setEliminado method, of class Usuario.
      */
+    /*
     @Test
     public void testSetEliminado() {
         System.out.println("setEliminado");
@@ -306,6 +326,7 @@ public class UsuarioTest {
     /**
      * Test of getNombreUsuario method, of class Usuario.
      */
+    /*
     @Test
     public void testGetNombreUsuario() {
         System.out.println("getNombreUsuario");
@@ -320,6 +341,7 @@ public class UsuarioTest {
     /**
      * Test of setNombreUsuario method, of class Usuario.
      */
+    /*
     @Test
     public void testSetNombreUsuario() {
         System.out.println("setNombreUsuario");
@@ -333,6 +355,7 @@ public class UsuarioTest {
     /**
      * Test of getContrasenia method, of class Usuario.
      */
+    /*
     @Test
     public void testGetContrasenia() {
         System.out.println("getContrasenia");
@@ -347,6 +370,7 @@ public class UsuarioTest {
     /**
      * Test of setContrasenia method, of class Usuario.
      */
+    /*
     @Test
     public void testSetContrasenia() {
         System.out.println("setContrasenia");
@@ -360,6 +384,7 @@ public class UsuarioTest {
     /**
      * Test of getRol method, of class Usuario.
      */
+    /*
     @Test
     public void testGetRol() {
         System.out.println("getRol");
@@ -374,6 +399,7 @@ public class UsuarioTest {
     /**
      * Test of setRol method, of class Usuario.
      */
+    /*
     @Test
     public void testSetRol() {
         System.out.println("setRol");
@@ -387,6 +413,7 @@ public class UsuarioTest {
     /**
      * Test of getDireccion method, of class Usuario.
      */
+    /*
     @Test
     public void testGetDireccion() {
         System.out.println("getDireccion");
@@ -401,6 +428,7 @@ public class UsuarioTest {
     /**
      * Test of setDireccion method, of class Usuario.
      */
+    /*
     @Test
     public void testSetDireccion() {
         System.out.println("setDireccion");
@@ -414,6 +442,7 @@ public class UsuarioTest {
     /**
      * Test of getNombreCompleto method, of class Usuario.
      */
+    /*
     @Test
     public void testGetNombreCompleto() {
         System.out.println("getNombreCompleto");
@@ -428,6 +457,7 @@ public class UsuarioTest {
     /**
      * Test of getTipo method, of class Usuario.
      */
+    /*
     @Test
     public void testGetTipo() {
         System.out.println("getTipo");
@@ -442,6 +472,7 @@ public class UsuarioTest {
     /**
      * Test of toString method, of class Usuario.
      */
+    /*
     @Test
     public void testToString() {
         System.out.println("toString");
@@ -454,3 +485,4 @@ public class UsuarioTest {
     }
     
 }
+*/

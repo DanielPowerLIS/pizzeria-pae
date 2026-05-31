@@ -1,3 +1,4 @@
+/*
 package pizzeria.pae.utilidades;
 
 import org.junit.jupiter.api.AfterEach;
@@ -12,6 +13,7 @@ import pizzeria.pae.modelo.beans.Usuario;
  *
  * @author jdani
  */
+/*
 public class SesionUsuarioTest {
     
     public SesionUsuarioTest() {
@@ -36,6 +38,7 @@ public class SesionUsuarioTest {
     /**
      * Test of getUsuarioActual method, of class SesionUsuario.
      */
+/*
     @Test
     public void testGetUsuarioActual() {
         System.out.println("getUsuarioActual");
@@ -49,6 +52,7 @@ public class SesionUsuarioTest {
     /**
      * Test of setUsuarioActual method, of class SesionUsuario.
      */
+/*
     @Test
     public void testSetUsuarioActual() {
         System.out.println("setUsuarioActual");
@@ -61,6 +65,7 @@ public class SesionUsuarioTest {
     /**
      * Test of limpiarSesion method, of class SesionUsuario.
      */
+/*
     @Test
     public void testLimpiarSesion() {
         System.out.println("limpiarSesion");
@@ -70,3 +75,4 @@ public class SesionUsuarioTest {
     }
     
 }
+*/

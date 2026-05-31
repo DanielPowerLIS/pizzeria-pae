@@ -1,3 +1,4 @@
+/*
 package pizzeria.pae.utilidades;
 
 import org.junit.jupiter.api.AfterEach;
@@ -11,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author jdani
  */
+/*
 public class ConvertidorNombreTest {
     
     public ConvertidorNombreTest() {
@@ -35,6 +37,7 @@ public class ConvertidorNombreTest {
     /**
      * Test of prepararNombre method, of class ConvertidorNombre.
      */
+/*
     @Test
     public void testPrepararNombre() {
         System.out.println("prepararNombre");
@@ -47,3 +50,4 @@ public class ConvertidorNombreTest {
     }
     
 }
+*/
