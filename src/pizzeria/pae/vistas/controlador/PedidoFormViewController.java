@@ -17,6 +17,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
+import pizzeria.pae.excepciones.ProductoNoSuficienteException;
 import pizzeria.pae.modelo.beans.DetallePedido;
 import pizzeria.pae.modelo.beans.Pedido;
 import pizzeria.pae.modelo.beans.Producto;
@@ -71,10 +72,9 @@ public class PedidoFormViewController implements Initializable {
     private List<DetallePedido> detallesAQuitar = new ArrayList<>();
     private List<DetallePedido> detallesNuevos = new ArrayList<>();
 
-
     public void asignarPedido(Pedido pedido) {
         this.pedidoEditar = pedido;
-        
+
         for (Usuario u : cmbCliente.getItems()) {
             if (u.getIdUsuario() == pedido.getCliente().getIdUsuario()) {
                 cmbCliente.getSelectionModel().select(u);
@@ -82,15 +82,15 @@ public class PedidoFormViewController implements Initializable {
             }
         }
         cmbCliente.setDisable(true);
-        
+
         txtFecha.setText(pedido.getFecha().toString());
-        
+
         listaDetalles.clear();
         listaDetalles.addAll(pedido.getDetallePedido());
-        
+
         calcularTotal();
     }
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarTabla();
@@ -106,18 +106,18 @@ public class PedidoFormViewController implements Initializable {
         listaDetalles = FXCollections.observableArrayList();
         tblDetallePedido.setItems(listaDetalles);
     }
-    
+
     private void cargarInformacionProductos() {
-        try{
+        try {
             cmbProducto.setItems(
-                FXCollections.observableArrayList(
-                    ProductoDAO.obtenerProductos(false)
-                )
+                    FXCollections.observableArrayList(
+                            ProductoDAO.obtenerProductos(false)
+                    )
             );
-        }catch(SQLException ex){
-             Alerta.mostrarAlertaError("Problema de conexión", "Ocurrió un problema al cargar la información.");       
+        } catch (SQLException ex) {
+            Alerta.mostrarAlertaError("Problema de conexión", "Ocurrió un problema al cargar la información.");
         }
-    
+
     }
 
     private void configurarTabla() {
@@ -129,20 +129,20 @@ public class PedidoFormViewController implements Initializable {
         colDetallePrecio.setCellValueFactory(new PropertyValueFactory<>("precioUnitario"));
         colDetalleSubtotal.setCellValueFactory(new PropertyValueFactory<>("subtotal"));
 
-        colDetalleCant.setCellFactory(columna ->
-            new TextFieldTableCell<DetallePedido, Integer>(
-                    new IntegerStringConverter()) {
+        colDetalleCant.setCellFactory(columna
+                -> new TextFieldTableCell<DetallePedido, Integer>(
+                        new IntegerStringConverter()) {
 
-                @Override
-                public void startEdit() {
-                    super.startEdit();
+            @Override
+            public void startEdit() {
+                super.startEdit();
 
-                    if (isEditing() && getGraphic() instanceof TextField) {
-                        TextField tfCelda = (TextField) getGraphic();
-                        ConfigurarSoloNumeros.configurarSoloNumeros(tfCelda);
-                    }
+                if (isEditing() && getGraphic() instanceof TextField) {
+                    TextField tfCelda = (TextField) getGraphic();
+                    ConfigurarSoloNumeros.configurarSoloNumeros(tfCelda);
                 }
-            });
+            }
+        });
 
         colDetalleCant.setOnEditCommit(event -> {
             if (event.getNewValue() <= 0) {
@@ -153,10 +153,26 @@ public class PedidoFormViewController implements Initializable {
 
             DetallePedido detalle = event.getRowValue();
 
+            try {
+                if (detalle.getProducto().getCantidad() != null && event.getNewValue() > detalle.getProducto().getCantidad()) {
+                    throw new ProductoNoSuficienteException(
+                            "Stock insuficiente. Hay "
+                            + detalle.getProducto().getCantidad()
+                            + " unidades disponibles de "
+                            + detalle.getProducto().getNombre()
+                            + "."
+                    );
+                }
+            } catch (ProductoNoSuficienteException ex) {
+                tblDetallePedido.refresh();
+                Alerta.mostrarAlertaAdvertencia("Inventario insuficiente", ex.getMessage());
+                return;
+            }
+
             if (pedidoEditar != null && !detallesNuevos.contains(detalle)) {
                 DetallePedido clonViejo = new DetallePedido(detalle.getIdPedido(), detalle.getProducto(), detalle.getCantidad());
                 detallesAQuitar.add(clonViejo);
-                
+
                 detallesNuevos.add(detalle);
             }
 
@@ -167,7 +183,7 @@ public class PedidoFormViewController implements Initializable {
             tblDetallePedido.refresh();
         });
     }
-    
+
     private Pedido crearPedido() {
 
         Pedido pedido = new Pedido();
@@ -182,7 +198,7 @@ public class PedidoFormViewController implements Initializable {
 
         return pedido;
     }
-    
+
     private BigDecimal calcularTotalPedido() {
 
         BigDecimal total = BigDecimal.ZERO;
@@ -193,30 +209,31 @@ public class PedidoFormViewController implements Initializable {
 
         return total;
     }
+
     private void cargarClientes() {
         try {
             cmbCliente.setItems(
-                FXCollections.observableArrayList(
-                    UsuarioDAO.obtenerUsuarios(false)
-                )
+                    FXCollections.observableArrayList(
+                            UsuarioDAO.obtenerUsuarios(false)
+                    )
             );
         } catch (SQLException ex) {
             Alerta.mostrarAlertaError(
-                "Problema de conexión",
-                "No se pudieron cargar los clientes."
+                    "Problema de conexión",
+                    "No se pudieron cargar los clientes."
             );
         }
     }
-    
+
     private void calcularTotal() {
         lblTotalPago.setText("$" + calcularTotalPedido());
     }
-    
+
     private void cerrarVentana() {
         Stage stage = (Stage) btnCancelarPed.getScene().getWindow();
         stage.close();
     }
-    
+
     private DetallePedido buscarDetalleProducto(Producto producto) {
 
         for (DetallePedido detalle : listaDetalles) {
@@ -230,7 +247,7 @@ public class PedidoFormViewController implements Initializable {
 
         return null;
     }
-    
+
     private DetallePedido crearDetallePedido(Producto producto) {
 
         DetallePedido detalle = new DetallePedido();
@@ -255,6 +272,17 @@ public class PedidoFormViewController implements Initializable {
             return;
         }
 
+        try {
+            if (producto.getCantidad() != null && producto.getCantidad() < 1) {
+                throw new ProductoNoSuficienteException(
+                        "El producto " + producto.getNombre() + " se ha agotado."
+                );
+            }
+        } catch (ProductoNoSuficienteException ex) {
+            Alerta.mostrarAlertaAdvertencia("Inventario agotado", ex.getMessage());
+            return;
+        }
+
         if (buscarDetalleProducto(producto) != null) {
             Alerta.mostrarAlertaAdvertencia(
                     "Producto duplicado",
@@ -262,7 +290,7 @@ public class PedidoFormViewController implements Initializable {
             );
             return;
         }
-        
+
         DetallePedido nuevoDetalle = crearDetallePedido(producto);
         if (pedidoEditar != null) {
             nuevoDetalle.setIdPedido(pedidoEditar.getIdPedido());
@@ -277,12 +305,12 @@ public class PedidoFormViewController implements Initializable {
     private void clickGuardarPedido(ActionEvent event) {
 
         if (cmbCliente.getValue() == null) {
-            Alerta.mostrarAlertaAdvertencia( "Cliente no seleccionado", "Debe asignar el pedido a un cliente.");
+            Alerta.mostrarAlertaAdvertencia("Cliente no seleccionado", "Debe asignar el pedido a un cliente.");
             return;
         }
 
         if (listaDetalles.isEmpty()) {
-            Alerta.mostrarAlertaAdvertencia( "Pedido vacío", "Debe agregar al menos un producto al pedido.");
+            Alerta.mostrarAlertaAdvertencia("Pedido vacío", "Debe agregar al menos un producto al pedido.");
             return;
         }
 
@@ -344,7 +372,7 @@ public class PedidoFormViewController implements Initializable {
 
         if (indiceSeleccionado >= 0) {
             DetallePedido detalleRemovido = listaDetalles.get(indiceSeleccionado);
-            
+
             if (pedidoEditar != null) {
                 if (detallesNuevos.contains(detalleRemovido)) {
                     detallesNuevos.remove(detalleRemovido);
@@ -356,7 +384,7 @@ public class PedidoFormViewController implements Initializable {
             listaDetalles.remove(indiceSeleccionado);
             calcularTotal();
         } else {
-            Alerta.mostrarAlertaAdvertencia( "Sin selección", "Debe seleccionar un producto de la tabla para eliminarlo.");
+            Alerta.mostrarAlertaAdvertencia("Sin selección", "Debe seleccionar un producto de la tabla para eliminarlo.");
         }
     }
 
@@ -364,6 +392,5 @@ public class PedidoFormViewController implements Initializable {
     private void clickCancelar(ActionEvent event) {
         cerrarVentana();
     }
-
 
 }

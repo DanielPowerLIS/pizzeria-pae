@@ -1,12 +1,10 @@
 package pizzeria.pae.modelo.beans;
 
 import java.math.BigDecimal;
-
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
-
+import pizzeria.pae.excepciones.ProductoNoSuficienteException;
 import pizzeria.pae.excepciones.ProductoUtilizadoException;
 
 public class ProductoTest {
@@ -57,7 +55,22 @@ public class ProductoTest {
 
         if (productoMock.getEsUtilizado()) {
             throw new ProductoUtilizadoException(
-                "El producto ya ha sido utilizado anteriormente."
+                    "El producto ya ha sido utilizado anteriormente."
+            );
+        }
+    }
+
+    @Test(expected = ProductoNoSuficienteException.class)
+    public void testProductoNoSuficienteException() throws ProductoNoSuficienteException {
+
+        Producto productoPrueba = new Producto();
+        productoPrueba.setCantidad(5);
+
+        int cantidadSolicitada = 10;
+
+        if (productoPrueba.getCantidad() != null && cantidadSolicitada > productoPrueba.getCantidad()) {
+            throw new ProductoNoSuficienteException(
+                    "Stock insuficiente. Solo hay " + productoPrueba.getCantidad() + " unidades disponibles."
             );
         }
     }
