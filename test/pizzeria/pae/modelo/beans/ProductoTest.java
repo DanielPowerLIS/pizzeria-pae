@@ -7,18 +7,18 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import pizzeria.pae.excepciones.ProductoUtilizadoException;
 
-class ProductoTest {
+public class ProductoTest { // Clase pública
 
     private Producto producto;
 
     @BeforeEach
-    void setup() {
+    public void setup() { // Método público
         producto = new Producto();
     }
 
     @Test
     @DisplayName("Validar consistencia de los datos del inventario")
-    void testvalidacionStockDisponible(){
+    public void testvalidacionStockDisponible(){ // Método público
         producto.setIdProducto(101);
         producto.setNombre("Refresco de Cola");
         producto.setCantidad(50);
@@ -30,7 +30,7 @@ class ProductoTest {
 
     @Test
     @DisplayName("Validar banderas lógicas de negocio del producto")
-    void testEsInsumoYEsUtilizado() {
+    public void testEsInsumoYEsUtilizado() { // Método público
         producto.setEsInsumo(false);
         producto.setEsUtilizado(true);
         
@@ -40,7 +40,7 @@ class ProductoTest {
 
     @Test
     @DisplayName("Validar almacenamiento de precio decimal y código único")
-    void testSetGetPrecioYCodigo() {
+    public void testSetGetPrecioYCodigo() { // Método público
         BigDecimal precio = new BigDecimal("199.99");
         producto.setPrecio(precio);
         producto.setCodigo("PROD-PIZ-001");
@@ -51,21 +51,20 @@ class ProductoTest {
     
     @Test
     @DisplayName("Validar lanzamiento de excepción si el producto ya fue utilizado")
-    void testProductoUtilizadoException() {
+    public void testProductoUtilizadoException() { // Método público
         
-        Producto producto = new Producto();
-        producto.setEsUtilizado(true);
+        Producto productoMock = new Producto();
+        productoMock.setEsUtilizado(true);
 
         ProductoUtilizadoException excepcionCapturada = assertThrows(
             ProductoUtilizadoException.class, 
             () -> {
-                if (producto.getEsUtilizado()) {
+                if (productoMock.getEsUtilizado()) {
                     throw new ProductoUtilizadoException("El producto ya ha sido utilizado anteriormente.");
                 }
             }
         );
 
-        // 4. (Opcional pero recomendado) Verificamos que el mensaje sea exactamente el que programaste
         assertEquals("El producto ya ha sido utilizado anteriormente.", excepcionCapturada.getMessage());
     }
 }
