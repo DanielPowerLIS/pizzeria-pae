@@ -1,69 +1,36 @@
-/*
 package pizzeria.pae.utilidades.seguridad;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
-/**
- *
- * @author jdani
- */
-/*
 public class BCryptHasherTest {
-    
-    public BCryptHasherTest() {
-    }
-    
-    @BeforeAll
-    public static void setUpClass() {
-    }
-    
-    @AfterAll
-    public static void tearDownClass() {
-    }
-    
-    @BeforeEach
-    public void setUp() {
-    }
-    
-    @AfterEach
-    public void tearDown() {
+
+    @Test
+    public void testGenerarContraseniaHash_Valido() {
+        String contraseniaPlana = "admin123";
+        String hashGenerado = BCryptHasher.generarContraseniaHash(contraseniaPlana);
+
+        assertNotNull("El hash generado no debe ser nulo", hashGenerado);
+        assertNotEquals("El hash no debe ser igual a la contraseña plana", contraseniaPlana, hashGenerado);
+        assertTrue("El hash de autenticación debe iniciar con el prefijo oficial de BCrypt ($2a$)",
+                hashGenerado.startsWith("$2a$"));
     }
 
-    /**
-     * Test of generarContraseniaHash method, of class BCryptHasher.
-     */
-/*
     @Test
-    public void testGenerarContraseniaHash() {
-        System.out.println("generarContraseniaHash");
-        String contrasenia = "";
-        String expResult = "";
-        String result = BCryptHasher.generarContraseniaHash(contrasenia);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testVerificarContraseniaHash_Correcto() {
+        String contraseniaPlana = "cajero2026";
+        String hashGenerado = BCryptHasher.generarContraseniaHash(contraseniaPlana);
+
+        assertTrue("Debe permitir el acceso cuando las contraseñas coinciden",
+                BCryptHasher.verificarContraseniaHash(contraseniaPlana, hashGenerado));
     }
 
-    /**
-     * Test of verificarContraseniaHash method, of class BCryptHasher.
-     */
-/*
     @Test
-    public void testVerificarContraseniaHash() {
-        System.out.println("verificarContraseniaHash");
-        String contrasenia = "";
-        String hashGuardado = "";
-        boolean expResult = false;
-        boolean result = BCryptHasher.verificarContraseniaHash(contrasenia, hashGuardado);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testVerificarContraseniaHash_Incorrecto() {
+        String contraseniaPlana = "cajero2026";
+        String hashGenerado = BCryptHasher.generarContraseniaHash(contraseniaPlana);
+
+        assertFalse("Debe bloquear el acceso si se introduce una contraseña incorrecta",
+                BCryptHasher.verificarContraseniaHash("passwordIncorrecto", hashGenerado));
     }
-    
 }
-*/
