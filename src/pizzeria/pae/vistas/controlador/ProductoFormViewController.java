@@ -85,10 +85,6 @@ public class ProductoFormViewController implements Initializable {
         
     }
     
-    public Producto obtenerProductoNuevo(){
-        return this.productoNuevo;
-    }
-    
     private void cargarInformacionProducto(){
         tfCodigo.setText(productoEditar.getCodigo());
         tfNombreProducto.setText(productoEditar.getNombre());

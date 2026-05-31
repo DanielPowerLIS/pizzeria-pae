@@ -44,7 +44,7 @@ public class ProductoDAO {
             
             try(ResultSet resultado = sentenciaBD.executeQuery()){
                
-                if(resultado.next()){
+                while(resultado.next()){
                     Producto p = new Producto();
 
                     p.setIdProducto(resultado.getInt("idProducto"));
@@ -94,7 +94,7 @@ public class ProductoDAO {
             
             try(ResultSet resultado = sentenciaBD.executeQuery()){
                
-                if(resultado.next()){
+                while(resultado.next()){
                     Producto p = new Producto();
 
                     p.setIdProducto(resultado.getInt("idProducto"));
