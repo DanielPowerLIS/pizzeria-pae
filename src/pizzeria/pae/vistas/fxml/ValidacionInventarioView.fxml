@@ -28,10 +28,6 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <HBox alignment="CENTER_RIGHT" spacing="15.0">
-         <children>
-            <Button fx:id="btnGuardarValidacion" prefHeight="40" prefWidth="160" style="-fx-background-color: #218c74; -fx-background-radius: 8;" text="Guardar Validación" textFill="WHITE" />
-         </children>
-      </HBox>
+      <HBox alignment="CENTER_RIGHT" spacing="15.0" />
    </children>
 </VBox>

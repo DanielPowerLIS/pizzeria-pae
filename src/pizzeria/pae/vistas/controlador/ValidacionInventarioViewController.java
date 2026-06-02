@@ -27,8 +27,6 @@ public class ValidacionInventarioViewController implements Initializable {
     
     
     @FXML
-    private Button btnGuardarValidacion;
-    @FXML
     private TableView<Producto> tvValidacion;
     @FXML
     private TableColumn<Producto, String> tcCodigo;
