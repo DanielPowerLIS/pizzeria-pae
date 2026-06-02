@@ -184,20 +184,7 @@ public class PedidoFormViewController implements Initializable {
         });
     }
 
-    private Pedido crearPedido() {
 
-        Pedido pedido = new Pedido();
-
-        pedido.setFecha(LocalDate.now());
-        pedido.setEstado("EN PROCESO");
-        pedido.setCliente(cmbCliente.getValue());
-
-        pedido.setDetallePedido(listaDetalles);
-
-        pedido.setTotal(calcularTotalPedido());
-
-        return pedido;
-    }
 
     private BigDecimal calcularTotalPedido() {
 
@@ -332,7 +319,7 @@ public class PedidoFormViewController implements Initializable {
                 Pedido pedido = new Pedido();
                 pedido.setCliente(cmbCliente.getValue());
                 pedido.setFecha(LocalDate.now());
-                pedido.setEstado("PENDIENTE");
+                pedido.setEstado("EN PROCESO");
                 pedido.setDetallePedido(listaDetalles);
                 pedido.setTotal(calcularTotalPedido());
 
@@ -344,6 +331,7 @@ public class PedidoFormViewController implements Initializable {
                 }
 
             } else {
+               
                 pedidoEditar.setTotal(calcularTotalPedido());
 
                 PedidoDAO.actualizarPedido(pedidoEditar);
