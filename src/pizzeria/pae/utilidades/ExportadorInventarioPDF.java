@@ -18,7 +18,6 @@ import pizzeria.pae.modelo.beans.Producto;
 
 public class ExportadorInventarioPDF extends Exportador<Producto> {
 
-    // Variables globales de la clase para usarlas en los distintos métodos
     private Document documento;
     private PdfPTable tabla;
 
@@ -82,7 +81,6 @@ public class ExportadorInventarioPDF extends Exportador<Producto> {
     @Override
     protected void cerrarDocumento() {
         try {
-            // Añadimos la tabla ya llena al documento y lo cerramos
             if (documento != null && tabla != null) {
                 documento.add(tabla);
                 documento.close();
@@ -95,7 +93,6 @@ public class ExportadorInventarioPDF extends Exportador<Producto> {
         }
     }
 
-    // --- Métodos auxiliares de diseño ---
 
     private PdfPCell crearHeaderCelda(String texto) {
         Font fuenteBlanca = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, Color.WHITE);

@@ -185,6 +185,8 @@ public class UsuariosViewController implements Initializable {
             if (UsuarioDAO.eliminarUsuario(usuarioSeleccionado.getIdUsuario())) {
                 Alerta.mostrarAlertaInformacion("Usuario Eliminado", "El usuario fue dado de baja exitosamente.");
                 cargarDatosTabla();
+                tblUsuarios.getSelectionModel().clearSelection();
+                tblUsuarios.requestFocus();
             } else {
                 Alerta.mostrarAlertaError("Error", "No se pudo eliminar al usuario.");
             }
