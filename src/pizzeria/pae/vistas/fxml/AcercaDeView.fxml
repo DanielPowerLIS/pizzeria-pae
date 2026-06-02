@@ -66,5 +66,10 @@
             <Font size="20.0" />
          </font>
       </Label>
+      <Label text="Victor Hugo Vásquez Martínez" textFill="WHITE">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
    </children>
 </VBox>

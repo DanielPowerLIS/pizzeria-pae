@@ -49,9 +49,6 @@ public class ValidacionInventarioViewController implements Initializable {
     }    
     
     
-    public void iniciarVista() {
-        
-    }
     private void configurarTabla() {
         tvValidacion.setEditable(true);
         
