@@ -51,6 +51,7 @@ public class LoginViewController implements Initializable {
                 throw new UsuarioNoEncontradoException("El usuario no ha sido encontrado o la contraseña es incorrecta.");
             } else {
                 UsuarioDAO.cambiarEstadoSesion(usuario.getIdUsuario(), true);
+                usuario.setEsActivo(true);
                 SesionUsuario.setUsuarioActual(usuario);
                 abrirMenuView();
             }

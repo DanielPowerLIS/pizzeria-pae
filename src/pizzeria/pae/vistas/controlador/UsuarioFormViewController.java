@@ -90,7 +90,6 @@ public class UsuarioFormViewController implements Initializable {
             txtCodigoPostal.setText(usuario.getDireccion().getCodigoPostal());
         }
 
-        // Asignación directa del rol guardado en base de datos
         if (usuario.getRol() != null && !usuario.getRol().isEmpty()) {
             cmbTipoUsuario.setValue(usuario.getRol());
         }
@@ -127,15 +126,15 @@ public class UsuarioFormViewController implements Initializable {
             usuario.setEsEmpleado(esEmpleado);
 
             if (!esEdicion) {
-                usuario.setEsActivo(true);
+                usuario.setEsActivo(false);
                 usuario.setHaPedido(false);
+                usuario.setEliminado(false);
             }
 
             boolean requiereCredenciales = "Administrador".equals(tipo) || "Cajero".equals(tipo);
             if (requiereCredenciales) {
                 String nuevoUsername = txtUsername.getText().trim();
 
-                // Validación para evitar usuarios duplicados
                 int idActual = esEdicion ? usuarioActual.getIdUsuario() : -1;
                 if (UsuarioDAO.existeNombreUsuario(nuevoUsername, idActual)) {
                     Alerta.mostrarAlertaError("Usuario Duplicado", "El nombre de usuario '" + nuevoUsername + "' ya está en uso por otro empleado.");

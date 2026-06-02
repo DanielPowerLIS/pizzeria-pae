@@ -14,6 +14,7 @@ import javafx.scene.control.Separator;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import pizzeria.pae.modelo.beans.Usuario;
+import pizzeria.pae.modelo.dao.UsuarioDAO;
 import pizzeria.pae.utilidades.SesionUsuario;
 
 public class MenuViewController implements Initializable {
@@ -122,7 +123,7 @@ public class MenuViewController implements Initializable {
         try {
             Usuario usrActual = SesionUsuario.getUsuarioActual();
             if (usrActual != null) {
-                pizzeria.pae.modelo.dao.UsuarioDAO.cambiarEstadoSesion(usrActual.getIdUsuario(), false);
+                UsuarioDAO.cambiarEstadoSesion(usrActual.getIdUsuario(), false);
             }
 
             SesionUsuario.limpiarSesion();
