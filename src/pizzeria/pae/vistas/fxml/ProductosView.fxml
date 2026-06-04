@@ -69,6 +69,7 @@
             <TableColumn fx:id="tcPrecio" prefWidth="100.0" text="Precio" />
             <TableColumn fx:id="tcExistencia" prefWidth="100.0" text="En Existencia" />
             <TableColumn fx:id="tcRestricciones" prefWidth="250.0" text="Restricciones" />
+            <TableColumn fx:id="tcFoto" prefWidth="75.0" text="Foto" />
          </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
