@@ -1,6 +1,7 @@
 package pizzeria.pae.vistas.controlador;
 
 import java.awt.Desktop;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -18,11 +19,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -66,6 +70,8 @@ public class ProductosViewController implements Initializable {
     private TableColumn<Producto, Integer> tcExistencia;
     @FXML
     private TableColumn<Producto, String> tcRestricciones;
+    @FXML
+    private TableColumn<Producto, byte[]> tcFoto;
 
     private ObservableList<Producto> productosObservables;
     
@@ -86,6 +92,34 @@ public class ProductosViewController implements Initializable {
         tcPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
         tcExistencia.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
         tcRestricciones.setCellValueFactory(new PropertyValueFactory<>("restricciones"));
+
+        tcFoto.setCellValueFactory(new PropertyValueFactory<>("foto"));
+        tcFoto.setCellFactory(columna -> new TableCell<Producto, byte[]>() {
+            private final ImageView imageView = new ImageView();
+
+            @Override
+            protected void updateItem(byte[] fotoBytes, boolean empty) {
+                super.updateItem(fotoBytes, empty);
+
+                if (empty || fotoBytes == null) {
+                    setGraphic(null);
+                } else {
+                    try {
+                        ByteArrayInputStream inputFoto = new ByteArrayInputStream(fotoBytes);
+                        Image imagen = new Image(inputFoto);
+
+                        imageView.setImage(imagen);
+                        imageView.setFitHeight(50); 
+                        imageView.setFitWidth(50);
+                        imageView.setPreserveRatio(true);
+
+                        setGraphic(imageView);
+                    } catch (Exception e) {
+                        setGraphic(null);
+                    }
+                }
+            }
+        });
     }
     
     private void iniciarVista(){
