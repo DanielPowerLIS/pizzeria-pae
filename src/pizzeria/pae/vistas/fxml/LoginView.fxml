@@ -70,7 +70,7 @@
    
        <!-- Botón de Inicio de Sesión -->
        <!-- Dimensiones amplias para cumplimiento de entrada dual (mouse/táctil) -->
-       <Button fx:id="btnIniciarSesion" maxWidth="Infinity" minHeight="55.0" onAction="#clickIniciarSesion" style="-fx-background-color: #800000; -fx-font-weight: bold; -fx-cursor: hand;" text="Iniciar Sesión" textFill="WHITE" />
+       <Button fx:id="btnIniciarSesion" defaultButton="true" maxWidth="Infinity" minHeight="55.0" onAction="#clickIniciarSesion" style="-fx-background-color: #800000; -fx-font-weight: bold; -fx-cursor: hand;" text="Iniciar Sesión" textFill="WHITE" />
    </children>
 
 </VBox>
